@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MarbeteTarima" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="folio1" class="java.lang.String"/>
+	<parameter name="folio2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select comp.F_Produc as clave,med.F_DesPro as descripcion,lt.F_ClaLot as lote,CONVERT(VARCHAR(10),lt.F_FecCad, 103) as caducidad,lt.F_Origen as origen,
+SUM(comp.F_Unidad) as cantidad,comp.F_ClaDoc as folio 
+from TB_Compra comp inner join tb_medica med on comp.F_Produc=med.F_ClaPro inner join TB_Lote lt on comp.F_Lote=lt.F_FolLot 
+where comp.F_ClaDoc between $P{folio1} and $P{folio2} and comp.F_StsCom='A' 
+GROUP BY comp.F_Produc,med.F_DesPro,lt.F_ClaLot,lt.F_FecCad,lt.F_Origen,comp.F_ClaDoc]]>
+	</queryString>
+	<field name="clave" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lote" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="caducidad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="origen" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<detail>
+		<band height="527">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="10" y="127" width="742" height="167"/>
+				<textElement textAlignment="Center">
+					<font size="125" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{clave}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="10" y="294" width="725" height="84"/>
+				<textElement>
+					<font size="36"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="213" y="440" width="243" height="45"/>
+				<textElement>
+					<font size="30" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lote}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="213" y="399" width="261" height="38"/>
+				<textElement>
+					<font size="30" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{caducidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement x="213" y="473" width="225" height="51"/>
+				<textElement>
+					<font size="36" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="479" width="94" height="45"/>
+				<textElement>
+					<font size="35"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="112" y="441" width="76" height="45"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<text><![CDATA[Lote:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="394" width="178" height="49"/>
+				<textElement>
+					<font size="35"/>
+				</textElement>
+				<text><![CDATA[Caducidad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="299" y="113" width="94" height="38"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<text><![CDATA[Clave:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="2" width="142" height="62"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\Users\\CEDIS TOLUCA3\\Documents\\NetBeansProjects\\UbicacionesIsem\\build\\web\\img\\Logo GNK claro2.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="559" y="33" width="193" height="42"/>
+				<textElement>
+					<font size="25"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{folio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="532" y="37" width="54" height="31"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Folio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="299" y="17" width="118" height="58"/>
+				<textElement>
+					<font size="44"/>
+				</textElement>
+				<text><![CDATA[ISEM]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="33">
+			<staticText>
+				<reportElement x="3" y="6" width="279" height="23"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[PROHIBIDA SU PRODUCCIÓN PARCIAL O TOTAL. SI REQUIERE LA INFORMACIÓN RECURRA CON EL POSEEDOR DEL DOCUMENTO ORIGINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="393" y="6" width="64" height="19"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN: 2 FECHA: 10/03/2014]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="671" y="6" width="56" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[GNKL-T-7 F30]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,10 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<br><br><br>
+<br><br><br>
+<div class="navbar navbar-inverse navbar-fixed-bottom">
+    <div class="text-center" style="color: white; bottom: auto">
+        GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
+        Todos los Derechos Reservados
+    </div>
+</div>

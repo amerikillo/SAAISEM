@@ -1,0 +1,10 @@
+ <div class="row-fluid">
+    <p class="pull-left">&copy; <span id="año-actual"></span> GNK Log&iacute;stica - Departamento de Sistemas</p>
+    <img class="pull-right" src="img/logo_gnk_bco.png"/>
+    <p class="pull-right"> v 1.00</p> 
+</div>
+<script>
+	var currentTime = new Date()
+	var year = currentTime.getFullYear()
+	document.getElementById("año-actual").innerHTML = year;
+</script>

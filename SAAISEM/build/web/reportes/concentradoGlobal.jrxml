@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="concentradoGlobal" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa04e4c5-5205-47c6-b26f-79faf959ff59">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idFact" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	u.F_NomCli,
+	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y'),
+	l.F_ClaPro,
+	l.F_ClaLot,
+	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'),
+	(f.F_Cant+0) as F_Cant,
+	l.F_Ubica,
+	f.F_IdFact,
+	l.F_Cb,
+	p.F_Pzs,
+	(f.F_Cant DIV p.F_Pzs),
+	(f.F_Cant MOD p.F_Pzs),
+	m.F_DesPro,
+	f.F_Id,
+	@rownum:=@rownum+1 as rownum
+FROM
+	(SELECT @rownum:=0) as rownum,
+	tb_facttemp f,
+	tb_lote l,
+	tb_uniatn u,
+	tb_pzxcaja p,
+	tb_medica m
+WHERE
+	f.F_IdLot = l.F_IdLote
+AND f.F_ClaCli = u.F_ClaCli
+AND p.F_ClaPro = l.F_ClaPro
+AND m.F_ClaPro = l.F_ClaPro
+AND F_IdFact = $P{idFact}
+group by
+f.F_Id;]]>
+	</queryString>
+	<field name="F_NomCli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DATE_FORMAT(f.F_FecEnt, &apos;%d/%m/%Y&apos;)" class="java.lang.String"/>
+	<field name="F_ClaPro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_ClaLot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DATE_FORMAT(l.F_FecCad, &apos;%d/%m/%Y&apos;)" class="java.lang.String"/>
+	<field name="F_Cant" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Ubica" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_IdFact" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Cb" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Pzs" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="(f.F_Cant DIV p.F_Pzs)" class="java.lang.Long"/>
+	<field name="(f.F_Cant MOD p.F_Pzs)" class="java.lang.Double"/>
+	<field name="F_DesPro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rownum" class="java.lang.Long"/>
+	<variable name="(f.F_Cant DIV p.F_Pzs)_1" class="java.lang.Long" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{(f.F_Cant DIV p.F_Pzs)}]]></variableExpression>
+	</variable>
+	<variable name="(f.F_Cant MOD p.F_Pzs)_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{(f.F_Cant MOD p.F_Pzs)}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="f.F_Cant+0_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_2" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_3" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="(f.F_Cant DIV p.F_Pzs)_2" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{(f.F_Cant DIV p.F_Pzs)}]]></variableExpression>
+	</variable>
+	<variable name="(f.F_Cant MOD p.F_Pzs)_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{(f.F_Cant MOD p.F_Pzs)}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_4" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5117f519-08a6-4554-8527-27ab11c4d1cb" x="110" y="0" width="347" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Concentrado Global por Proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e05b0b91-2cbf-49bd-abc2-8ad949fb7cc7" x="0" y="23" width="75" height="14"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<text><![CDATA[Requerimiento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9f49afb8-a730-43ce-b957-aa4208289b2a" x="75" y="23" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{F_IdFact}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="53f5730a-f54d-46d9-8115-f80160df6316" x="0" y="2" width="50" height="20"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<text><![CDATA[Proveedor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d2af7c81-ea4e-4541-b9e3-4cb8849e5d6d" x="408" y="2" width="85" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha de Entrega:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5ad50a5d-c786-4a26-9fbb-42b485c20d69" x="50" y="2" width="358" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{F_NomCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="eb2aed8a-a107-4b18-b32c-249c5126b73f" x="493" y="2" width="79" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y')}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<line>
+				<reportElement uuid="dc16c450-737a-4085-aed5-02aba18a84eb" x="0" y="15" width="572" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="70830bc3-713e-4e25-8e3c-4fe43c5397b2" x="179" y="0" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Clave]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f9a753f6-1f96-49fe-a8f8-9f276115459f" x="246" y="1" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Lote]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a8812132-4231-4ebf-8e02-d98e85a77888" x="316" y="1" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Caducidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3b254235-73d1-4202-88b7-a8dff43e55d3" x="444" y="1" width="50" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Ubicacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="22b58b54-b0a7-4855-a512-1275a1d38153" x="111" y="1" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[C.B.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a588faab-b130-4378-9628-eb8bbb3eb6bb" x="384" y="1" width="50" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Total de Piezas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fc0b5714-44ca-47b9-876c-85af72a9d7ce" x="49" y="1" width="50" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="37" splitType="Stretch">
+			<textField>
+				<reportElement uuid="01db694b-de64-467a-8a0f-8dd5ff6680b7" x="246" y="2" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0e630cfc-2cba-4258-b38f-2adec11d542e" x="316" y="2" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATE_FORMAT(l.F_FecCad, '%d/%m/%Y')}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9b9145b9-3dbf-48e7-8d64-5cad7a574ed1" x="445" y="2" width="50" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Ubica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="64abfbc0-523b-454d-b9ff-72248bdae34f" x="179" y="2" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8a51cdc2-c388-4478-a58f-2ac1ad119888" x="111" y="2" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Cb}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###,##0" isBlankWhenNull="true">
+				<reportElement uuid="0b6a3f5b-26fe-4397-a4c3-d938cc35cf46" x="385" y="2" width="50" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Cant}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="b1ab397b-9946-4f91-9239-a89a42a71031" x="0" y="35" width="572" height="1" forecolor="#CCCCCC"/>
+			</line>
+			<textField>
+				<reportElement uuid="9e723926-9f0e-4913-81da-a75665de8795" x="0" y="16" width="572" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_DesPro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1ebdbb6c-adec-4e2c-9dc8-8db5f6d4cf08" x="49" y="2" width="50" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="798764ce-80b0-468d-a463-0a57449de859" x="0" y="2" width="49" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rownum}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement uuid="a68a748e-f2e0-4c1e-ae53-fa329a1a85f9" mode="Opaque" x="526" y="4" width="40" height="13" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d6c324cc-ce19-47bd-8d79-c88d1f7ef2c1" mode="Opaque" x="11" y="4" width="515" height="13" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="91749f50-e7e8-44b0-a365-78d53e3eb1b4" x="227" y="14" width="65" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales]]></text>
+			</staticText>
+			<textField pattern="#,###,##0">
+				<reportElement uuid="46504a08-157b-4f29-89c0-be77dd90a281" x="302" y="14" width="65" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{(f.F_Cant DIV p.F_Pzs)_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###,##0" isBlankWhenNull="true">
+				<reportElement uuid="774fe81e-7860-4bba-8c72-06792e4a64ae" x="372" y="14" width="65" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{(f.F_Cant MOD p.F_Pzs)_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###,##0">
+				<reportElement uuid="5bc89d43-adde-42e2-9e4d-f36b3eae1433" x="442" y="14" width="65" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{F_Cant_4}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
