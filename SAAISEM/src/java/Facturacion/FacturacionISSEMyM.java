@@ -99,89 +99,51 @@ public class FacturacionISSEMyM extends HttpServlet {
                         ResultSet r_Org = con.consulta("SELECT F_ClaOrg FROM tb_lote WHERE F_ClaPro='" + Clave + "' GROUP BY F_ClaOrg ORDER BY F_ClaOrg+0");
                         while (r_Org.next()) {
                             Org = Integer.parseInt(r_Org.getString("F_ClaOrg"));
-
-                            if (Org == 1) {
-                                ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,L.F_ExiLot AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' AND L.F_ClaOrg='" + Org + "' ORDER BY L.F_FecCad ASC");
-                                while (FechaLote.next()) {
-                                    Caducidad = FechaLote.getString("F_FecCad");
-                                    FolioLote = FechaLote.getString("F_FolLot");
-                                    String ClaLot = FechaLote.getString("F_ClaLot");
-                                    existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
-                                    Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
-                                    Costo = Double.parseDouble(FechaLote.getString("F_Costo"));
-                                    Ubicacion = FechaLote.getString("F_Ubica");
-                                    ClaProve = Integer.parseInt(FechaLote.getString("F_ProVee"));
-                                    if (Tipo == 2504) {
-                                        IVA = 0.0;
-                                    } else {
-                                        IVA = 0.16;
-                                    }
-
-                                    if (piezas > existencia) {
-                                        diferencia = piezas - existencia;
-                                        con.actualizar("UPDATE tb_lote SET F_ExiLot='0' WHERE F_FolLot='" + FolioLote + "'");
-
-                                        IVAPro = (existencia * Costo) * IVA;
-                                        Monto = existencia * Costo;
-                                        MontoIva = Monto + IVAPro;
-
-                                        ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
-                                        while (FolioMov.next()) {
-                                            FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
-                                        }
-                                        FolMov = FolioMovi + 1;
-                                        con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
-
-                                        con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + existencia + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
-                                        con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + existencia + "','" + existencia + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
-                                        piezas = diferencia;
-                                    } else {
-                                        diferencia = existencia - piezas;
-                                        con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_FolLot='" + FolioLote + "'");
-
-                                        IVAPro = (piezas * Costo) * IVA;
-                                        Monto = piezas * Costo;
-                                        MontoIva = Monto + IVAPro;
-
-                                        if (piezas > 0) {
-                                            ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
-                                            while (FolioMov.next()) {
-                                                FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
-                                            }
-                                            FolMov = FolioMovi + 1;
-                                            con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
-
-                                            con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + piezas + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
-                                            con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezas + "','" + piezas + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
-                                            con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_FolLot='" + FolioLote + "'");
-                                        }
-                                        piezas = 0;
-                                    }
+                        }
+                        if (Org == 1) {
+                            ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,L.F_ExiLot AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' AND L.F_ClaOrg='" + Org + "' ORDER BY L.F_FecCad ASC");
+                            while (FechaLote.next()) {
+                                Caducidad = FechaLote.getString("F_FecCad");
+                                FolioLote = FechaLote.getString("F_FolLot");
+                                String ClaLot = FechaLote.getString("F_ClaLot");
+                                existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
+                                Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
+                                Costo = Double.parseDouble(FechaLote.getString("F_Costo"));
+                                Ubicacion = FechaLote.getString("F_Ubica");
+                                ClaProve = Integer.parseInt(FechaLote.getString("F_ProVee"));
+                                if (Tipo == 2504) {
+                                    IVA = 0.0;
+                                } else {
+                                    IVA = 0.16;
                                 }
-                            } else {
-                                ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,L.F_ExiLot AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' ORDER BY L.F_FecCad ASC");
-                                while (FechaLote.next()) {
-                                    Caducidad = FechaLote.getString("F_FecCad");
-                                    FolioLote = FechaLote.getString("F_FolLot");
-                                    String ClaLot = FechaLote.getString("F_ClaLot");
-                                    existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
-                                    Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
-                                    Costo = Double.parseDouble(FechaLote.getString("F_Costo"));
-                                    Ubicacion = FechaLote.getString("F_Ubica");
-                                    ClaProve = Integer.parseInt(FechaLote.getString("F_ProVee"));
-                                    if (Tipo == 2504) {
-                                        IVA = 0.0;
-                                    } else {
-                                        IVA = 0.16;
+
+                                if (piezas > existencia) {
+                                    diferencia = piezas - existencia;
+                                    con.actualizar("UPDATE tb_lote SET F_ExiLot='0' WHERE F_FolLot='" + FolioLote + "'");
+
+                                    IVAPro = (existencia * Costo) * IVA;
+                                    Monto = existencia * Costo;
+                                    MontoIva = Monto + IVAPro;
+
+                                    ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
+                                    while (FolioMov.next()) {
+                                        FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
                                     }
-                                    if (piezas > existencia) {
-                                        diferencia = piezas - existencia;
-                                        con.actualizar("UPDATE tb_lote SET F_ExiLot='0' WHERE F_FolLot='" + FolioLote + "'");
+                                    FolMov = FolioMovi + 1;
+                                    con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
 
-                                        IVAPro = (existencia * Costo) * IVA;
-                                        Monto = existencia * Costo;
-                                        MontoIva = Monto + IVAPro;
+                                    con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + existencia + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
+                                    con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + existencia + "','" + existencia + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
+                                    piezas = diferencia;
+                                } else {
+                                    diferencia = existencia - piezas;
+                                    con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_FolLot='" + FolioLote + "'");
 
+                                    IVAPro = (piezas * Costo) * IVA;
+                                    Monto = piezas * Costo;
+                                    MontoIva = Monto + IVAPro;
+
+                                    if (piezas > 0) {
                                         ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
                                         while (FolioMov.next()) {
                                             FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
@@ -189,40 +151,78 @@ public class FacturacionISSEMyM extends HttpServlet {
                                         FolMov = FolioMovi + 1;
                                         con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
 
-                                        con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + existencia + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
-                                        con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + existencia + "','" + existencia + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
-
-                                        piezas = diferencia;
-                                    } else {
-                                        diferencia = existencia - piezas;
+                                        con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + piezas + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
+                                        con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezas + "','" + piezas + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
                                         con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_FolLot='" + FolioLote + "'");
-
-                                        IVAPro = (piezas * Costo) * IVA;
-                                        Monto = piezas * Costo;
-                                        MontoIva = Monto + IVAPro;
-
-                                        if (piezas >= 1) {
-                                            ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
-                                            while (FolioMov.next()) {
-                                                FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
-                                            }
-                                            FolMov = FolioMovi + 1;
-                                            con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
-
-                                            con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + piezas + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
-                                            con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezas + "','" + piezas + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
-                                            con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_FolLot='" + FolioLote + "'");
-                                        }
-                                        piezas = 0;
                                     }
+                                    piezas = 0;
                                 }
                             }
-                        } 
+                        } else {
+                            ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,L.F_ExiLot AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' ORDER BY L.F_FecCad ASC");
+                            while (FechaLote.next()) {
+                                Caducidad = FechaLote.getString("F_FecCad");
+                                FolioLote = FechaLote.getString("F_FolLot");
+                                String ClaLot = FechaLote.getString("F_ClaLot");
+                                existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
+                                Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
+                                Costo = Double.parseDouble(FechaLote.getString("F_Costo"));
+                                Ubicacion = FechaLote.getString("F_Ubica");
+                                ClaProve = Integer.parseInt(FechaLote.getString("F_ProVee"));
+                                if (Tipo == 2504) {
+                                    IVA = 0.0;
+                                } else {
+                                    IVA = 0.16;
+                                }
+                                if (piezas > existencia) {
+                                    diferencia = piezas - existencia;
+                                    con.actualizar("UPDATE tb_lote SET F_ExiLot='0' WHERE F_FolLot='" + FolioLote + "'");
+
+                                    IVAPro = (existencia * Costo) * IVA;
+                                    Monto = existencia * Costo;
+                                    MontoIva = Monto + IVAPro;
+
+                                    ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
+                                    while (FolioMov.next()) {
+                                        FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
+                                    }
+                                    FolMov = FolioMovi + 1;
+                                    con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
+
+                                    con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + existencia + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
+                                    con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + existencia + "','" + existencia + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
+
+                                    piezas = diferencia;
+                                } else {
+                                    diferencia = existencia - piezas;
+                                    con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_FolLot='" + FolioLote + "'");
+
+                                    IVAPro = (piezas * Costo) * IVA;
+                                    Monto = piezas * Costo;
+                                    MontoIva = Monto + IVAPro;
+
+                                    if (piezas >= 1) {
+                                        ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
+                                        while (FolioMov.next()) {
+                                            FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
+                                        }
+                                        FolMov = FolioMovi + 1;
+                                        con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
+
+                                        con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + piezas + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
+                                        con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezas + "','" + piezas + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
+                                        con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_FolLot='" + FolioLote + "'");
+                                    }
+                                    piezas = 0;
+                                }
+                            }
+                        }
+
                         con.actualizar("update tb_unireq set F_Status='1' where F_IdReq='" + rset_cantidad.getString("F_IdReq") + "'");
+                    }
                     byte[] a = request.getParameter("Obs").getBytes("ISO-8859-1");
                     String Observaciones = (new String(a, "UTF-8")).toUpperCase();
                     con.insertar("insert into tb_obserfact values ('" + FolioFactura + "','" + Observaciones + "',0,'" + request.getParameter("F_Req").toUpperCase() + "')");
-                    }
                     con.actualizar("delete * FROM tb_unireq WHERE F_ClaUni='" + ClaUni + "' and F_FecCarg = CURDATE()");
                     con.cierraConexion();
                     //consql.cierraConexion();

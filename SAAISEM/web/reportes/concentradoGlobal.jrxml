@@ -111,7 +111,7 @@ f.F_Id;]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="18"/>
 				</textElement>
-				<text><![CDATA[Concentrado Global por Proveedor]]></text>
+				<text><![CDATA[Folio a Remisionar]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="e05b0b91-2cbf-49bd-abc2-8ad949fb7cc7" x="0" y="23" width="75" height="14"/>
@@ -128,9 +128,11 @@ f.F_Id;]]>
 	<pageHeader>
 		<band height="22" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="53f5730a-f54d-46d9-8115-f80160df6316" x="0" y="2" width="50" height="20"/>
-				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
-				<text><![CDATA[Proveedor:]]></text>
+				<reportElement uuid="53f5730a-f54d-46d9-8115-f80160df6316" x="0" y="2" width="85" height="15"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Punto de Entrega]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="d2af7c81-ea4e-4541-b9e3-4cb8849e5d6d" x="408" y="2" width="85" height="20"/>
@@ -138,8 +140,10 @@ f.F_Id;]]>
 				<text><![CDATA[Fecha de Entrega:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="5ad50a5d-c786-4a26-9fbb-42b485c20d69" x="50" y="2" width="358" height="20"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement uuid="5ad50a5d-c786-4a26-9fbb-42b485c20d69" x="85" y="2" width="323" height="20"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{F_NomCli}]]></textFieldExpression>
 			</textField>
 			<textField>

@@ -61,7 +61,7 @@
                     <h3 class="panel-title">Facturación aútomatica</h3>
                 </div>
                 <div class="panel-body ">
-                    <form class="form-horizontal" role="form" name="formulario1" id="formulario1" method="post" action="FacturacionISSEMyM">
+                    <form class="form-horizontal" role="form" name="formulario1" id="formulario1" method="post" action="Facturacion">
                         <div class="form-group">
                             <div class="form-group">
                                 <!--label for="Clave" class="col-xs-2 control-label">Clave*</label>
@@ -75,7 +75,7 @@
                                         <%
                                             try {
                                                 con.conectar();
-                                                ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli from tb_uniatn u, tb_unireq r where u.F_ClaCli = r.F_ClaUni and u.F_StsCli = 'A' and r.F_Status=0 group by u.F_ClaCli");
+                                                ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn u, tb_unireq r where u.F_ClaCli = r.F_ClaUni and F_StsCli = 'A' and r.F_Status = '0' group by F_ClaCli");
                                                 while (rset.next()) {
                                         %>
                                         <option value="<%=rset.getString(1)%>"
@@ -96,7 +96,7 @@
                                 </div>
 
                                 <div class="col-lg-1"></div>
-                                <div class="col-lg-2"><button class="btn btn-block btn-primary" type="submit" name="accion" value="consultar" onclick="return valida_clave();" >Consultar</button></div>
+                                <div class="col-lg-2"><button class="btn btn-block btn-primary" type="submit" name="accion" value="consultar" onclick="return valida_clave();" > Consultar</button></div>
                             </div>
 
                         </div>
@@ -108,20 +108,10 @@
                                 </div>
                             </div>
                         </div>
-                        <%
-                            if (!Clave.equals("")) {
-                        %>
-                        <button class="hidden" type="submit" name="accion" value="guardar" onclick="return valida_alta();" id="BtnGuardar">Generar Remisión</button> 
-                        <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#Observaciones" name="accion" value="remisionCamion" onclick="">Remisionar</button>
-                        <div class="hidden">
-                            <textarea id="Obs" name="Obs"></textarea>
-                            <input id="F_Req" name="F_Req" />
-                        </div>
+
+                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardarGlobal" onclick="return validaRemision();">Generar Concentrado</button> 
                         <br/><br/>
                         <button class="btn btn-block btn-danger" type="submit" name="accion" value="cancelar" onclick="return confirm('¿Seguro que desea CANCELAR esta orden?');">Cancelar</button> 
-                        <%
-                            }
-                        %>
                     </form>
                     <div>
                         <h6>Los campos marcados con * son obligatorios</h6>
@@ -170,45 +160,7 @@
             </div>
         </div>
 
-        <!--
-                Modal
-        -->
-        <div class="modal fade" id="Observaciones" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="row">
-                            <div class="col-sm-5">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <h4 class="modal-title" id="myModalLabel">Requerimiento</h4>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <input name="Requerimiento" id="Requerimiento" class="form-control" />
-                            </div>
-                        </div>
-
-                        <h4 class="modal-title" id="myModalLabel">Observaciones</h4>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <textarea name="Obser" id="Obser" class="form-control"></textarea>
-                            </div>
-                        </div>
-                        <div style="display: none;" class="text-center" id="Loader">
-                            <img src="imagenes/ajax-loader-1.gif" height="150" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" onclick="return validaRemision();" name="accion" value="actualizarCB">Remisionar</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--
-            /Modal
-            -->
+        
     </body>
 </html>
 

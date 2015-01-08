@@ -91,7 +91,7 @@
                         <%
                             if (tipo.equals("7")) {
                         %>
-                        <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
+                        <li><a href="/SAAISEM/remisionarCamion.jsp">Generar Remisiones</a></li>
                             <%
                                 }
                             %>
@@ -120,7 +120,13 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Operaciones<b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        <%
+                            if (tipo.equals("8")) {
+                        %>
                         <li><a href="/SAAISEM/operaciones/adminRutas.jsp">Administrar Rutas</a></li>
+                            <%
+                                }
+                            %>
                         <li><a href="/SAAISEM/operaciones/verRutas.jsp">Consultar Rutas</a></li>
                     </ul>
                 </li>

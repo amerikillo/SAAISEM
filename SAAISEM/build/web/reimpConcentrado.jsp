@@ -64,8 +64,17 @@
 
             <div>
                 <h3>Revisión de Concentrados por Proveedor</h3>
-                <h4>Seleccione</h4>
-
+                <div class="row">
+                    <form action="reimpRutaConcentrado.jsp" method="post" target="_blank">
+                    <h4 class="col-sm-4">Seleccione fecha para concentrado de ruta:</h4>
+                    <div class="col-sm-2">
+                        <input type="date" class="form-control" required="" name="F_FecSur">
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-block">Generar</button>
+                    </div>
+                    </form>
+                </div>
                 <br />
                 <div class="panel panel-primary">
                     <div class="panel-body">

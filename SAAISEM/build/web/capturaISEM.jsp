@@ -288,11 +288,12 @@
                             </label>
                             <div class="col-sm-2">
                                 <select  class="form-control" name="Prioridad" id="Prioridad" onchange="document.getElementById('CanPro').focus()" >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option selected="">5</option>
+                                    <option selected="">101</option>
+                                    <option>102</option>
+                                    <option>103</option>
+                                    <option>104</option>
+                                    <option>105</option>
+                                    <option>106</option>
                                     <option>ND</option>
                                 </select>
                             </div>

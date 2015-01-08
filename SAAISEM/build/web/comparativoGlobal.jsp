@@ -70,8 +70,12 @@
                 Folios por Remisionar
             </h3>
             <hr/>
-            <h4>Generar Concentrado por día</h4>
-            <input />
+            <div class="row">
+                <h4 class="col-sm-3">Generar Concentrado por día</h4>
+                <div class="col-sm-2">
+                    <input type="date" class="form-control" />
+                </div>
+            </div>
             <hr/>
             <div class="panel panel-primary">
                 <div class="panel-body">
