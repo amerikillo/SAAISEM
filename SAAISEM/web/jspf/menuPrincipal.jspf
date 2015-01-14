@@ -25,7 +25,7 @@
                         <li><a href="/SAAISEM/capturaISEM.jsp">Captura de Órdenes de Compra</a></li>
                         <li class="divider"></li>
 
-                        <!--li><a href="/SAAISEM/captura.jsp">Entrada Manual</a></li-->
+                        <li><a href="/SAAISEM/captura.jsp">Entrada Manual</a></li>
                         <li><a href="/SAAISEM/compraAuto2.jsp">Entrada Automática OC</a></li>
                         <li class="divider"></li>
                         <li><a href="/SAAISEM/hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC</a></li>

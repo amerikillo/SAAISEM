@@ -88,14 +88,14 @@ public class Ubicaciones extends HttpServlet {
         Devoluciones objDev = new Devoluciones();
         ConectionDB con = new ConectionDB();
         ConectionDB_SQLServer conModula = new ConectionDB_SQLServer();
-        conModula.conectar();
+        //conModula.conectar();
         con.conectar();
         String UbicaMov = CBUbica;
         int CantMov = Integer.parseInt(cantMov);
         DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
         DateFormat df2 = new SimpleDateFormat("yyyyMMdd");
         DateFormat df3 = new SimpleDateFormat("yyyy-MM-dd");
-        String F_ClaPro = "", F_ClaLot = "", F_FecCad = "", F_FolLot = "", F_ClaOrg = "", F_Ubica = "", F_FecFab = "", F_Cb = "", F_ClaMar = "";
+        String F_ClaPro = "", F_ClaLot = "", F_FecCad = "", F_FolLot = "", F_ClaOrg = "", F_Ubica = "", F_FecFab = "", F_Cb = "", F_ClaMar = "", F_Origen = "";
         int F_ExiLot = 0, F_IdLote = 0, F_ExiLotDestino = 0;
         ResultSet rset = con.consulta("select * from tb_lote where F_IdLote = '" + idLote + "' ");
         while (rset.next()) {
@@ -109,13 +109,14 @@ public class Ubicaciones extends HttpServlet {
             F_Cb = rset.getString("F_Cb");
             F_ClaMar = rset.getString("F_ClaMar");
             F_ExiLot = rset.getInt("F_ExiLot");
+            F_Origen = rset.getString("F_Origen");
         }
         if ((F_ExiLot - CantMov) >= 0) {
             rset = con.consulta("select F_ClaUbi from tb_ubica where F_Cb= '" + CBUbica + "' ");
             while (rset.next()) {
                 UbicaMov = rset.getString("F_ClaUbi");
             }
-            rset = con.consulta("select F_IdLote, F_ExiLot from tb_lote where F_ClaPro= '" + F_ClaPro + "' and F_ClaLot = '" + F_ClaLot + "' and F_FecCad = '" + F_FecCad + "' and F_Ubica = '" + UbicaMov + "' ");
+            rset = con.consulta("select F_IdLote, F_ExiLot from tb_lote where F_ClaPro= '" + F_ClaPro + "' and F_ClaLot = '" + F_ClaLot + "' and F_FecCad = '" + F_FecCad + "' and F_Ubica = '" + UbicaMov + "' and F_Origen = '" + F_Origen + "' ");
             while (rset.next()) {
                 F_ExiLotDestino = rset.getInt("F_ExiLot");
                 F_IdLote = rset.getInt("F_IdLote");
@@ -124,12 +125,12 @@ public class Ubicaciones extends HttpServlet {
             if (F_IdLote != 0) {//Ya existe insumo en el desitno
                 con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLotDestino + CantMov) + "' where F_IdLote='" + F_IdLote + "'");
                 if (CBUbica.equals("MODULA")) {
-                    conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                    //conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
                 }
             } else {//No existe insumo en el destino
-                con.insertar("insert into tb_lote values(0,'" + F_ClaPro + "','" + F_ClaLot + "','" + F_FecCad + "','" + CantMov + "','" + F_FolLot + "','" + F_ClaOrg + "','" + UbicaMov + "','" + F_FecFab + "','" + F_Cb + "','" + F_ClaMar + "')");
+                con.insertar("insert into tb_lote values(0,'" + F_ClaPro + "','" + F_ClaLot + "','" + F_FecCad + "','" + CantMov + "','" + F_FolLot + "','" + F_ClaOrg + "','" + UbicaMov + "','" + F_FecFab + "','" + F_Cb + "','" + F_ClaMar + "', '" + F_Origen + "')");
                 if (CBUbica.equals("MODULA")) {
-                    conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                    //conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
                 }
             }
             con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLot - CantMov) + "' where F_IdLote = '" + idLote + "' ");
@@ -142,7 +143,7 @@ public class Ubicaciones extends HttpServlet {
         while (rset.next()) {
             idLoteNuevo = rset.getInt("F_IdLote");
         }
-        conModula.cierraConexion();
+        //conModula.cierraConexion();
         con.cierraConexion();
         return idLoteNuevo;
     }

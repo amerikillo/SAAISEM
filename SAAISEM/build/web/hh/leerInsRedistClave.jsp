@@ -109,7 +109,7 @@
                     if (!UbiAnt.equals("PorUbicar")) {
 
                         con.conectar();
-                        ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, l.F_Cb from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and (l.F_ClaPro = '" + ClaPro + "' or l.F_ClaLot = '" + ClaPro + "') ");
+                        ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, l.F_Cb, l.F_Origen from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and (l.F_ClaPro = '" + ClaPro + "' or l.F_ClaLot = '" + ClaPro + "') ");
                         while (rset.next()) {
             %>
             <h5>
@@ -120,6 +120,8 @@
                 Cantidad: <%=formatter.format(rset.getInt("F_ExiLot"))%>
                 <br/>
                 Descripción: <%=rset.getString("F_DesPro")%>
+                <br/>
+                Origen: <%=rset.getString("F_Origen")%>
                 <br/>
                 Lote: <%=rset.getString("F_ClaLot")%>
                 <br/>
@@ -140,7 +142,7 @@
             } else {
 
                 con.conectar();
-                ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, l.F_Cb from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
+                ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, l.F_Cb, l.F_Origen from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
                 while (rset.next()) {
             %>
             <h5>
@@ -151,6 +153,8 @@
                 Cantidad: <%=formatter.format(rset.getInt("F_ExiLot"))%>
                 <br/>
                 Descripción: <%=rset.getString("F_DesPro")%>
+                <br/>
+                Origen: <%=rset.getString("F_Origen")%>
                 <br/>
                 Lote: <%=rset.getString("F_ClaLot")%>
                 <br/>

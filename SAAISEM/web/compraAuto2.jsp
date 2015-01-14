@@ -559,7 +559,26 @@
                                             </div>
                                             <input value="<%=rset.getString("p.F_ClaProve")%>" name="claPro" id="claPro" class="hidden" onkeypress="return tabular(event, this)" />
                                         </td>
-                                        <td colspan="5">
+                                        <td>
+                                            Origen:
+                                            <select class="form-control" name="F_Origen" id="F_Origen">
+                                                <%
+                                                try{
+                                                    con.conectar();
+                                                    ResultSet rset3 = con.consulta("select F_ClaOri, F_DesOri from tb_origen");
+                                                    while(rset3.next()){
+                                                        %>
+                                                        <option value="<%=rset3.getString("F_ClaOri")%>"><%=rset3.getString("F_DesOri")%></option>
+                                                        <%
+                                                    }
+                                                    con.cierraConexion();
+                                                }catch(Exception e){
+                                                    System.out.println(e.getMessage());
+                                                }
+                                                %>
+                                            </select>
+                                        </td>
+                                        <td colspan="4">
                                             <strong>Observaciones</strong>
                                             <textarea class="form-control" readonly><%=rset2.getString(7)%></textarea>
                                         </td>
@@ -694,7 +713,8 @@
                         <td>Remisión</td>
                         <td><a name="ancla"></a>Código de Barras</td>
                         <td>CLAVE</td>
-                        <td>Descripción</td>                       
+                        <td>Descripción</td>
+                        <td>Ori</td>
                         <td>Lote</td>
                         <td>Caducidad</td>                        
                         <td>Cantidad</td>                      
@@ -708,7 +728,7 @@
                         String obser = "";
                         try {
                             con.conectar();
-                            ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "' and F_Estado = '1'");
+                            ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi, C.F_Origen FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "' and F_Estado = '1'");
                             while (rset.next()) {
                                 banCompra = 1;
                     %>
@@ -717,6 +737,7 @@
                         <td><%=rset.getString(1)%></td>
                         <td><%=rset.getString(2)%></td>
                         <td><%=rset.getString(3)%></td>
+                        <td><%=rset.getString("F_Origen")%></td>
                         <td><%=rset.getString(4)%></td>
                         <td><%=df3.format(df2.parse(rset.getString(5)))%></td>
                         <td class="text-right"><%=formatter.format(rset.getDouble(6))%></td>           
@@ -806,13 +827,8 @@
         </div>
 
 
-        <br><br><br>
-        <div class="navbar navbar-inverse">
-            <div class="text-center text-muted">
-                GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
-                Todos los Derechos Reservados
-            </div>
-        </div>
+        <br>
+        <%@include file="jspf/piePagina.jspf" %>
 
 
         <!--

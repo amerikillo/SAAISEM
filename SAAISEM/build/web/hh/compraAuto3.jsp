@@ -173,8 +173,7 @@
                         <select class="form-control" name="Proveedor" id="Proveedor" onchange="SelectProve(this.form);
                                 document.getElementById('Fecha').focus()">
                             <option value="">--Proveedor--</option>
-                            <%
-                                try {
+                            <%                                try {
                                     con.conectar();
                                     ResultSet rset = con.consulta("select F_ClaProve, F_NomPro from tb_proveedor order by F_NomPro");
                                     while (rset.next()) {
@@ -444,7 +443,7 @@
                                     }
                                 }
                             %>
-                            Lote
+                            <strong>Lote</strong>
                             <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
 
 
@@ -462,7 +461,7 @@
                                     }
                                 }
                             %>
-                            Caducidad
+                            <strong>Caducidad</strong>
                             <input type="text" value="<%=Cadu%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="
                                     return LP_data(event, this);
                                     anade(this, event);
@@ -504,6 +503,7 @@
                                 </div>
                             </div>
 
+
                             <div class="col-sm-6">
                                 <button class="btn btn-block btn-primary glyphicon glyphicon-refresh" type = "submit" value = "refresh" name = "accion" ></button>
                             </div>
@@ -512,6 +512,28 @@
                             </div>
                             <input value="<%=rset.getString("p.F_ClaProve")%>" name="claPro" id="claPro" class="hidden" onkeypress="return tabular(event, this)" />
 
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <strong>Origen:</strong>
+                                    <select class="form-control" name="F_Origen" id="F_Origen">
+                                        <%
+                                            try {
+                                                con.conectar();
+                                                ResultSet rset3 = con.consulta("select F_ClaOri, F_DesOri from tb_origen");
+                                                while (rset3.next()) {
+                                        %>
+                                        <option value="<%=rset3.getString("F_ClaOri")%>"><%=rset3.getString("F_DesOri")%></option>
+                                        <%
+                                                }
+                                                con.cierraConexion();
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                        %>
+                                    </select>
+                                </div>
+                            </div>
                             <strong>Observaciones</strong>
                             <textarea class="form-control" readonly><%=rset2.getString(7)%></textarea>
 
@@ -938,7 +960,7 @@
                                 //return false;
                             }
 
-                            $(function() {
+                            $(function () {
                                 $("#Fecha").datepicker();
                                 $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
                             });
@@ -985,7 +1007,7 @@
                             var formatNumber = {
                                 separador: ",", // separador para los miles
                                 sepDecimal: '.', // separador para los decimales
-                                formatear: function(num) {
+                                formatear: function (num) {
                                     num += '';
                                     var splitStr = num.split('.');
                                     var splitLeft = splitStr[0];
@@ -996,7 +1018,7 @@
                                     }
                                     return this.simbol + splitLeft + splitRight;
                                 },
-                                new : function(num, simbol) {
+                                new : function (num, simbol) {
                                     this.simbol = simbol || '';
                                     return this.formatear(num);
                                 }

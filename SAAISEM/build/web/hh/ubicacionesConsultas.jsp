@@ -30,29 +30,29 @@
     try {
         if (request.getParameter("accion").equals("buscar")) {
             if (!request.getParameter("F_ClaPro").equals("") && request.getParameter("F_ClaPro") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "'";
             }
             if (!request.getParameter("F_ClaLot").equals("") && request.getParameter("F_ClaLot") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "'";
             }
             if (!request.getParameter("F_Ubica").equals("") && request.getParameter("F_Ubica") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "'";
             }
             if (!request.getParameter("F_Cb").equals("") && request.getParameter("F_Cb") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "'";
             }
         }
         if (request.getParameter("accion").equals("porUbicar")) {
 
-            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
+            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where  F_Ubica='NUEVA'";
         }
         if (request.getParameter("accion").equals("mostrarTodas")) {
-            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ExiLot!=0";
+            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias";
         }
 
@@ -126,6 +126,7 @@
             <thead>
                 <tr>
                     <td>CLAVE</td>
+                    <td>Origen</td>
                     <td>Lote</td>
                     <td>Caducidad</td>
                     <td>Ubicación</td>
@@ -139,9 +140,15 @@
                         con.conectar();
                         rset2 = con.consulta(qry2);
                         while (rset2.next()) {
+                            ResultSet rset3 = con.consulta("select F_DesOri from tb_origen where F_ClaOri = '"+rset2.getString("F_Origen")+"' ");
+                            String F_Origen = "";
+                            while(rset3.next()){
+                                F_Origen = rset3.getString("F_DesOri");
+                            }
                 %>
                 <tr>
                     <td><a href="#" title="<%=rset2.getString("F_DesPro")%>"><%=rset2.getString("F_ClaPro")%></a></td>
+                    <td><%=F_Origen%></td>
                     <td><%=rset2.getString("F_ClaLot")%></td>
                     <td><%=rset2.getString("F_FecCad")%></td>
                     <td><%=rset2.getString("F_DesUbi")%></td>
