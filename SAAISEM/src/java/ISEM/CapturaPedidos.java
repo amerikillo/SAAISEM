@@ -72,6 +72,10 @@ public class CapturaPedidos extends HttpServlet {
                 con.cierraConexion();
                 response.sendRedirect("capturaISEM.jsp");
             }
+            if (request.getParameter("accion").equals("Actualizar")) { 
+                sesion.setAttribute("NoCompra", request.getParameter("NoCompra"));
+                out.println("<script>window.location='capturaISEM.jsp'</script>");
+            }
             if (request.getParameter("accion").equals("Clave")) {
                 System.out.println("Hola");
                 int ordenCapturada = 0;
@@ -202,27 +206,39 @@ public class CapturaPedidos extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("capturar")) {
-                con.conectar();
-                String ClaPro = "", Priori = "", Lote = "", Cadu = "", Cant = "", Observaciones = "";
-                ClaPro = request.getParameter("ClaPro");
-                Priori = request.getParameter("Prioridad");
-                Lote = request.getParameter("LotPro");
-                Cadu = request.getParameter("CadPro");
-                Cant = request.getParameter("CanPro");
-                byte[] a = request.getParameter("Observaciones").getBytes("ISO-8859-1");
-                Observaciones = (new String(a, "UTF-8")).toUpperCase();
-                if (Priori.equals("")) {
-                    Priori = "-";
-                }
-                if (Lote.equals("")) {
-                    Lote = "-";
-                }
-                if (Cadu.equals("")) {
-                    Cadu = "00/00/0000";
-                }
-
                 try {
-                    con.insertar("insert into tb_pedidoisem values(0,'" + (String) sesion.getAttribute("NoCompra") + "','" + (String) sesion.getAttribute("proveedor") + "','" + ClaPro + "','','" + Priori + "','" + Lote + "','" + df.format(df2.parse(Cadu)) + "','" + Cant + "','" + Observaciones + "',CURRENT_TIMESTAMP(),'" + (String) sesion.getAttribute("fec_entrega") + "','" + (String) sesion.getAttribute("hor_entrega") + "','" + (String) sesion.getAttribute("Usuario") + "','0','0')");
+                    con.conectar();
+                    String ClaPro = "", Priori = "", Lote = "", Cadu = "", Cant = "", Observaciones = "";
+                    ClaPro = request.getParameter("ClaPro");
+                    Priori = request.getParameter("Prioridad");
+                    Lote = request.getParameter("LotPro");
+                    Cadu = request.getParameter("CadPro");
+                    Cant = request.getParameter("CanPro");
+                    byte[] a = request.getParameter("Observaciones").getBytes("ISO-8859-1");
+                    Observaciones = (new String(a, "UTF-8")).toUpperCase();
+                    if (Priori.equals("")) {
+                        Priori = "-";
+                    }
+                    if (Lote.equals("")) {
+                        Lote = "-";
+                    }
+                    if (Cadu.equals("")) {
+                        Cadu = "00/00/0000";
+                    }
+                    int i = 0, cantAnt = 0;
+                    String F_IdIsem = "";
+                    ResultSet rset = con.consulta("select F_IdIsem, F_Cant from tb_pedidoisem where F_NoCompra = '" + (String) sesion.getAttribute("NoCompra") + "' and F_Clave = '" + ClaPro + "' ");
+                    while (rset.next()) {
+                        F_IdIsem = rset.getString("F_IdIsem");
+                        i = 1;
+                        cantAnt = rset.getInt("F_Cant");
+                    }
+                    if (i == 1) {
+                        con.insertar("update tb_pedidoisem set F_Cant = '" + (cantAnt + Integer.parseInt(Cant)) + "' where F_IdIsem='" + F_IdIsem + "'");
+                    } else {
+
+                        con.insertar("insert into tb_pedidoisem values(0,'" + (String) sesion.getAttribute("NoCompra") + "','" + (String) sesion.getAttribute("proveedor") + "','" + ClaPro + "','','" + Priori + "','" + Lote + "','" + df.format(df2.parse(Cadu)) + "','" + Cant + "','" + Observaciones + "',CURRENT_TIMESTAMP(),'" + (String) sesion.getAttribute("fec_entrega") + "','" + (String) sesion.getAttribute("hor_entrega") + "','" + (String) sesion.getAttribute("Usuario") + "','0','0')");
+                    }
                     sesion.setAttribute("clave", "");
                     sesion.setAttribute("descripcion", "");
                 } catch (Exception e) {
@@ -279,7 +295,7 @@ public class CapturaPedidos extends HttpServlet {
                 con.conectar();
                 try {
                     con.insertar("update tb_pedidoisem set F_StsPed = '1' where F_NoCompra = '" + (String) sesion.getAttribute("NoCompra") + "'  and F_IdUsu = '" + (String) sesion.getAttribute("Usuario") + "' ");
-                    correo.enviaCorreo((String) sesion.getAttribute("NoCompra"));
+                    //correo.enviaCorreo((String) sesion.getAttribute("NoCompra"));
                     sesion.setAttribute("clave", "");
                     sesion.setAttribute("descripcion", "");
                     sesion.setAttribute("proveedor", "");
@@ -287,6 +303,7 @@ public class CapturaPedidos extends HttpServlet {
                     sesion.setAttribute("hor_entrega", "");
                     sesion.setAttribute("NoCompra", "");
                 } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
                 con.cierraConexion();
                 response.sendRedirect("capturaISEM.jsp");
@@ -294,23 +311,23 @@ public class CapturaPedidos extends HttpServlet {
             if (request.getParameter("accion").equals("reactivar")) {
                 con.conectar();
                 try {
-                    con.insertar("update tb_pedidoisem set F_Recibido='0' where F_NoCompra = '"+request.getParameter("NoCompra")+"'  ");
+                    con.insertar("update tb_pedidoisem set F_Recibido='0' where F_NoCompra = '" + request.getParameter("NoCompra") + "'  ");
                     //con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"'  ");
                 } catch (Exception e) {
                 }
                 con.cierraConexion();
-                out.println("<script>alert('Se reactivo la orden "+request.getParameter("NoCompra")+" corrercetamente')</script>");
+                out.println("<script>alert('Se reactivo la orden " + request.getParameter("NoCompra") + " corrercetamente')</script>");
                 out.println("<script>window.location='ordenesCompra.jsp'</script>");
             }
             if (request.getParameter("accion").equals("cerrar")) {
                 con.conectar();
                 try {
-                    con.insertar("update tb_pedidoisem set F_Recibido='1' where F_NoCompra = '"+request.getParameter("NoCompra")+"'  ");
-                    con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"'  ");
+                    con.insertar("update tb_pedidoisem set F_Recibido='1' where F_NoCompra = '" + request.getParameter("NoCompra") + "'  ");
+                    con.insertar("delete from tb_compratemp where F_OrdCom = '" + request.getParameter("NoCompra") + "'  ");
                 } catch (Exception e) {
                 }
                 con.cierraConexion();
-                out.println("<script>alert('Se cerró la orden "+request.getParameter("NoCompra")+" corrercetamente')</script>");
+                out.println("<script>alert('Se cerró la orden " + request.getParameter("NoCompra") + " corrercetamente')</script>");
                 out.println("<script>window.location='ordenesCompra.jsp'</script>");
             }
         } catch (Exception e) {

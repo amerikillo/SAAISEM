@@ -254,7 +254,7 @@
                             <div class="row">
                                 <h4 class="col-sm-3">Folio Orden de Compra:</h4>
                                 <div class="col-sm-2"><input class="form-control" value="<%=rset.getString(1)%>" readonly="" name="folio" id="folio" onkeypress="return tabular(event, this)" /></div>
-                                <h4 class="col-sm-2 text-right">Número de Tarima:</h4>
+                                <h4 class="col-sm-2 text-right">Remisión:</h4>
                                 <div class="col-sm-2"><input class="form-control" value="<%=folioRemi%>" name="folioRemi" id="folioRemi" onkeypress="return tabular(event, this)" /></div>
                                 <div class="col-sm-2">
                                     <%
@@ -694,7 +694,6 @@
                         <td>Remisión</td>
                         <td><a name="ancla"></a>Código de Barras</td>
                         <td>CLAVE</td>
-                        <td>SAP</td>
                         <td>Descripción</td>                       
                         <td>Lote</td>
                         <td>Caducidad</td>                        
@@ -709,7 +708,7 @@
                         String obser = "";
                         try {
                             con.conectar();
-                            ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi, M.F_ClaSap FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "' and F_Estado = '1'");
+                            ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "' and F_Estado = '1'");
                             while (rset.next()) {
                                 banCompra = 1;
                     %>
@@ -717,7 +716,6 @@
                         <td><%=rset.getString("C.F_FolRemi")%></td>
                         <td><%=rset.getString(1)%></td>
                         <td><%=rset.getString(2)%></td>
-                        <td><%=rset.getString("F_ClaSap")%></td>
                         <td><%=rset.getString(3)%></td>
                         <td><%=rset.getString(4)%></td>
                         <td><%=df3.format(df2.parse(rset.getString(5)))%></td>

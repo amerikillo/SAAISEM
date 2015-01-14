@@ -10,16 +10,17 @@
 <%@page import="javax.servlet.http.HttpSession"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    DecimalFormat formatter = new DecimalFormat("#,###,###");
+<%    DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
     custom.setGroupingSeparator(',');
     formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "";
+    String tipo = "";
     if (sesion.getAttribute("Usuario") != null) {
         usua = (String) sesion.getAttribute("Usuario");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("indexIsem.jsp");
     }
@@ -51,8 +52,8 @@
     }
 
     if (NoCompra.equals("")) {
-        NoCompra = indice.noCompra();
-        sesion.setAttribute("NoCompra", NoCompra);
+        //NoCompra = indice.noCompra();
+        //sesion.setAttribute("NoCompra", NoCompra);
     }
 %>
 
@@ -74,24 +75,18 @@
     <body onload="focusLocus();
             SelectProve(FormBusca);">
         <div class="container">
-            <h3>ISEM - Captura de Entregas</h3>
-            <div class="row">
-                <div class="col-sm-11">
-                    <a class="btn btn-default" href="capturaISEM.jsp">Captura de Órdenes de Compra</a>
-                    <a class="btn btn-default" href="verFoliosIsem.jsp">Ver Órdenes de Compra</a>
-                </div>
-                <div class="text-right">
-                    <a class="btn btn-danger" href="indexIsem.jsp">Salir</a>
-                </div>
-            </div>
-            <hr/>
+
+            <h1>SIALSS</h1>
+            <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
+
+            <%@include file="jspf/menuPrincipal.jspf" %>
             <form name="FormBusca" action="CapturaPedidos" method="post">
                 <div class="row">
                     <label class="col-sm-3 col-sm-offset-7 text-right">
                         <h4>Número de Orden de Compra</h4>
                     </label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="NoCompra" name="NoCompra" value="<%=NoCompra%>" readonly=""  />
+                        <input type="text" class="form-control" id="NoCompra" name="NoCompra" required="" value="<%=NoCompra%>" />
                     </div>
                 </div>
                 <br/>
@@ -125,13 +120,16 @@
 
                         </select>
                     </div>
+                    <div class="col-sm-2">
+                        <a href="#" class="btn btn-block btn-default" onclick="window.open('/SAAISEM/catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Agregar Proveedor</a>
+                    </div>
                 </div>
                 <div class="row">
                     <label class="col-sm-2">
                         <h4>Fecha de Entrega:</h4>
                     </label>
                     <div class="col-sm-2">
-                        <input type="date" class="form-control" id="Fecha" name="Fecha" value="<%=fecEnt%>" onchange="document.getElementById('Hora').focus()" />
+                        <input type="date" class="form-control" id="Fecha" name="Fecha" value="<%=fecEnt%>"  /><!--onchange="document.getElementById('Hora').focus()"-->
                     </div>
                     <label class="col-sm-2">
                         <h4>Hora de Entrega:</h4>
@@ -180,15 +178,17 @@
                         <h4>Clave:</h4>
                     </label>
                     <div class="col-sm-2">
-                        <!--input type="text" class="form-control" id="Clave" name="Clave" /-->
-                        <select name="Clave" id="Clave" class="form-control">
+                        <input type="text" class="form-control" id="Clave" name="Clave" />
+                        <!--select name="Clave" id="Clave" class="form-control">
                             <option>-- Seleccione --</option>
-                        </select>
+                        </select-->
                     </div>
                     <div class="col-sm-1">
                         <button class="btn btn-primary btn-block" onclick="return validaClaDes(this);" name="accion" value="Clave">Clave</button>
                     </div>
-                    
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary btn-block" name="accion" value="Actualizar"><span class="glyphicon glyphicon-refresh"></span></button>
+                    </div>
                 </div>
             </form>
             <br/>
@@ -277,16 +277,16 @@
                                     System.out.println(e.getMessage());
                                 }
                             %>
-                            <label class="col-sm-2 text-center">
+                            <label class="hidden">
                                 <h4>Exist. en Almacén:</h4>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="hidden">
                                 <input type="text" class="form-control" name="CantAlm" id="CantAlm" readonly="" value="<%=formatter.format(Integer.parseInt(cantidad))%>" />
                             </div>
-                            <label class="col-sm-2 text-center">
+                            <label class="hidden">
                                 <h4>No. de Entrega:</h4>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="hidden">
                                 <select  class="form-control" name="Prioridad" id="Prioridad" onchange="document.getElementById('CanPro').focus()" >
                                     <option selected="">101</option>
                                     <option>102</option>
@@ -309,7 +309,7 @@
                             <div class="hidden">
                                 <input type="text" class="form-control" data-date-format="dd/mm/yyyy" readonly="" name="CadPro" id="CadPro"/>
                             </div><label class="col-sm-2 text-right">
-                                <h4>Pzs a Entregar:</h4>
+                                <h4>Piezas a Recibir:</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" name="CanPro" id="CanPro" onKeyPress="return justNumbers(event);" />
@@ -410,7 +410,7 @@
                                     document.getElementById('Clave').focus();
                                 }
                                 if (document.getElementById('ClaPro').value !== "") {
-                                    document.getElementById('Prioridad').focus();
+                                    document.getElementById('CanPro').focus();
                                 }
                             }
 
@@ -479,7 +479,7 @@
             <%
                 try {
                     con.conectar();
-                    ResultSet rset3 = con.consulta("select DISTINCT F_ClaProve from tb_prodprov order by F_ClaProve limit 0,50");
+                    ResultSet rset3 = con.consulta("select DISTINCT F_ClaProve from tb_prodprov order by F_ClaProve");
                     while (rset3.next()) {
                         out.println("if (form.Proveedor.value == '" + rset3.getString(1) + "') {");
                         out.println("var select = document.getElementById('Clave');");
@@ -503,7 +503,7 @@
 
 
         </script>
-       
+
     </body>
 
 </html>

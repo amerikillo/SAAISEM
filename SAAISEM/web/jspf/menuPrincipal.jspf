@@ -15,14 +15,20 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <%
+                    if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")) {
+                %>
                 <li class="dropdown">
+
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <%
                             if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")) {
                         %>
+                        <li><a href="/SAAISEM/capturaISEM.jsp">Captura de Órdenes de Compra</a></li>
+                        <li class="divider"></li>
 
-                        <li><a href="/SAAISEM/captura.jsp">Entrada Manual</a></li>
+                        <!--li><a href="/SAAISEM/captura.jsp">Entrada Manual</a></li-->
                         <li><a href="/SAAISEM/compraAuto2.jsp">Entrada Automática OC</a></li>
                         <li class="divider"></li>
                         <li><a href="/SAAISEM/hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC</a></li>
@@ -32,15 +38,15 @@
                                 if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")) {
                             %>
                         <li><a href="/SAAISEM/verificarCompraAuto.jsp">Verificar Remisión</a></li>
-                            <%
-                                }
-                            %>
                         <li><a href="#" onclick="window.open('/SAAISEM/reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Remisiones</a></li>
                         <li><a href="#"  onclick="window.open('/SAAISEM/ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                         <li><a href="#"  onclick="window.open('/SAAISEM/kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
                         <li><a href="#"  onclick="window.open('/SAAISEM/hh/ubicacionesConsultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                         <!--li><a href="#"  onclick="window.open('/SAAISEM/creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li-->
 
+                        <%
+                            }
+                        %>
                         <%
                             if (tipo.equals("5") || tipo.equals("3")) {
                         %>
@@ -66,11 +72,17 @@
 
                     </ul>
                 </li>
+                <%
+                    }
+                %>
+                <%
+                    if (tipo.equals("5") || tipo.equals("7") || tipo.equals("2")) {
+                %>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <%
-                            if (tipo.equals("7") || tipo.equals("3")) {
+                            if (tipo.equals("7")) {
                         %>
                         <li><a href="/SAAISEM/requerimiento.jsp">Carga de Requerimiento</a></li>
                         <li><a href="/SAAISEM/factura.jsp">Facturación Automática</a></li>
@@ -78,7 +90,7 @@
                                 }
                             %>
                             <%
-                                if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2")) {
+                                if (tipo.equals("5") || tipo.equals("7") || tipo.equals("2")) {
                             %>
                         <li><a href="/SAAISEM/facturacionManual.jsp">Facturación Manual</a></li>
                         <li><a href="/SAAISEM/facturacionRural/verReqsWeb.jsp">Facturación Web</a></li>
@@ -92,16 +104,19 @@
                             if (tipo.equals("7")) {
                         %>
                         <li><a href="/SAAISEM/remisionarCamion.jsp">Generar Remisiones</a></li>
-                            <%
-                                }
-                            %>
                         <li><a href="#"  onclick="window.open('verDevoluciones.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devoluciones</a></li>
                         <li><a href="/SAAISEM/reimp_factura.jsp">Administrar Remisiones</a></li>
                         <li><a href="/SAAISEM/reimpConcentrado.jsp">Reimpresión Folios a Remisionar</a></li>
                         <li><a href="/SAAISEM/comparativoGlobal.jsp">Folios a Remisionar</a></li>
 
+                        <%
+                            }
+                        %>
                     </ul>
                 </li>
+                <%
+                    }
+                %>
                 <!--li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -116,7 +131,9 @@
                 %>
             <li><a href="#"  onclick="window.open('invenCiclico/nuevoInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario Ciclico</a></li>
         </ul>
-    </li-->
+    </li--> <%
+        if (tipo.equals("5") || tipo.equals("7") || tipo.equals("2")) {
+                %>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Operaciones<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -130,12 +147,15 @@
                         <li><a href="/SAAISEM/operaciones/verRutas.jsp">Consultar Rutas</a></li>
                     </ul>
                 </li>
+                <%
+                    }
+                %>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#" onclick="window.open('/SAAISEM/medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
                         <li><a href="#" onclick="window.open('/SAAISEM/catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
-                        <li><a href="#" onclick="window.open('/SAAISEM/marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li><li><a href="#" onclick="window.open('/SAAISEM/marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
+                        <li><a href="#" onclick="window.open('/SAAISEM/marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
                         <li><a href="#" onclick="window.open('/SAAISEM/modula/catalogoCB.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de CB</a></li>
 
                     </ul>

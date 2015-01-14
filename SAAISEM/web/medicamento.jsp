@@ -112,12 +112,11 @@
                             <thead>
                                 <tr>
                                     <td>CLAVE</td>
-                                    <td>Clave SAP</td>
                                     <td>Descripción</td>
                                     <td>Tipo Medicamento</td>
                                     <td>Costo</td>
-                                    <td>Max</td>
-                                    <td>Min</td>
+                                    <!--td>Max</td>
+                                    <td>Min</td-->
                                 </tr>
                             </thead>
                             <tbody>
@@ -143,13 +142,11 @@
                                 %>
                                 <tr>
                                     <td><small><%=rset.getString(1)%></small></td>
-                                    <td><small><%=rset.getString("F_ClaSap")%></small></td>
                                     <td><small><%=rset.getString(2)%></small></td>
                                     <td><small><%=DesTipo%></small></td>
                                     <td class="text-right"><small>$ <%=formatterDecimal.format(rset.getDouble(5))%></small></td>  
-                                    <td><input type="number" name="Max<%=rset.getString(1)%>" class="form-control input-sm text-right" value="<%=(max)%>" /></td>  
-                                    <td><input type="number" name="Min<%=rset.getString(1)%>" class="form-control input-sm text-right" value="<%=(min)%>" /></td>                            
-
+                                    <!--td><input type="number" name="Max<%=rset.getString(1)%>" class="form-control input-sm text-right" value="<%=(max)%>" /></td>  
+                                    <td><input type="number" name="Min<%=rset.getString(1)%>" class="form-control input-sm text-right" value="<%=(min)%>" /></td-->
                                 </tr>
                                 <%
                                         }
@@ -160,7 +157,7 @@
                                 %>
                             </tbody>
                         </table>
-                        <button class="btn btn-success btn-block" name="accion" value="Actualizar">Actualizar</button>
+                        <!--button class="btn btn-success btn-block" name="accion" value="Actualizar">Actualizar</button-->
                     </form>
                 </div>
             </div>

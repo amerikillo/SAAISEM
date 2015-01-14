@@ -77,7 +77,7 @@
                 <br/>
                 <div class="row">
                     <label class="col-sm-2">
-                        <h4>&Oacute;rdenes de Compra: </h4>
+                        <h4>Elegir Remisión: </h4>
                     </label>
                     <div class="col-sm-9">
                         <select class="form-control" name="NoCompra" onchange="this.form.submit();">

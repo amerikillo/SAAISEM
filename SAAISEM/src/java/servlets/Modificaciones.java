@@ -110,6 +110,7 @@ public class Modificaciones extends HttpServlet {
                     sesion.setAttribute("CodBar", "");
                     sesion.setAttribute("Lote", "");
                     sesion.setAttribute("Cadu", "");
+                    sesion.setAttribute("NoCompra", null);
                     response.sendRedirect("compraAuto2.jsp");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
