@@ -46,6 +46,7 @@ AND F.F_ClaCli = U.F_ClaCli
 AND F.F_lote = Lotes.F_FolLot
 AND F.F_ClaDoc = $P{Folfact}
 AND F.F_StsFact='A'
+AND M.F_Origen='1'
 group by F.F_ClaPro, Lotes.F_ClaLot, Lotes.F_FecCad
 ORDER BY
 	F.F_ClaPro]]>
@@ -205,6 +206,13 @@ ORDER BY
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="76013451-25ee-4a78-ae2b-b3ef144f39a7" x="10" y="39" width="214" height="11"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Administración]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>

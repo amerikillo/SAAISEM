@@ -15,9 +15,6 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <%
-                    if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")) {
-                %>
                 <li class="dropdown">
 
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
@@ -41,12 +38,13 @@
                         <li><a href="#" onclick="window.open('/SAAISEM/reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Remisiones</a></li>
                         <li><a href="#"  onclick="window.open('/SAAISEM/ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                         <li><a href="#"  onclick="window.open('/SAAISEM/kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
-                        <li><a href="#"  onclick="window.open('/SAAISEM/hh/ubicacionesConsultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                         <!--li><a href="#"  onclick="window.open('/SAAISEM/creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li-->
 
                         <%
                             }
                         %>
+                        <li><a href="#"  onclick="window.open('/SAAISEM/hh/ubicacionesConsultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
+
                         <%
                             if (tipo.equals("5") || tipo.equals("3")) {
                         %>
@@ -72,9 +70,6 @@
 
                     </ul>
                 </li>
-                <%
-                    }
-                %>
                 <%
                     if (tipo.equals("5") || tipo.equals("7") || tipo.equals("2")) {
                 %>

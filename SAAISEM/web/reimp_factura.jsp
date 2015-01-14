@@ -79,8 +79,8 @@
                                     <td>No. Folio</td>
                                     <td>Punto de Entrega</td>
                                     <td>Fecha de Entrega</td>
-                                    <td>Especial</td>
-                                    <td>Común</td>
+                                    <td>Admon</td>
+                                    <td>Venta</td>
                                     <td>Ver Factura</td>
                                     <td>Devolución</td>
                                     <%

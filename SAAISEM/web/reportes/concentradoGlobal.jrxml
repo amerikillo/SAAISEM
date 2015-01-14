@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="concentradoGlobal" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa04e4c5-5205-47c6-b26f-79faf959ff59">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="295"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="idFact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -35,6 +35,7 @@ WHERE
 AND f.F_ClaCli = u.F_ClaCli
 AND p.F_ClaPro = l.F_ClaPro
 AND m.F_ClaPro = l.F_ClaPro
+AND m.F_Origen='1'
 AND F_IdFact = $P{idFact}
 group by
 f.F_Id;]]>
@@ -105,7 +106,7 @@ f.F_Id;]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="37" splitType="Stretch">
+		<band height="53" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="5117f519-08a6-4554-8527-27ab11c4d1cb" x="110" y="0" width="347" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -114,15 +115,20 @@ f.F_Id;]]>
 				<text><![CDATA[Folio a Remisionar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e05b0b91-2cbf-49bd-abc2-8ad949fb7cc7" x="0" y="23" width="75" height="14"/>
+				<reportElement uuid="e05b0b91-2cbf-49bd-abc2-8ad949fb7cc7" x="0" y="38" width="75" height="14"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<text><![CDATA[Requerimiento:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="9f49afb8-a730-43ce-b957-aa4208289b2a" x="75" y="23" width="100" height="14"/>
+				<reportElement uuid="9f49afb8-a730-43ce-b957-aa4208289b2a" x="75" y="38" width="100" height="14"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{F_IdFact}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="9eb09486-b24a-499c-8947-83ebcd4851eb" x="0" y="23" width="75" height="14"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<text><![CDATA[Administración]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
@@ -136,7 +142,9 @@ f.F_Id;]]>
 			</staticText>
 			<staticText>
 				<reportElement uuid="d2af7c81-ea4e-4541-b9e3-4cb8849e5d6d" x="408" y="2" width="85" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Fecha de Entrega:]]></text>
 			</staticText>
 			<textField>
@@ -148,7 +156,9 @@ f.F_Id;]]>
 			</textField>
 			<textField>
 				<reportElement uuid="eb2aed8a-a107-4b18-b32c-249c5126b73f" x="493" y="2" width="79" height="20"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y')}]]></textFieldExpression>
 			</textField>
 		</band>

@@ -84,7 +84,8 @@
                                     <td>No. Folio</td>
                                     <td>Punto de entrega</td>
                                     <td>Orden de Compra</td>
-                                    <td>Concentrado</td>
+                                    <td>Folio Admon</td>
+                                    <td>Folio Venta</td>
                                     <td>Marbetes</td>
                                     <td>Excel</td>
                                     <td>Cancelar</td>
@@ -106,6 +107,12 @@
                                     <td><%=rset.getString("FecEnt")%></td>
                                     <td>
                                         <form action="reimpGlobalReq.jsp" target="_blank">
+                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_IdFact")%>">
+                                            <button class="btn btn-block btn-primary">Imprimir</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="reimpGlobalReqVenta.jsp" target="_blank">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_IdFact")%>">
                                             <button class="btn btn-block btn-primary">Imprimir</button>
                                         </form>
