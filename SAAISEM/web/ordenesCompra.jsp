@@ -304,6 +304,26 @@
                             <div class="col-sm-1">
                                 <a class="btn btn-default" target="_blank" href="imprimeOrdenCompra.jsp?ordenCompra=<%=NoCompra%>"><span class="glyphicon glyphicon-print"></span></a>
                             </div>
+
+                            <%
+                                if (rset.getString("F_StsPed").equals("0")) {
+                            %>
+                            <div class="col-sm-1">
+                                <form name="formValidar" action="CapturaPedidos">
+                                    <input value="<%=rset.getString("F_NoCompra")%>" name="F_NoCompra" class="hidden" />
+                                    <button class="btn btn-default" value="confirmarRemi" name="accion">Validar</button>
+                                </form>
+                            </div>
+                            <%
+                                }
+                            %>
+
+                            <div class="col-sm-1">
+                                <form name="formValidar" action="CapturaPedidos">
+                                    <input value="<%=rset.getString("F_NoCompra")%>" name="F_NoCompra" class="hidden" />
+                                    <button class="btn btn-default" value="eliminarRemi" name="accion">Eliminar</button>
+                                </form>
+                            </div>
                         </div>
                         <div class="panel-body">
                             <form name="FormBusca" action="CapturaPedidos" method="post">
@@ -444,11 +464,11 @@
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
-                                        $(document).ready(function() {
+                                        $(document).ready(function () {
                                             $('#datosCompras').dataTable();
                                         });
 
-                                        $(function() {
+                                        $(function () {
                                             $("#Fecha").datepicker();
                                             $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
                                         });

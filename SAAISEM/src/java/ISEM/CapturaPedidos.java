@@ -291,6 +291,30 @@ public class CapturaPedidos extends HttpServlet {
                 con.cierraConexion();
                 response.sendRedirect("capturaISEM.jsp");
             }
+            if (request.getParameter("accion").equals("eliminarRemi")) {
+                con.conectar();
+                try {
+                    con.insertar("delete from tb_pedidoisem where F_NoCompra = '" + request.getParameter("F_NoCompra") + "'");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                con.cierraConexion();
+                //response.sendRedirect("ordenesCompra.jsp");
+                out.println("<script>alert('Se eliminó la orden " + request.getParameter("F_NoCompra") + " corrercetamente')</script>");
+                out.println("<script>window.location='ordenesCompra.jsp'</script>");
+            }
+            if (request.getParameter("accion").equals("confirmarRemi")) {
+                con.conectar();
+                try {
+                    con.insertar("update tb_pedidoisem set F_StsPed = '1' where F_NoCompra = '" + request.getParameter("F_NoCompra") + "'");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                con.cierraConexion();
+                //response.sendRedirect("ordenesCompra.jsp");
+                out.println("<script>alert('Se validó la orden " + request.getParameter("F_NoCompra") + " corrercetamente')</script>");
+                out.println("<script>window.location='ordenesCompra.jsp'</script>");
+            }
             if (request.getParameter("accion").equals("confirmar")) {
                 con.conectar();
                 try {

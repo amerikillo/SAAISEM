@@ -504,6 +504,7 @@
 
         </script>
 
+    <%@include file="jspf/piePagina.jspf" %>
     </body>
 
 </html>

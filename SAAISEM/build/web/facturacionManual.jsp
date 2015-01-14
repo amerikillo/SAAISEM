@@ -158,6 +158,7 @@
                 <table class="table table-condensed table-striped table-bordered table-responsive">
                     <tr>
                         <td>CLAVE</td>
+                        <td>Origen</td>
                         <td>Lote</td>
                         <td>Caducidad</td>
                         <td>Ubicación</td>
@@ -169,12 +170,13 @@
                         int banBtn = 0;
                         try {
                             con.conectar();
-                            ResultSet rset = con.consulta("SELECT l.F_ClaPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), f.F_Cant, l.F_Ubica, f.F_IdFact, mar.F_DesMar, f.F_Id FROM tb_facttemp f, tb_lote l, tb_medica m, tb_marca mar WHERE m.F_ClaPro = l.F_ClaPro and l.F_ClaMar = mar.F_ClaMar and f.F_IdLot = l.F_IdLote and F_ClaCli = '" + ClaCli + "' and F_StsFact=3;");
+                            ResultSet rset = con.consulta("SELECT l.F_ClaPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), f.F_Cant, l.F_Ubica, f.F_IdFact, mar.F_DesMar, f.F_Id, l.F_Origen FROM tb_facttemp f, tb_lote l, tb_medica m, tb_marca mar WHERE m.F_ClaPro = l.F_ClaPro and l.F_ClaMar = mar.F_ClaMar and f.F_IdLot = l.F_IdLote and F_ClaCli = '" + ClaCli + "' and F_StsFact=3;");
                             while (rset.next()) {
                                 banBtn = 1;
                     %>
                     <tr>
                         <td><%=rset.getString(1)%></td>
+                        <td><%=rset.getString("F_Origen")%></td>
                         <td><%=rset.getString(2)%></td>
                         <td><%=rset.getString(3)%></td>
                         <td><%=rset.getString(5)%></td>

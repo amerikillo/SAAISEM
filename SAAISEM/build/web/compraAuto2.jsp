@@ -223,10 +223,14 @@
                                 }
                                 try {
                                     con.conectar();
-                                    ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro from tb_pedidoisem o, tb_proveedor p where o.F_Provee = p.F_ClaProve and o.F_FecSur like  '%" + fecha + "%'  and o.F_Provee like '%" + request.getParameter("Proveedor") + "'  and F_StsPed !='2' and F_Recibido=0  group by o.F_NoCompra");
+                                    ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, F_StsPed from tb_pedidoisem o, tb_proveedor p where o.F_Provee = p.F_ClaProve and o.F_FecSur like  '%" + fecha + "%'  and o.F_Provee like '%" + request.getParameter("Proveedor") + "'  and F_StsPed !='2' and F_Recibido=0  group by o.F_NoCompra");
                                     while (rset.next()) {
+                                        String banConfirmada="";
+                                        if(rset.getString("F_StsPed").equals("0")){
+                                         banConfirmada=" | Sin Confirmar";   
+                                        }
                             %>
-                            <option value="<%=rset.getString(1)%>"><%=rset.getString(2)%> - <%=rset.getString(1)%></option>
+                            <option value="<%=rset.getString(1)%>"><%=rset.getString(2)%> - <%=rset.getString(1)%> <%=banConfirmada%></option>
                             <%
                                     }
                                     con.cierraConexion();

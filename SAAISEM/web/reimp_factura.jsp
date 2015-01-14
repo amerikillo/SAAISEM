@@ -84,7 +84,7 @@
                                     <td>Ver Factura</td>
                                     <td>Devolución</td>
                                     <%
-                                        if (usua.equals("oscar")) {
+                                        if (usua.equals("remision")) {
                                             out.println("<td>Reintegrar Insumo</td>");
                                         }
                                     %>
@@ -136,7 +136,7 @@
                                         %>
                                     </td>
                                     <%
-                                        if (usua.equals("oscar")) {
+                                        if (usua.equals("remision")) {
                                     %>
                                     <td>
                                         <%

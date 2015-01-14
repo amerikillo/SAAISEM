@@ -109,32 +109,32 @@
                         <div class="row">
                             <label for="folio" class="col-sm-2 control-label">No. Folio GNKL</label>
                             <div class="col-sm-2">
-                                <input type="folio" class="form-control" id="folio" name="folio" placeholder="Folio" readonly value="<%=folio_gnk%>"/>
+                                <input type="text" class="form-control" id="folio" name="folio" placeholder="Folio" readonly value="<%=folio_gnk%>"/>
                             </div>
                             <label for="fecha" class="col-sm-1 control-label">Fecha</label>
                             <div class="col-sm-2">
-                                <input type="fecha" class="form-control" id="fecha" name="fecha" placeholder="Fecha" readonly value="<%=df3.format(new java.util.Date())%>">
+                                <input type="text" class="form-control" id="fecha" name="fecha" placeholder="Fecha" readonly value="<%=df3.format(new java.util.Date())%>">
                             </div>
                             <label for="hora" class="col-sm-1 control-label">Hora</label>
                             <div class="col-sm-2">
-                                <input type="hora" class="form-control" id="hora" name="hora" placeholder="Hora" readonly value="<%=df3.format(new java.util.Date())%>">
+                                <input type="text" class="form-control" id="hora" name="hora" placeholder="Hora" readonly value="<%=df3.format(new java.util.Date())%>">
                             </div>
                         </div>
                         <br/>
                         <div class="row">
                             <label for="fol_rem" class="col-sm-2 control-label">Folio Remisión</label>
                             <div class="col-sm-3">
-                                <input type="fol_rem" class="form-control" id="folio_remi" name="folio_remi" placeholder="Folio Remisión" onKeyPress="return tabular(event, this)" value="<%=folio_remi%>" />
+                                <input type="text" class="form-control" id="folio_remi" name="folio_remi" placeholder="Folio Remisión" onKeyPress="return tabular(event, this)" value="<%=folio_remi%>" />
                             </div>
                             <label for="orden" class="col-sm-2 control-label">Orden de Compra</label>
                             <div class="col-sm-3">
-                                <input type="orden" class="form-control" id="orden" name="orden" placeholder="Orden de Compra" onKeyPress="return tabular(event, this)" value="<%=orden%>" />
+                                <input type="text" class="form-control" id="orden" name="orden" placeholder="Orden de Compra" onKeyPress="return tabular(event, this)" value="<%=orden%>" />
                             </div>
                         </div>
                         <br/>
                         <div class="row">
                             <label for="prov" class="col-sm-2 control-label">Proveedor</label>
-                            <input type="prov" class="hidden" id="provee" name="provee" placeholder="Proveedor" readonly onKeyPress="return tabular(event, this)" value="<%=provee%>" />                             
+                            <input type="text" class="hidden" id="provee" name="provee" placeholder="Proveedor" readonly onKeyPress="return tabular(event, this)" value="<%=provee%>" />                             
                             <div class="col-sm-3">
                                 <select class="form-control" name="list_provee" onKeyPress="return tabular(event, this)" id="list_provee" onchange="proveedor();">
                                     <option value="">Proveedor</option>
@@ -171,7 +171,7 @@
                             </div>
                             <label for="recib" class="col-sm-1 control-label">Recibido por</label>
                             <div class="col-sm-2">
-                                <input type="recib" class="form-control" id="recib" name="recib" placeholder="Recibe" onKeyPress="return tabular(event, this)" value = "<%=usua%>" readonly>
+                                <input type="text" class="form-control" id="recib" name="recib" placeholder="Recibe" onKeyPress="return tabular(event, this)" value = "<%=usua%>" readonly>
                             </div>
                         </div>
 
@@ -183,7 +183,7 @@
                         <div class="row">
                             <label for="codigo" class="col-sm-1 control-label">C.B</label>
                             <div class="col-sm-2">
-                                <input type="codigo" class="form-control" id="codigo" name="codigo"  placeholder="C. B." maxlength="13" onkeydown="if (event.keyCode == 13) {
+                                <input type="text" class="form-control" id="codigo" name="codigo"  placeholder="C. B." maxlength="13" onkeydown="if (event.keyCode == 13) {
                                             document.getElementById('claveCod').click();
                                             return false;
                                         }"  />
@@ -196,7 +196,7 @@
                             %>
                             <label for="clave" class="col-sm-1 control-label">CLAVE</label>
                             <div class="col-sm-2">
-                                <input type="clave" class="form-control" id="clave" name="clave" placeholder="CLAVE" onKeyPress="return tabular(event, this)">
+                                <input type="text" class="form-control" id="clave" name="clave" placeholder="CLAVE" onKeyPress="return tabular(event, this)">
                             </div>
                             <div class="col-sm-2">
                                 <button class="btn btn-block btn-primary" type = "submit" value = "clave" name = "accion" >CLAVE</button>
@@ -207,7 +207,7 @@
 
                             <label for="descr" class="col-sm-1 control-label">Descripción</label>
                             <div class="col-sm-8">
-                                <input type="descr" class="form-control" id="descr" name="descr" placeholder="Descripción" onKeyPress="return tabular(event, this)">
+                                <input type="text" class="form-control" id="descr" name="descr" placeholder="Descripción" onKeyPress="return tabular(event, this)">
                             </div>
                             <div class="col-sm-2">
                                 <button class="btn btn-block btn-primary"  type = "submit" value = "descripcion" name = "accion" >Descripción</button>
@@ -217,7 +217,7 @@
                         <div class="row">
                             <label for="clave1" class="col-sm-1 control-label">CLAVE</label>
                             <div class="col-sm-2">
-                                <input type="clave1" class="form-control" id="clave1" name="clave1" placeholder="CLAVE" value="<%=clave%>" readonly onKeyPress="return tabular(event, this)">
+                                <input type="text" class="form-control" id="clave1" name="clave1" placeholder="CLAVE" value="<%=clave%>" readonly onKeyPress="return tabular(event, this)">
                             </div>
                             <label for="descr1" class="col-sm-1 control-label">Descripción</label>
                             <div class="col-sm-3">
@@ -233,7 +233,7 @@
                         <div class="row">                               
                             <label for="Marca" class="col-sm-1 control-label">Marca</label>
                             <div class="col-sm-2">
-                                <input type="Marca" class="hidden" id="Marca" name="Marca" readonly="true" placeholder="Marca" onKeyPress="return tabular(event, this)" value="<%=Marca%>" />
+                                <input type="text" class="hidden" id="Marca" name="Marca" readonly="true" placeholder="Marca" onKeyPress="return tabular(event, this)" value="<%=Marca%>" />
                                 <select class="form-control" name="list_marca" onKeyPress="return tabular(event, this)" id="list_marca" onchange="marca();">
                                     <option value="">Marca</option>
                                     <%
@@ -276,7 +276,7 @@
                         <div class="row">
                             <label for="Lote" class="col-sm-1 control-label">Lote</label>
                             <div class="col-sm-2">
-                                <input type="Lote" class="form-control" id="Lote" name="Lote" placeholder="Lote" onKeyPress="return tabular(event, this)" />
+                                <input type="text" class="form-control" id="Lote" name="Lote" placeholder="Lote" onKeyPress="return tabular(event, this)" />
                             </div>
                             <label for="Caducidad" class="col-sm-1 control-label">Cadu</label>
                             <div class="col-sm-1">
@@ -321,7 +321,7 @@
                     <div class="row">
                         <label for="clave1" class="col-sm-1 control-label">Clave</label>
                         <div class="col-sm-2">
-                            <input type="clave1" class="form-control" id="clave1" name="clave1" placeholder="Clave" onKeyPress="return tabular(event, this)" value="<%=F_ClaPro%>">
+                            <input type="text" class="form-control" id="clave1" name="clave1" placeholder="Clave" onKeyPress="return tabular(event, this)" value="<%=F_ClaPro%>">
                         </div>
                         <%
                             if (numLot != 1) {
@@ -359,7 +359,7 @@
                     <br/>
                     <div class="row">
                         <label for="Marca" class="col-sm-1 control-label">Marca</label>
-                        <input type="Marca" class="hidden" id="Marca" name="Marca" readonly="true" placeholder="Marca" onKeyPress="return tabular(event, this)" value="<%=F_ClaMar%>" />
+                        <input type="text" class="hidden" id="Marca" name="Marca" readonly="true" placeholder="Marca" onKeyPress="return tabular(event, this)" value="<%=F_ClaMar%>" />
                         <div class="col-sm-2">
                             <select class="form-control" name="list_marca" onKeyPress="return tabular(event, this)" id="list_marca" onchange="marca();">
                                 <option value="">Marca</option>
@@ -396,7 +396,7 @@
                     <div class="row">                                
                         <label for="Lote" class="col-sm-1 control-label">Lote</label>
                         <div class="col-sm-2">
-                            <input type="Lote" class="form-control" id="Lote" name="Lote" placeholder="Lote" onKeyPress="return tabular(event, this)" value="<%=F_ClaLot%>" />
+                            <input type="text" class="form-control" id="Lote" name="Lote" placeholder="Lote" onKeyPress="return tabular(event, this)" value="<%=F_ClaLot%>" />
                         </div>
                         <div class="col-sm-2">
                             <%
@@ -423,7 +423,7 @@
                         </div>
                         <label for="cb" class="col-sm-2 control-label">Código de Barras</label>
                         <div class="col-sm-2">
-                            <input type="cb" class="form-control" id="cb" name="cb" placeholder="C. B." onKeyPress="return tabular(event, this)" value="<%=Cb%>" maxlength="13" readonly="true" />
+                            <input type="text" class="form-control" id="cb" name="cb" placeholder="C. B." onKeyPress="return tabular(event, this)" value="<%=Cb%>" maxlength="13" readonly="true" />
                         </div>
                     </div>
                     <br/>
@@ -484,12 +484,35 @@
                     </div>
                     <%}%>
                     <br/>
+                    <div class="row">
+
+                        <strong class="col-sm-1">Origen:</strong>
+                        <div class="col-sm-2">
+                            <select class="form-control" name="F_Origen" id="F_Origen">
+                                <%
+                                    try {
+                                        con.conectar();
+                                        ResultSet rset3 = con.consulta("select F_ClaOri, F_DesOri from tb_origen");
+                                        while (rset3.next()) {
+                                %>
+                                <option value="<%=rset3.getString("F_ClaOri")%>"><%=rset3.getString("F_DesOri")%></option>
+                                <%
+                                        }
+                                        con.cierraConexion();
+                                    } catch (Exception e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                    <br/>
                     <h5><strong>Tarimas Completas</strong></h5>
                     <div class="row">
 
                         <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
                         <div class="col-sm-1">
-                            <input type="Cajas" class="form-control" id="TarimasC" name="TarimasC" placeholder="0" onKeyPress="return justNumbers(event);
+                            <input type="text" class="form-control" id="TarimasC" name="TarimasC" placeholder="0" onKeyPress="return justNumbers(event);
                                     return handleEnter(even);" onkeyup="totalPiezas()" onclick="" />
                         </div>
                         <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
@@ -507,16 +530,16 @@
 
                         <label for="Cajas" class="hidden">Tarimas</label>
                         <div class="hidden">
-                            <input type="Cajas" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
+                            <input type="text" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
                                     return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
                         </div>
                         <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
                         <div class="col-sm-1">
-                            <input type="pzsxcaja" class="form-control" id="CajasxTI" name="CajasxTI" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                            <input type="text" class="form-control" id="CajasxTI" name="CajasxTI" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                         </div>
                         <label for="pzsxcaja" class="col-sm-2 control-label">Resto</label>
                         <div class="col-sm-1">
-                            <input type="pzsxcaja" class="form-control" id="Resto" name="Resto" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                            <input type="text" class="form-control" id="Resto" name="Resto" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                         </div>
                     </div>
                     <br/>
@@ -579,7 +602,8 @@
                     <td>Remisión</td>
                     <td><a name="ancla"></a>Código de Barras</td>
                     <td>Clave</td>
-                    <td>Descripción</td>                       
+                    <td>Descripción</td>
+                    <td>Origen</td>                       
                     <td>Lote</td>
                     <td>Caducidad</td>                        
                     <td>Cantidad</td>                      
@@ -593,7 +617,7 @@
                     String obser = "";
                     try {
                         con.conectar();
-                        ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + orden + "' and F_Estado = '1'");
+                        ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi, C.F_Origen FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + orden + "' and F_Estado = '1'");
                         while (rset.next()) {
                             banCompra = 1;
 
@@ -603,6 +627,7 @@
                     <td><%=rset.getString(1)%></td>
                     <td><%=rset.getString(2)%></td>
                     <td><%=rset.getString(3)%></td>
+                    <td><%=rset.getString("F_Origen")%></td>
                     <td><%=rset.getString(4)%></td>
                     <td><%=df3.format(df2.parse(rset.getString(5)))%></td>
                     <td><%=formatter.format(rset.getDouble(6))%></td>           
@@ -654,8 +679,8 @@
             }
         %>
 
-    </body>
     <%@include file="jspf/piePagina.jspf" %>
+    </body>
 </html>
 
 

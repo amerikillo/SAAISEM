@@ -45,7 +45,7 @@
                 <br /><br /><br />
                 <img src="imagenes/Logo GNK claro2.jpg" width="200" height="100" alt="Logo GNK claro2"/>
                 <br/><br/><%
-                    if (usua.equals("oscar")) {
+                    if (usua.equals("ingreso")) {
                 %>
                 <div class="panel panel-danger">
                     <div class="panel-heading">

@@ -35,7 +35,7 @@ WHERE
 AND f.F_ClaCli = u.F_ClaCli
 AND p.F_ClaPro = l.F_ClaPro
 AND m.F_ClaPro = l.F_ClaPro
-AND m.F_Origen='1'
+AND l.F_Origen='1'
 AND F_IdFact = $P{idFact}
 group by
 f.F_Id;]]>

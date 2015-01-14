@@ -122,6 +122,7 @@
                                 <tr>
                                     <td>Clave</td>
                                     <td>Descripción</td>
+                                    <td>Ori</td>
                                     <td>Lote</td>
                                     <td>Caducidad</td>
                                     <td>Req.</td>
@@ -137,7 +138,7 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_StsFact, F.F_Obs FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' and F_StsFact='A' GROUP BY F.F_IdFact");
+                                            ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_StsFact, F.F_Obs, L.F_Origen FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' and F_StsFact='A' GROUP BY F.F_IdFact");
                                             while (rset.next()) {
                                                 String status = "E";
                                                 if (rset.getString("F_StsFact").equals("C")) {
@@ -147,6 +148,7 @@
                                 <tr>
                                     <td><%=rset.getString(4)%></td>
                                     <td><%=rset.getString(5)%></td>
+                                    <td><%=rset.getString("F_Origen")%></td>
                                     <td><%=rset.getString(6)%></td>
                                     <td><%=rset.getString(7)%></td>
                                     <td><%=rset.getString(8)%></td>
@@ -194,6 +196,7 @@
                                 <tr>
                                     <td>Clave</td>
                                     <td>Descripción</td>
+                                    <td>Origen</td>
                                     <td>Lote</td>
                                     <td>Caducidad</td>
                                     <td>Ubicación</td>
@@ -208,7 +211,7 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_StsFact, F.F_Obs FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' and F_StsFact='C' GROUP BY F.F_IdFact");
+                                            ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_StsFact, F.F_Obs, L.F_Origen FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' and F_StsFact='C' GROUP BY F.F_IdFact");
                                             while (rset.next()) {
                                                 String status = "E";
                                                 if (rset.getString("F_StsFact").equals("C")) {
@@ -218,6 +221,7 @@
                                 <tr>
                                     <td><%=rset.getString(4)%></td>
                                     <td><%=rset.getString(5)%></td>
+                                    <td><%=rset.getString("F_Origen")%></td>
                                     <td><%=rset.getString(6)%></td>
                                     <td><%=rset.getString(7)%></td>
                                     <td><%=rset.getString(12)%></td>

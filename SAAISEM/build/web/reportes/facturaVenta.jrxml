@@ -29,7 +29,8 @@ FROM
 		SELECT
 			L.F_FolLot,
 			L.F_ClaLot,
-			DATE_FORMAT(L.F_FecCad, '%d/%m/%Y') AS F_FecCad
+			DATE_FORMAT(L.F_FecCad, '%d/%m/%Y') AS F_FecCad,
+			L.F_Origen
 		FROM
 			tb_lote L
 		GROUP BY
@@ -46,7 +47,7 @@ AND F.F_ClaCli = U.F_ClaCli
 AND F.F_lote = Lotes.F_FolLot
 AND F.F_ClaDoc = $P{Folfact}
 AND F.F_StsFact='A'
-AND M.F_Origen='2'
+AND Lotes.F_Origen='2'
 group by F.F_ClaPro, Lotes.F_ClaLot, Lotes.F_FecCad
 ORDER BY
 	F.F_ClaPro]]>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d36d56d-e705-43d8-bec6-461dd4e714a4">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="31"/>
+	<property name="ireport.y" value="192"/>
 	<parameter name="Folfact" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT DISTINCT
@@ -29,7 +29,8 @@ FROM
 		SELECT
 			L.F_FolLot,
 			L.F_ClaLot,
-			DATE_FORMAT(L.F_FecCad, '%d/%m/%Y') AS F_FecCad
+			DATE_FORMAT(L.F_FecCad, '%d/%m/%Y') AS F_FecCad,
+			L.F_Origen
 		FROM
 			tb_lote L
 		GROUP BY
@@ -46,7 +47,7 @@ AND F.F_ClaCli = U.F_ClaCli
 AND F.F_lote = Lotes.F_FolLot
 AND F.F_ClaDoc = $P{Folfact}
 AND F.F_StsFact='A'
-AND M.F_Origen='1'
+AND Lotes.F_Origen = '1'
 group by F.F_ClaPro, Lotes.F_ClaLot, Lotes.F_FecCad
 ORDER BY
 	F.F_ClaPro]]>
@@ -304,13 +305,6 @@ ORDER BY
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="$ #,##0.00">
-				<reportElement uuid="4346598f-a282-46b9-b9f0-418442310d51" x="424" y="0" width="43" height="8"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="6"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{F_Costo}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="d0b255d6-bab6-45bf-b9e6-ab1064e2d22c" x="109" y="0" width="102" height="8"/>
 				<textElement>
@@ -339,20 +333,27 @@ ORDER BY
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_CantSur}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="$ #,##0.00">
-				<reportElement uuid="a2312c3d-1a7f-4ebc-ae89-8494b20c1c37" x="467" y="0" width="43" height="8"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="6"/>
+			<staticText>
+				<reportElement uuid="b8ad6ad2-91c2-43d8-8371-09349beebbb7" mode="Opaque" x="421" y="0" width="45" height="8" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{F_Iva}]]></textFieldExpression>
-			</textField>
-			<textField pattern="$ ###,###,###,##0.00">
-				<reportElement uuid="2a6fbfe3-271a-44b3-bb20-aa3128a2246d" x="510" y="0" width="60" height="8"/>
-				<textElement textAlignment="Center">
-					<font size="6"/>
+				<text><![CDATA[$ 0.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f7fa246b-2164-4aca-ad79-76e82d2187f7" mode="Opaque" x="476" y="0" width="45" height="8" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{F_Monto}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[$ 0.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a9d3609a-8f6f-46cc-8ac0-e234bfe9e931" mode="Opaque" x="525" y="0" width="45" height="8" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="false"/>
+				</textElement>
+				<text><![CDATA[$ 0.00]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
@@ -397,16 +398,11 @@ ORDER BY
 	<summary>
 		<band height="255">
 			<textField pattern="###,###,###,##0">
-				<reportElement uuid="725d5750-7548-47dc-8fe3-564b87a38ce5" x="341" y="8" width="57" height="13"/>
-				<textElement textAlignment="Right">
+				<reportElement uuid="725d5750-7548-47dc-8fe3-564b87a38ce5" x="375" y="7" width="57" height="13"/>
+				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{ent}]]></textFieldExpression>
-			</textField>
-			<textField pattern="$ ###,###,###,##0.00">
-				<reportElement uuid="2928c97d-1da9-41eb-8a3d-1e23153734fc" x="472" y="8" width="100" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="758fa8bf-0040-4248-bcfd-18815c4848bc" x="1" y="8" width="49" height="14"/>
@@ -416,8 +412,8 @@ ORDER BY
 				<text><![CDATA[Totales:]]></text>
 			</staticText>
 			<textField pattern="###,###,###,##0">
-				<reportElement uuid="295b3dce-eea8-463d-9f08-6670d3c60bae" x="272" y="8" width="58" height="13"/>
-				<textElement textAlignment="Right">
+				<reportElement uuid="295b3dce-eea8-463d-9f08-6670d3c60bae" x="314" y="7" width="58" height="13"/>
+				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{req}]]></textFieldExpression>
@@ -507,6 +503,13 @@ ORDER BY
 			<line>
 				<reportElement uuid="47de8204-3169-404f-b97b-8ecf77d9477f" x="398" y="113" width="168" height="1"/>
 			</line>
+			<staticText>
+				<reportElement uuid="33626465-8ac3-43a9-a011-f5abb7ac226a" mode="Opaque" x="521" y="8" width="49" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[$ 0.00]]></text>
+			</staticText>
 		</band>
 	</summary>
 	<noData>

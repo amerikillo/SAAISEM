@@ -72,8 +72,7 @@
                                 <div class="col-xs-7">
                                     <select id="Nombre" name="Nombre" class="form-control">
                                         <option value="">Unidad</option>
-                                        <%
-                                            try {
+                                        <%                                            try {
                                                 con.conectar();
                                                 ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn u, tb_unireq r where u.F_ClaCli = r.F_ClaUni and F_StsCli = 'A' and r.F_Status = '0' group by F_ClaCli");
                                                 while (rset.next()) {
@@ -160,43 +159,43 @@
             </div>
         </div>
 
-        
+
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script>
+                            $(document).ready(function () {
+                                $('#datosProv').dataTable();
+                            });
+                            function validaRemision() {
+                                var seg = confirm('Desea Remisionar este Insumo?');
+                                if (seg == false) {
+                                    return false;
+                                } else {
+                                    if ($('#FecFab').val() === "") {
+                                        alert("Debe seleccionar una fecha de entrega");
+                                        return false;
+                                    } else {
+                                        document.getElementById('Loader').style.display = 'block';
+                                        var observaciones = document.getElementById('Obser').value;
+                                        document.getElementById('Obs').value = observaciones;
+                                        var req = document.getElementById('Requerimiento').value;
+                                        document.getElementById('F_Req').value = req;
+                                        document.getElementById('BtnGuardar').click();
+                                    }
+                                }
+
+                            }
+
+        </script> 
+
     </body>
 </html>
 
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script>
-                                $(document).ready(function() {
-                                    $('#datosProv').dataTable();
-                                });
-                                function validaRemision() {
-                                    var seg = confirm('Desea Remisionar este Insumo?');
-                                    if (seg == false) {
-                                        return false;
-                                    } else {
-                                        if ($('#FecFab').val() === "") {
-                                            alert("Debe seleccionar una fecha de entrega");
-                                            return false;
-                                        } else {
-                                            document.getElementById('Loader').style.display = 'block';
-                                            var observaciones = document.getElementById('Obser').value;
-                                            document.getElementById('Obs').value = observaciones;
-                                            var req = document.getElementById('Requerimiento').value;
-                                            document.getElementById('F_Req').value = req;
-                                            document.getElementById('BtnGuardar').click();
-                                        }
-                                    }
-
-                                }
-
-</script> 
