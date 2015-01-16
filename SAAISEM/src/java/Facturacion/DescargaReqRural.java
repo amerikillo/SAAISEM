@@ -171,7 +171,7 @@ public class DescargaReqRural extends HttpServlet {
 
                     /**/
                     if (diferencia > 0 && piezasDif == 0) {
-                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','0','" + FechaE + "','','0','','" + diferencia + "')");
+                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','0','" + FechaE + "','0','0','','" + diferencia + "')");
                         diferencia = 0;
                         piezasDif = 0;
                     }
