@@ -60,6 +60,7 @@ public class Ubicaciones extends HttpServlet {
                     }
                 }
             } catch (Exception e) {
+                out.println(e.getMessage());
                 System.out.println(e.getMessage());
             }
         } finally {
@@ -71,7 +72,7 @@ public class Ubicaciones extends HttpServlet {
         ConectionDB con = new ConectionDB();
         int banUbica = 0;
         con.conectar();
-        ResultSet rset = con.consulta("select F_ClaUbi from tb_Ubica where F_ClaUbi = '" + F_ClaUbi + "' ");
+        ResultSet rset = con.consulta("select F_ClaUbi from tb_ubica where F_ClaUbi = '" + F_ClaUbi + "' ");
         while (rset.next()) {
             banUbica = 1;
         }

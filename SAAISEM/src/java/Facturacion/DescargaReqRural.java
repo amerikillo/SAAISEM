@@ -43,7 +43,7 @@ public class DescargaReqRural extends HttpServlet {
                 conReqRur.conectar();
                 con.conectar();
                 String F_ClaUni = "", F_FecEnt = "", F_User = "", F_IdReq = "";
-                F_FecEnt=request.getParameter("F_FecSur");
+                F_FecEnt = request.getParameter("F_FecSur");
                 con.insertar("delete from tb_reqruralesweb where F_IdReq = '" + request.getParameter("F_IdReq") + "'");
                 ResultSet rset = conReqRur.consulta("select * from v_requerimientos where F_IdReq = '" + request.getParameter("F_IdReq") + "' ");
                 while (rset.next()) {
@@ -97,8 +97,9 @@ public class DescargaReqRural extends HttpServlet {
                     pzxCaja = rsetCP.getInt(1);
                 }
                 piezas = (pzxCaja * cajasReq) + piezasReq;
-                        //piezas = Integer.parseInt(rset_cantidad.getString("CANTIDAD"));
+                //piezas = Integer.parseInt(rset_cantidad.getString("CANTIDAD"));
 
+                String IdLote = "";
                 //INICIO DE CONSULTA MYSQL
                 ResultSet r_Org = con.consulta("SELECT F_ClaOrg FROM tb_lotetemp" + Usuario + " WHERE F_ClaPro='" + Clave + "' GROUP BY F_ClaOrg ORDER BY F_ClaOrg+0");
                 while (r_Org.next()) {
@@ -108,7 +109,7 @@ public class DescargaReqRural extends HttpServlet {
                         ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,(L.F_ExiLot) AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp" + Usuario + " L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' and L.F_Ubica !='REJA_DEVOL'  GROUP BY L.F_IdLote ORDER BY L.F_Origen, L.F_FecCad,L.F_IdLote ASC");
                         while (FechaLote.next()) {
                             FolioLote = FechaLote.getString("F_FolLot");
-                            String IdLote = FechaLote.getString("F_IdLote");
+                            IdLote = FechaLote.getString("F_IdLote");
                             existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
                             ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_facttemp where F_IdLot = '" + IdLote + "' and F_StsFact!=5");
                             while (rset2.next()) {
@@ -119,13 +120,13 @@ public class DescargaReqRural extends HttpServlet {
                                 if (piezas > existencia) {
                                     diferencia = piezas - existencia;
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
-                                    con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','')");
+                                    con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + existencia + "')");
                                     piezas = diferencia;
                                 } else {
                                     diferencia = existencia - piezas;
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                     if (piezas > 0) {
-                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','')");
+                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + piezas + "')");
                                         con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                     }
                                     piezas = 0;
@@ -136,7 +137,7 @@ public class DescargaReqRural extends HttpServlet {
                         ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,(L.F_ExiLot) AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp" + Usuario + " L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' AND L.F_Ubica !='REJA_DEVOL'  GROUP BY L.F_IdLote ORDER BY L.F_Origen, L.F_IdLote,L.F_FecCad ASC");
                         while (FechaLote.next()) {
                             FolioLote = FechaLote.getString("F_FolLot");
-                            String IdLote = FechaLote.getString("F_IdLote");
+                            IdLote = FechaLote.getString("F_IdLote");
                             existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
                             ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_facttemp where F_IdLot = '" + IdLote + "' and F_StsFact!=5");
                             while (rset2.next()) {
@@ -148,20 +149,26 @@ public class DescargaReqRural extends HttpServlet {
                                     diferencia = piezas - existencia;
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
 
-                                    con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','')");
+                                    con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + existencia + "')");
                                     piezas = diferencia;
                                 } else {
                                     diferencia = existencia - piezas;
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
 
                                     if (piezas >= 1) {
-                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','')");
+                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + piezas + "')");
                                         con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                     }
                                     piezas = 0;
                                 }
                             }
                         }
+                    }
+
+                    /**/
+                    if (diferencia > 0) {
+                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','0','" + FechaE + "','0','0','" + diferencia + "')");
+                        diferencia=0;
                     }
                 }
                 con.actualizar("update tb_reqruralesweb set F_StsReq='5' where F_IdReq='" + rset_cantidad.getString("F_IdReq") + "'");
@@ -178,6 +185,7 @@ public class DescargaReqRural extends HttpServlet {
         //out.println("<script>window.open('reimpGlobalMarbetes.jsp?fol_gnkl=" + FolFact + "','_blank')</script>");
         //--------------------------------------------------------------------------------------------------------------------------------------
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

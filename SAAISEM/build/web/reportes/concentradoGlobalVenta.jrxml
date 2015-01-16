@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="concentradoGlobal" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa04e4c5-5205-47c6-b26f-79faf959ff59">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="310"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="89"/>
 	<parameter name="idFact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -35,6 +35,7 @@ WHERE
 AND f.F_ClaCli = u.F_ClaCli
 AND p.F_ClaPro = l.F_ClaPro
 AND m.F_ClaPro = l.F_ClaPro
+AND f.F_Cant>0
 AND F_IdFact = $P{idFact}
 AND l.F_Origen='2'
 group by
@@ -51,9 +52,7 @@ f.F_Id;]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="DATE_FORMAT(l.F_FecCad, &apos;%d/%m/%Y&apos;)" class="java.lang.String"/>
-	<field name="F_Cant" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="F_Cant" class="java.lang.Double"/>
 	<field name="F_Ubica" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -74,7 +73,7 @@ f.F_Id;]]>
 	<field name="F_Id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="rownum" class="java.lang.Long"/>
+	<field name="rownum" class="java.lang.Double"/>
 	<variable name="(f.F_Cant DIV p.F_Pzs)_1" class="java.lang.Long" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{(f.F_Cant DIV p.F_Pzs)}]]></variableExpression>
 	</variable>
@@ -316,20 +315,6 @@ f.F_Id;]]>
 				</textElement>
 				<text><![CDATA[Totales]]></text>
 			</staticText>
-			<textField pattern="#,###,##0">
-				<reportElement uuid="46504a08-157b-4f29-89c0-be77dd90a281" x="302" y="14" width="65" height="12"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{(f.F_Cant DIV p.F_Pzs)_2}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,###,##0" isBlankWhenNull="true">
-				<reportElement uuid="774fe81e-7860-4bba-8c72-06792e4a64ae" x="372" y="14" width="65" height="12"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{(f.F_Cant MOD p.F_Pzs)_2}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,###,##0">
 				<reportElement uuid="5bc89d43-adde-42e2-9e4d-f36b3eae1433" x="442" y="14" width="65" height="12"/>
 				<textElement>
