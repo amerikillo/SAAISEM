@@ -66,7 +66,7 @@ public class DescargaReqRural extends HttpServlet {
         ConectionDB con = new ConectionDB();
         int ban1 = 1;
         String Clave = "", FolioLote = "";
-        int piezas = 0, existencia = 0, diferencia = 0, X = 0, FolioFactura = 0, FolFact = 0, Tipo = 0, Org = 0;
+        int piezas = 0, existencia = 0, diferencia = 0, X = 0, FolioFactura = 0, FolFact = 0, Tipo = 0, Org = 0, piezasDif = 0;
 
         try {
 
@@ -121,6 +121,7 @@ public class DescargaReqRural extends HttpServlet {
                                     diferencia = piezas - existencia;
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
                                     con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + existencia + "')");
+                                    piezasDif = 0;
                                     piezas = diferencia;
                                 } else {
                                     diferencia = existencia - piezas;
@@ -129,6 +130,7 @@ public class DescargaReqRural extends HttpServlet {
                                         con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + piezas + "')");
                                         con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                     }
+                                    piezasDif = diferencia;
                                     piezas = 0;
                                 }
                             }
@@ -150,6 +152,7 @@ public class DescargaReqRural extends HttpServlet {
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
 
                                     con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + existencia + "')");
+                                    piezasDif = 0;
                                     piezas = diferencia;
                                 } else {
                                     diferencia = existencia - piezas;
@@ -159,6 +162,7 @@ public class DescargaReqRural extends HttpServlet {
                                         con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + piezas + "')");
                                         con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                     }
+                                    piezasDif = diferencia;
                                     piezas = 0;
                                 }
                             }
@@ -166,9 +170,10 @@ public class DescargaReqRural extends HttpServlet {
                     }
 
                     /**/
-                    if (diferencia > 0) {
-                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','0','" + FechaE + "','0','0','" + diferencia + "')");
-                        diferencia=0;
+                    if (diferencia > 0 && piezasDif == 0) {
+                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','0','" + FechaE + "','','0','','" + diferencia + "')");
+                        diferencia = 0;
+                        piezasDif = 0;
                     }
                 }
                 con.actualizar("update tb_reqruralesweb set F_StsReq='5' where F_IdReq='" + rset_cantidad.getString("F_IdReq") + "'");
