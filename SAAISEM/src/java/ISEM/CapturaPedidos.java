@@ -51,7 +51,7 @@ public class CapturaPedidos extends HttpServlet {
                     ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, p.F_ClaProve from tb_pedidoisem o, tb_proveedor p where o.F_Provee = p.F_ClaProve and F_NoCompra = '" + request.getParameter("NoCompra") + "'  group by o.F_NoCompra");
                     while (rset.next()) {
 
-                        sesion.setAttribute("NoCompra", rset.getString(1));
+                        sesion.setAttribute("NoOrdCompra", rset.getString(1));
                         sesion.setAttribute("proveedor", rset.getString(2));
                         sesion.setAttribute("fec_entrega", rset.getString(3));
                         sesion.setAttribute("hor_entrega", rset.getString(4));
@@ -73,7 +73,7 @@ public class CapturaPedidos extends HttpServlet {
                 response.sendRedirect("capturaISEM.jsp");
             }
             if (request.getParameter("accion").equals("Actualizar")) { 
-                sesion.setAttribute("NoCompra", request.getParameter("NoCompra"));
+                sesion.setAttribute("NoOrdCompra", request.getParameter("NoCompra"));
                 out.println("<script>window.location='capturaISEM.jsp'</script>");
             }
             if (request.getParameter("accion").equals("Clave")) {
@@ -106,7 +106,7 @@ public class CapturaPedidos extends HttpServlet {
                         sesion.setAttribute("proveedor", request.getParameter("Proveedor"));
                         sesion.setAttribute("fec_entrega", request.getParameter("Fecha"));
                         sesion.setAttribute("hor_entrega", request.getParameter("Hora"));
-                        sesion.setAttribute("NoCompra", request.getParameter("NoCompra"));
+                        sesion.setAttribute("NoOrdCompra", request.getParameter("NoCompra"));
 
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -125,7 +125,7 @@ public class CapturaPedidos extends HttpServlet {
                                     }
                                     con.cierraConexion();
                                     if (ban2 == 1) {
-                                        sesion.setAttribute("NoCompra", "");
+                                        sesion.setAttribute("NoOrdCompra", "");
                                         sesion.setAttribute("clave", "");
                                         sesion.setAttribute("descripcion", "");
                                         out.println("<script>alert('Número de Compra ya utilizado')</script>");
@@ -164,7 +164,7 @@ public class CapturaPedidos extends HttpServlet {
                     sesion.setAttribute("proveedor", request.getParameter("Proveedor"));
                     sesion.setAttribute("fec_entrega", request.getParameter("Fecha"));
                     sesion.setAttribute("hor_entrega", request.getParameter("Hora"));
-                    sesion.setAttribute("NoCompra", request.getParameter("NoCompra"));
+                    sesion.setAttribute("NoOrdCompra", request.getParameter("NoCompra"));
 
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -183,7 +183,7 @@ public class CapturaPedidos extends HttpServlet {
                                 }
                                 con.cierraConexion();
                                 if (ban2 == 1) {
-                                    sesion.setAttribute("NoCompra", "");
+                                    sesion.setAttribute("NoOrdCompra", "");
                                     sesion.setAttribute("clave", "");
                                     sesion.setAttribute("descripcion", "");
                                     out.println("<script>alert('Número de Compra ya utilizado')</script>");
@@ -227,7 +227,7 @@ public class CapturaPedidos extends HttpServlet {
                     }
                     int i = 0, cantAnt = 0;
                     String F_IdIsem = "";
-                    ResultSet rset = con.consulta("select F_IdIsem, F_Cant from tb_pedidoisem where F_NoCompra = '" + (String) sesion.getAttribute("NoCompra") + "' and F_Clave = '" + ClaPro + "' ");
+                    ResultSet rset = con.consulta("select F_IdIsem, F_Cant from tb_pedidoisem where F_NoCompra = '" + (String) sesion.getAttribute("NoOrdCompra") + "' and F_Clave = '" + ClaPro + "' ");
                     while (rset.next()) {
                         F_IdIsem = rset.getString("F_IdIsem");
                         i = 1;
@@ -237,7 +237,7 @@ public class CapturaPedidos extends HttpServlet {
                         con.insertar("update tb_pedidoisem set F_Cant = '" + (cantAnt + Integer.parseInt(Cant)) + "' where F_IdIsem='" + F_IdIsem + "'");
                     } else {
 
-                        con.insertar("insert into tb_pedidoisem values(0,'" + (String) sesion.getAttribute("NoCompra") + "','" + (String) sesion.getAttribute("proveedor") + "','" + ClaPro + "','','" + Priori + "','" + Lote + "','" + df.format(df2.parse(Cadu)) + "','" + Cant + "','" + Observaciones + "',CURRENT_TIMESTAMP(),'" + (String) sesion.getAttribute("fec_entrega") + "','" + (String) sesion.getAttribute("hor_entrega") + "','" + (String) sesion.getAttribute("Usuario") + "','0','0')");
+                        con.insertar("insert into tb_pedidoisem values(0,'" + (String) sesion.getAttribute("NoOrdCompra") + "','" + (String) sesion.getAttribute("proveedor") + "','" + ClaPro + "','','" + Priori + "','" + Lote + "','" + df.format(df2.parse(Cadu)) + "','" + Cant + "','" + Observaciones + "',CURRENT_TIMESTAMP(),'" + (String) sesion.getAttribute("fec_entrega") + "','" + (String) sesion.getAttribute("hor_entrega") + "','" + (String) sesion.getAttribute("Usuario") + "','0','0')");
                     }
                     sesion.setAttribute("clave", "");
                     sesion.setAttribute("descripcion", "");
@@ -270,7 +270,7 @@ public class CapturaPedidos extends HttpServlet {
                     sesion.setAttribute("proveedor", "");
                     sesion.setAttribute("fec_entrega", "");
                     sesion.setAttribute("hor_entrega", "");
-                    sesion.setAttribute("NoCompra", "");
+                    sesion.setAttribute("NoOrdCompra", "");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -318,14 +318,14 @@ public class CapturaPedidos extends HttpServlet {
             if (request.getParameter("accion").equals("confirmar")) {
                 con.conectar();
                 try {
-                    con.insertar("update tb_pedidoisem set F_StsPed = '1' where F_NoCompra = '" + (String) sesion.getAttribute("NoCompra") + "'  and F_IdUsu = '" + (String) sesion.getAttribute("Usuario") + "' ");
+                    con.insertar("update tb_pedidoisem set F_StsPed = '1' where F_NoCompra = '" + (String) sesion.getAttribute("NoOrdCompra") + "'  and F_IdUsu = '" + (String) sesion.getAttribute("Usuario") + "' ");
                     //correo.enviaCorreo((String) sesion.getAttribute("NoCompra"));
                     sesion.setAttribute("clave", "");
                     sesion.setAttribute("descripcion", "");
                     sesion.setAttribute("proveedor", "");
                     sesion.setAttribute("fec_entrega", "");
                     sesion.setAttribute("hor_entrega", "");
-                    sesion.setAttribute("NoCompra", "");
+                    sesion.setAttribute("NoOrdCompra", "");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }

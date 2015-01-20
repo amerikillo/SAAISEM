@@ -107,7 +107,7 @@ public class Medicamentos extends HttpServlet {
                     String Nombre = "";
                     int TpMed = 0;
                     con.conectar();
-                    conModula.conectar();
+                    //conModula.conectar();
                     try {
 
                         ResultSet rst_prov = con.consulta("SELECT F_ClaPro FROM tb_medica WHERE F_ClaPro='" + request.getParameter("Clave").toUpperCase() + "'");
@@ -120,16 +120,16 @@ public class Medicamentos extends HttpServlet {
 
                         } else {
                             TpMed = Integer.parseInt(request.getParameter("list_medica").toUpperCase());
-                            conModula.ejecutar("insert into IMP_ARTICOLI (ART_OPERAZIONE, ART_ARTICOLO, ART_DES, ART_UMI, ART_MIN, ART_PROY) values ('I','" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','PZ','" + request.getParameter("Min").toUpperCase() + "', 'ISSEMyM')");
-                            con.insertar("insert into tb_medica values ('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','A','" + TpMed + "','" + request.getParameter("Costo").toUpperCase() + "','" + request.getParameter("PresPro").toUpperCase() + "','" + request.getParameter("SAP").toUpperCase() + "');");
-                            con.insertar("insert into tb_maxmodula values('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Max").toUpperCase() + "','" + request.getParameter("Min").toUpperCase() + "','0')");
+                            //conModula.ejecutar("insert into IMP_ARTICOLI (ART_OPERAZIONE, ART_ARTICOLO, ART_DES, ART_UMI, ART_MIN, ART_PROY) values ('I','" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','PZ','" + request.getParameter("Min").toUpperCase() + "', 'ISSEMyM')");
+                            con.insertar("insert into tb_medica values ('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','A','" + TpMed + "','" + request.getParameter("Costo").toUpperCase() + "','" + request.getParameter("PresPro").toUpperCase() + "','" + request.getParameter("F_Origen").toUpperCase() + "','" + request.getParameter("SAP").toUpperCase() + "');");
+                            //con.insertar("insert into tb_maxmodula values('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Max").toUpperCase() + "','" + request.getParameter("Min").toUpperCase() + "','0')");
                         }
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                         out.println("<script>alert('Error: " + e.getMessage() + "')</script>");
                         out.println("<script>window.location='medicamento.jsp'</script>");
                     }
-                    conModula.cierraConexion();
+                    //conModula.cierraConexion();
                     con.cierraConexion();
 
                     out.println("<script>alert('Medicamento capturado correctamente.')</script>");

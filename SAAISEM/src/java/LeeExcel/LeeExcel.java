@@ -4,6 +4,7 @@ import conn.ConectionDB;
 import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Vector;
@@ -76,7 +77,7 @@ public class LeeExcel {
                     try {
                         String Clave = (vectorCellEachRowData.get(j).toString() + "");
                         /*NumberFormat formatter = new DecimalFormat("0000");
-                        Clave = formatter.format(Double.parseDouble(Clave));*/
+                         Clave = formatter.format(Double.parseDouble(Clave));*/
                         qry = qry + "'" + Clave + "' , ";
                     } catch (Exception e) {
                     }
@@ -84,7 +85,11 @@ public class LeeExcel {
                     System.out.println("algo");
                     try {
                         String ClaPro = ((vectorCellEachRowData.get(j).toString()) + "");
-                        NumberFormat formatter = new DecimalFormat("0000.00");
+                        DecimalFormat formatter = new DecimalFormat("0000.00");
+                        DecimalFormatSymbols custom = new DecimalFormatSymbols();
+                        custom.setDecimalSeparator('.');
+                        custom.setGroupingSeparator(',');
+                        formatter.setDecimalFormatSymbols(custom);
                         ClaPro = formatter.format(Double.parseDouble(ClaPro));
                         String[] punto = ClaPro.split("\\.");
                         System.out.println(punto.length);

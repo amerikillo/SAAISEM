@@ -225,9 +225,9 @@
                                     con.conectar();
                                     ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, F_StsPed from tb_pedidoisem o, tb_proveedor p where o.F_Provee = p.F_ClaProve and o.F_FecSur like  '%" + fecha + "%'  and o.F_Provee like '%" + request.getParameter("Proveedor") + "'  and F_StsPed !='2' and F_Recibido=0  group by o.F_NoCompra");
                                     while (rset.next()) {
-                                        String banConfirmada="";
-                                        if(rset.getString("F_StsPed").equals("0")){
-                                         banConfirmada=" | Sin Confirmar";   
+                                        String banConfirmada = "";
+                                        if (rset.getString("F_StsPed").equals("0")) {
+                                            banConfirmada = " | Sin Confirmar";
                                         }
                             %>
                             <option value="<%=rset.getString(1)%>"><%=rset.getString(2)%> - <%=rset.getString(1)%> <%=banConfirmada%></option>
@@ -567,18 +567,27 @@
                                             Origen:
                                             <select class="form-control" name="F_Origen" id="F_Origen">
                                                 <%
-                                                try{
-                                                    con.conectar();
-                                                    ResultSet rset3 = con.consulta("select F_ClaOri, F_DesOri from tb_origen");
-                                                    while(rset3.next()){
-                                                        %>
-                                                        <option value="<%=rset3.getString("F_ClaOri")%>"><%=rset3.getString("F_DesOri")%></option>
+                                                    try {
+                                                        con.conectar();
+                                                        ResultSet rset3 = con.consulta("select F_ClaOri, F_DesOri from tb_origen");
+                                                        while (rset3.next()) {
+                                                            ResultSet rset4 = con.consulta("select F_Origen from tb_medica where F_ClaPro = '" + rset2.getString(1) + "' ");
+                                                %>
+                                                <option value="<%=rset3.getString("F_ClaOri")%>"
                                                         <%
+                                                            while (rset4.next()) {
+                                                                if (rset3.getString("F_ClaOri").equals(rset4.getString("F_Origen"))) {
+                                                                    out.println("selected");
+                                                                }
+                                                            }
+                                                        %>
+                                                        ><%=rset3.getString("F_DesOri")%></option>
+                                                <%
+                                                        }
+                                                        con.cierraConexion();
+                                                    } catch (Exception e) {
+                                                        System.out.println(e.getMessage());
                                                     }
-                                                    con.cierraConexion();
-                                                }catch(Exception e){
-                                                    System.out.println(e.getMessage());
-                                                }
                                                 %>
                                             </select>
                                         </td>
@@ -1172,14 +1181,14 @@
                                             return false;
                                         } else {
                                             var dtFechaActual = new Date();
-                                            var sumarDias = parseInt(30);
+                                            var sumarDias = parseInt(180);
                                             dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
                                             var fechaSpl = cad.split("/");
                                             var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
                                             /*alert(Caducidad);*/
 
                                             if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
-                                                alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
+                                                alert("La fecha de caducidad no puede ser menor a 6 meses próximos");
                                                 document.getElementById('cad').focus();
                                                 return false;
                                             }
@@ -1223,14 +1232,14 @@
                                         return false;
                                     } else {
                                         var dtFechaActual = new Date();
-                                        var sumarDias = parseInt(30);
+                                        var sumarDias = parseInt(180);
                                         dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
                                         var fechaSpl = cad.split("/");
                                         var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
                                         /*alert(Caducidad);*/
 
                                         if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
-                                            alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
+                                            alert("La fecha de caducidad no puede ser menor a 6 meses próximos");
                                             document.getElementById('cad').focus();
                                             return false;
                                         }

@@ -28,7 +28,7 @@
     CapturaPedidos indice = new CapturaPedidos();
     String proveedor = "", fecEnt = "", horEnt = "", claPro = "", desPro = "", NoCompra = "";
     try {
-        NoCompra = (String) sesion.getAttribute("NoCompra");
+        NoCompra = (String) sesion.getAttribute("NoOrdCompra");
         proveedor = (String) sesion.getAttribute("proveedor");
         fecEnt = (String) sesion.getAttribute("fec_entrega");
         horEnt = (String) sesion.getAttribute("hor_entrega");

@@ -88,7 +88,17 @@
                             </div>
                         </div>
                         <br/>
-                        <div class="row">
+                        <div>
+                            <label for="F_Origen" class="col-xs-1 control-label">Origen</label>
+                            <div class="col-xs-2">
+                                <select name="F_Origen" id="F_Origen" class="form-control">
+                                    <option value="1">Admon</option>
+                                    <option value="2">Venta</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                        <!--div class="row">
                             <label for="Costo" class="col-xs-1 control-label">Máximo</label>
                             <div class="col-xs-2">
                                 <input type="number" class="form-control" id="Max" name="Max" placeholder="Máximo"  />
@@ -97,7 +107,7 @@
                             <div class="col-xs-2">
                                 <input type="number" class="form-control" id="Min" name="Min" placeholder="Mínimo"   />
                             </div>
-                        </div>
+                        </div-->
                         <br/>
                         <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();"> Guardar</button> 
 
@@ -112,6 +122,7 @@
                             <thead>
                                 <tr>
                                     <td>CLAVE</td>
+                                    <td>SAP</td>
                                     <td>Descripción</td>
                                     <td>Tipo Medicamento</td>
                                     <td>Costo</td>
@@ -142,6 +153,7 @@
                                 %>
                                 <tr>
                                     <td><small><%=rset.getString(1)%></small></td>
+                                    <td><small><%=rset.getString("F_ClaSap")%></small></td>
                                     <td><small><%=rset.getString(2)%></small></td>
                                     <td><small><%=DesTipo%></small></td>
                                     <td class="text-right"><small>$ <%=formatterDecimal.format(rset.getDouble(5))%></small></td>  
