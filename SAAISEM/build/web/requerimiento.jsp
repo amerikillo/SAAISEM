@@ -60,7 +60,7 @@
                                 </div-->
                                 <label for="Nombre" class="col-xs-2 control-label">Nombre Archivo*</label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" type="file" name="file1" id="file1" accept=".xlsx"/>                                    
+                                    <input class="form-control" type="file" name="file1" id="file1" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>                                    
                                 </div>
                             </div>
                         </div>
@@ -82,125 +82,126 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-</html>
 
 
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script>
-                            $(document).ready(function() {
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
+                            $(document).ready(function () {
                                 $('#datosProv').dataTable();
                             });
-</script>
-<script>
+        </script>
+        <script>
 
 
-    function isNumberKey(evt, obj)
-    {
-        var charCode = (evt.which) ? evt.which : event.keyCode;
-        if (charCode === 13 || charCode > 31 && (charCode < 48 || charCode > 57)) {
-            if (charCode === 13) {
+            function isNumberKey(evt, obj)
+            {
+                var charCode = (evt.which) ? evt.which : event.keyCode;
+                if (charCode === 13 || charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    if (charCode === 13) {
+                        frm = obj.form;
+                        for (i = 0; i < frm.elements.length; i++)
+                            if (frm.elements[i] === obj)
+                            {
+                                if (i === frm.elements.length - 1)
+                                    i = -1;
+                                break
+                            }
+                        /*ACA ESTA EL CAMBIO*/
+                        if (frm.elements[i + 1].disabled === true)
+                            tabular(e, frm.elements[i + 1]);
+                        else
+                            frm.elements[i + 1].focus();
+                        return false;
+                    }
+                    return false;
+                }
+                return true;
+
+            }
+
+
+            function valida_alta() {
+                /*var Clave = document.formulario1.Clave.value;*/
+                var Nombre = document.getElementById('file1').value;
+
+                if (Nombre === "") {
+                    alert("Tiene campos vacíos, verifique.");
+                    return false;
+                }
+                document.getElementById('Loader').style.display = 'block';
+            }
+        </script>
+        <script language="javascript">
+            function justNumbers(e)
+            {
+                var keynum = window.event ? window.event.keyCode : e.which;
+                if ((keynum == 8) || (keynum == 46))
+                    return true;
+
+                return /\d/.test(String.fromCharCode(keynum));
+            }
+            otro = 0;
+            function LP_data() {
+                var key = window.event.keyCode;//codigo de tecla. 
+                if (key < 48 || key > 57) {//si no es numero 
+                    window.event.keyCode = 0;//anula la entrada de texto. 
+                }
+            }
+            function anade(esto) {
+                if (esto.value.length === 0) {
+                    if (esto.value.length == 0) {
+                        esto.value += "(";
+                    }
+                }
+                if (esto.value.length > otro) {
+                    if (esto.value.length == 4) {
+                        esto.value += ") ";
+                    }
+                }
+                if (esto.value.length > otro) {
+                    if (esto.value.length == 9) {
+                        esto.value += "-";
+                    }
+                }
+                if (esto.value.length < otro) {
+                    if (esto.value.length == 4 || esto.value.length == 9) {
+                        esto.value = esto.value.substring(0, esto.value.length - 1);
+                    }
+                }
+                otro = esto.value.length
+            }
+
+
+            function tabular(e, obj)
+            {
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla != 13)
+                    return;
                 frm = obj.form;
                 for (i = 0; i < frm.elements.length; i++)
-                    if (frm.elements[i] === obj)
+                    if (frm.elements[i] == obj)
                     {
-                        if (i === frm.elements.length - 1)
+                        if (i == frm.elements.length - 1)
                             i = -1;
                         break
                     }
                 /*ACA ESTA EL CAMBIO*/
-                if (frm.elements[i + 1].disabled === true)
+                if (frm.elements[i + 1].disabled == true)
                     tabular(e, frm.elements[i + 1]);
                 else
                     frm.elements[i + 1].focus();
                 return false;
             }
-            return false;
-        }
-        return true;
 
-    }
+        </script> 
 
-
-    function valida_alta() {
-        /*var Clave = document.formulario1.Clave.value;*/
-        var Nombre = document.getElementById('file1').value;
-
-        if (Nombre === "") {
-            alert("Tiene campos vacíos, verifique.");
-            return false;
-        }
-        document.getElementById('Loader').style.display = 'block';
-    }
-</script>
-<script language="javascript">
-    function justNumbers(e)
-    {
-        var keynum = window.event ? window.event.keyCode : e.which;
-        if ((keynum == 8) || (keynum == 46))
-            return true;
-
-        return /\d/.test(String.fromCharCode(keynum));
-    }
-    otro = 0;
-    function LP_data() {
-        var key = window.event.keyCode;//codigo de tecla. 
-        if (key < 48 || key > 57) {//si no es numero 
-            window.event.keyCode = 0;//anula la entrada de texto. 
-        }
-    }
-    function anade(esto) {
-        if (esto.value.length === 0) {
-            if (esto.value.length == 0) {
-                esto.value += "(";
-            }
-        }
-        if (esto.value.length > otro) {
-            if (esto.value.length == 4) {
-                esto.value += ") ";
-            }
-        }
-        if (esto.value.length > otro) {
-            if (esto.value.length == 9) {
-                esto.value += "-";
-            }
-        }
-        if (esto.value.length < otro) {
-            if (esto.value.length == 4 || esto.value.length == 9) {
-                esto.value = esto.value.substring(0, esto.value.length - 1);
-            }
-        }
-        otro = esto.value.length
-    }
-
-
-    function tabular(e, obj)
-    {
-        tecla = (document.all) ? e.keyCode : e.which;
-        if (tecla != 13)
-            return;
-        frm = obj.form;
-        for (i = 0; i < frm.elements.length; i++)
-            if (frm.elements[i] == obj)
-            {
-                if (i == frm.elements.length - 1)
-                    i = -1;
-                break
-            }
-        /*ACA ESTA EL CAMBIO*/
-        if (frm.elements[i + 1].disabled == true)
-            tabular(e, frm.elements[i + 1]);
-        else
-            frm.elements[i + 1].focus();
-        return false;
-    }
-
-</script> 
+    </body>
+</html>

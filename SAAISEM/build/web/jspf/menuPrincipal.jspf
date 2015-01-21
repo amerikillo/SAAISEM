@@ -22,6 +22,8 @@
                         <%
                             if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")) {
                         %>
+                        <li><a href="/SAAISEM/SAP/cargarOrdenSAP.jsp">Subir Orden SAP</a></li>
+                        <li class="divider"></li>
                         <li><a href="/SAAISEM/capturaISEM.jsp">Captura de Órdenes de Compra</a></li>
                         <li class="divider"></li>
 
@@ -135,7 +137,7 @@
                         <%
                             if (tipo.equals("8")) {
                         %>
-                        <li><a href="/SAAISEM/operaciones/adminRutas.jsp">Administrar Rutas</a></li>
+                        <li><a href="#" onclick="window.open('/SAAISEM/operaciones/adminRutas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Administrar Rutas</a></li>
                             <%
                                 }
                             %>
