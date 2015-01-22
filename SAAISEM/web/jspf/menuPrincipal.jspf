@@ -105,6 +105,8 @@
                         <li><a href="/SAAISEM/reimp_factura.jsp">Administrar Remisiones</a></li>
                         <li><a href="/SAAISEM/reimpConcentrado.jsp">Reimpresión Folios a Remisionar</a></li>
                         <li><a href="/SAAISEM/comparativoGlobal.jsp">Folios a Remisionar</a></li>
+                        <li><a href="/SAAISEM/Secuencial.jsp">Generar Secuencial</a></li>
+                        <li><a href="/SAAISEM/RelacionarF.jsp">Relacionar Facturas</a></li>
 
                         <%
                             }

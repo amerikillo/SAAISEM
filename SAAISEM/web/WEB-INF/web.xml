@@ -152,6 +152,18 @@
         <servlet-name>SubeOrdenSapServlet</servlet-name>
         <servlet-class>in.co.sneh.controller.SubeOrdenSapServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReporteImprime</servlet-name>
+        <servlet-class>servlets.ReporteImprime</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteSecuencial</servlet-name>
+        <servlet-class>servlets.ReporteSecuencial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RelacionaFact</servlet-name>
+        <servlet-class>servlets.RelacionaFact</servlet-class>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>SubeOrdenSapServlet</servlet-name>
@@ -304,6 +316,18 @@
     <servlet-mapping>
         <servlet-name>Rutas</servlet-name>
         <url-pattern>/Rutas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteImprime</servlet-name>
+        <url-pattern>/ReporteImprime</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteSecuencial</servlet-name>
+        <url-pattern>/ReporteSecuencial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RelacionaFact</servlet-name>
+        <url-pattern>/RelacionaFact</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

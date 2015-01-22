@@ -16,7 +16,7 @@
         usua = (String) sesion.getAttribute("nombre");
         tipo = (String) sesion.getAttribute("Tipo");
     } else {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("../index.jsp");
     }
     ConectionDB con = new ConectionDB();
     String F_Anio = "";
