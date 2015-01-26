@@ -164,6 +164,20 @@
         <servlet-name>RelacionaFact</servlet-name>
         <servlet-class>servlets.RelacionaFact</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CargaInsumoServlet</servlet-name>
+        <servlet-class>CatalogoISEM.CargaInsumoServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CargaUnidadesServlet</servlet-name>
+        <servlet-class>CatalogoISEM.CargaUnidadesServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CargaUnidadesServlet</servlet-name>
+        <url-pattern>/facturacion/CargaUnidadesServlet</url-pattern>
+    </servlet-mapping>
     
     <servlet-mapping>
         <servlet-name>SubeOrdenSapServlet</servlet-name>
@@ -328,6 +342,10 @@
     <servlet-mapping>
         <servlet-name>RelacionaFact</servlet-name>
         <url-pattern>/RelacionaFact</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargaInsumoServlet</servlet-name>
+        <url-pattern>/facturacion/CargaInsumoServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -136,7 +136,7 @@
                                         con.conectar();
                                         int tipo = 0;
                                         String DesTipo = "";
-                                        ResultSet rset = con.consulta("SELECT * FROM tb_medica where F_Costo!=0 ORDER BY F_DesPro ASC");
+                                        ResultSet rset = con.consulta("SELECT m.* FROM tb_medica m, tb_artiis a where m.F_ClaPro = a.F_ClaInt ORDER BY F_DesPro ASC");
                                         while (rset.next()) {
                                             int max = 0, min = 0;
                                             ResultSet rset2 = con.consulta("select F_Max, F_Min from tb_maxmodula where F_ClaPro = '" + rset.getString("F_ClaPro") + "'");

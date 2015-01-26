@@ -82,15 +82,17 @@
                             if (tipo.equals("7")) {
                         %>
                         <li><a href="/SAAISEM/requerimiento.jsp">Carga de Requerimiento</a></li>
-                        <li><a href="/SAAISEM/factura.jsp">Facturación Automática</a></li>
+                        <li class="divider"></li>
                             <%
                                 }
                             %>
                             <%
                                 if (tipo.equals("5") || tipo.equals("7") || tipo.equals("2")) {
                             %>
+                        <li><a href="/SAAISEM/factura.jsp">Facturación Automática</a></li>
                         <li><a href="/SAAISEM/facturacionManual.jsp">Facturación Manual</a></li>
                         <li><a href="/SAAISEM/facturacionRural/verReqsWeb.jsp">Facturación Web</a></li>
+                        <li class="divider"></li>
                         <!--li><a href="/SAAISEM/validacionSurtido.jsp">Validación Surtido</a></li>
                         <li><a href="/SAAISEM/validacionAuditores.jsp">Validación Auditores</a></li-->
                         <!--li><a href="#"  onclick="window.open('modula/modulaHistorico.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Histórico Modula</a></li-->
@@ -100,11 +102,12 @@
                         <%
                             if (tipo.equals("7")) {
                         %>
-                        <li><a href="/SAAISEM/remisionarCamion.jsp">Generar Remisiones</a></li>
                         <li><a href="#"  onclick="window.open('verDevoluciones.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devoluciones</a></li>
+                        <li class="divider"></li>
                         <li><a href="/SAAISEM/reimp_factura.jsp">Administrar Remisiones</a></li>
                         <li><a href="/SAAISEM/reimpConcentrado.jsp">Reimpresión Folios a Remisionar</a></li>
                         <li><a href="/SAAISEM/comparativoGlobal.jsp">Folios a Remisionar</a></li>
+                        <li class="divider"></li>
                         <li><a href="/SAAISEM/Secuencial.jsp">Generar Secuencial</a></li>
                         <li><a href="/SAAISEM/RelacionarF.jsp">Relacionar Facturas</a></li>
 
@@ -116,6 +119,12 @@
                 <%
                     }
                 %>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Surtido<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/SAAISEM/remisionarCamion.jsp">Generar Remisiones</a></li>
+                    </ul>
+                </li>
                 <!--li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -131,7 +140,7 @@
             <li><a href="#"  onclick="window.open('invenCiclico/nuevoInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario Ciclico</a></li>
         </ul>
     </li--> <%
-        if (tipo.equals("5") || tipo.equals("7") || tipo.equals("2")|| tipo.equals("8")|| tipo.equals("9")) {
+        if (tipo.equals("5") || tipo.equals("7") || tipo.equals("2") || tipo.equals("8") || tipo.equals("9")) {
                 %>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Operaciones<b class="caret"></b></a>
@@ -156,7 +165,15 @@
                         <li><a href="#" onclick="window.open('/SAAISEM/catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
                         <li><a href="#" onclick="window.open('/SAAISEM/marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
                         <li><a href="#" onclick="window.open('/SAAISEM/modula/catalogoCB.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de CB</a></li>
+                        <li><a href="#" onclick="window.open('/SAAISEM/catalogoUnidades.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Unidades</a></li>
 
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos ISEM<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" onclick="window.open('/SAAISEM/facturacion/catalogoArtIS.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Insumo ISEM</a></li>
+                        <li><a href="#" onclick="window.open('/SAAISEM/facturacion/catalogoUniDis.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Unidades ISEM</a></li>
                     </ul>
                 </li>
                 <!--li class="dropdown">
