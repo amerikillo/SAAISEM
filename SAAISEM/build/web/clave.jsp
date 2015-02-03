@@ -205,7 +205,7 @@
         </div>
         <br><br><br>
         <div class="navbar navbar-fixed-bottom navbar-inverse">
-            GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
+            GNK Logística || Desarrollo de Aplicaciones 2009 - 2015 <span class="glyphicon glyphicon-registration-mark"></span><br />
             <div class="text-center text-muted">
                 Todos los Derechos Reservados
             </div>
