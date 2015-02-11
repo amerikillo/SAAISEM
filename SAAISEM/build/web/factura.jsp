@@ -119,11 +119,38 @@
                         </div>
 
                     </form>
+                    <%
+                        try {
+                            con.conectar();
+                            ResultSet rset = con.consulta("select f.F_ClaUni from tb_fecharuta f, tb_uniatn u where f.F_ClaUni = u.F_ClaCli and f.F_Fecha = '" + request.getParameter("F_FecEnt") + "' and u.F_ClaJurNum = '" + UsuaJuris + "' ");
+                            while (rset.next()) {
+                                String F_NomCli = "";
+                                int banReq = 0;
+                                ResultSet rset2 = con.consulta("select  F_NomCli from tb_uniatn where F_ClaCli = '" + rset.getString("F_ClaUni") + "'");
+                                while (rset2.next()) {
+                                    F_NomCli = rset2.getString("F_NomCli");
+                                }
+
+                                rset2 = con.consulta("select F_ClaUni from tb_unireq where F_Status = '0' and F_ClaUni = '" + rset.getString("F_ClaUni") + "'");
+                                while (rset2.next()) {
+                                    banReq = 1;
+                                }
+                                if (banReq == 1) {
+                    %>
                     <form action="Facturacion" method="post">
                         <input name="F_FecEnt" class="hidden" value="<%= request.getParameter("F_FecEnt")%>" />
                         <input name="F_Juris" class="hidden" value="<%=UsuaJuris%>" />
-                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardarGlobal" onclick="return validaRemision();">Generar Folio(s)</button> 
+                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardarGlobal" id="btnGeneraFolio" onclick="return validaRemision()">Generar Folio(s)</button> 
                     </form>
+
+                    <%
+                                }
+                            }
+                            con.cierraConexion();
+                        } catch (Exception e) {
+                            out.println(e.getMessage());
+                        }
+                    %>
                     <div>
                         <h6>Los campos marcados con * son obligatorios</h6>
                     </div>
@@ -205,7 +232,24 @@
             </div>
         </div>
 
-
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center" id="imagenCarga">
+                            <img src="imagenes/ajax-loader-1.gif" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 
         ================================================== -->
         <!-- Se coloca al final del documento para que cargue mas rapido -->
@@ -217,27 +261,18 @@
         <script src="js/dataTables.bootstrap.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
         <script>
-                            $(document).ready(function () {
+                            $(document).ready(function() {
                                 $('#datosProv').dataTable();
                             });
                             function validaRemision() {
-                                var seg = confirm('Desea Remisionar Estos Requerimientos?');
-                                if (seg == false) {
-                                    return false;
+                                var confirmacion = confirm('Seguro que desea generar los Folios');
+                                if (confirmacion === true) {
+                                    $('#myModal').modal();
+                                    $('#btnGeneraFolio').prop('disabled', true);
+                                    return true;
                                 } else {
-                                    if ($('#FecFab').val() === "") {
-                                        alert("Debe seleccionar una fecha de entrega");
-                                        return false;
-                                    } else {
-                                        document.getElementById('Loader').style.display = 'block';
-                                        var observaciones = document.getElementById('Obser').value;
-                                        document.getElementById('Obs').value = observaciones;
-                                        var req = document.getElementById('Requerimiento').value;
-                                        document.getElementById('F_Req').value = req;
-                                        document.getElementById('BtnGuardar').click();
-                                    }
+                                    return false;
                                 }
-
                             }
 
         </script> 

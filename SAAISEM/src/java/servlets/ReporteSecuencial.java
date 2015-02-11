@@ -4,6 +4,7 @@
  */
 package servlets;
 
+import ExportarTxt.LogTxt;
 import conn.ConectionDB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -44,7 +45,6 @@ public class ReporteSecuencial extends HttpServlet {
             ResultSet FolFact = null;
                 ResultSet FolioAgr = null;
                 ResultSet DatosUni = null;
-                ResultSet DatosMedico = null;
                 ResultSet DatosFact = null;
                 ResultSet UltSecu = null;
                 ResultSet TxT = null;
@@ -56,14 +56,14 @@ public class ReporteSecuencial extends HttpServlet {
                 String fecha_ini = request.getParameter("fecha_ini");
                 String Dife = request.getParameter("radio");
                 String fecha_fin = request.getParameter("fecha_fin");
-                String F_Cliente="", FolAgr="", F_ClaDoc="", F_ClaDoc2="", F_FecEnt="", F_Secuencial="", F_Fecsur="", F_FacGNKLAgr="", F_FolAgr="", F_DesMedIS="",F_Folios="",vm_ClaArtSum="",vm_ClaArtSum2="";
-                String F_Origen="",vp_AdmVen="", F_IdOrg="", F_SPArtIS="", F_IdePro="",F_Espacio="";
-                int CantidSum=0, CantidReqSum=0,F_Long=0;
+                String F_Cliente="", FolAgr="", F_ClaDoc="", F_ClaDoc2="", F_FecEnt="", F_Fecsur="", F_FacGNKLAgr="", F_FolAgr="", F_DesMedIS="",F_Folios="",vm_ClaArtSum="",vm_ClaArtSum2="";
+                String F_Origen="",vp_AdmVen="", F_IdOrg="", F_SPArtIS="", F_IdePro="",F_Espacio="",LogLimpiar="",LogArticulo="",LogUnidad="";
+                int CantidSum=0, CantidReqSum=0,F_Secuencial=0,F_Long=0,F_UltSecuencial=0;
                 double F_PreVenIS = 0.0;
-                
+                LogTxt Log = new LogTxt();
                 if ((fecha_ini != "") && (fecha_fin != "")) {
                     try {
-                        con.actualizar("Delete From tb_txtis where F_Fecsur >= '"+df.format(df2.parse(fecha_ini))+"'");  // Borra los registros de la tabla de acuerdo a la fecha                       
+                        con.actualizar("Delete From tb_txtis where F_Fecsur >= '"+fecha_ini+"'");  // Borra los registros de la tabla de acuerdo a la fecha                       
                         
                         con.actualizar("Delete From tb_facagr");  // limpia tabla
                         
@@ -71,8 +71,8 @@ public class ReporteSecuencial extends HttpServlet {
                         //FolFact = con.consulta("Select F_FecEnt, F_ClaDoc, F_ClaCli  FROM tb_factura WHERE F_FecEnt BETWEEN '"+df.format(df2.parse(fecha_ini))+"'  "
                         //+ "AND '"+df.format(df2.parse(fecha_fin))+"'  AND F_TipDoc <> 'D' AND F_StsFac <> 'C' GROUP BY F_FecEnt, F_ClaDoc, F_ClaCli  ORDER BY F_FecEnt, F_ClaDoc, F_ClaCli ");
                         
-                        FolFact = con.consulta("Select F_FecEnt, F_ClaDoc, F_ClaCli  FROM tb_factura WHERE F_FecEnt BETWEEN '"+df.format(df2.parse(fecha_ini))+"'  "
-                        + "AND '"+df.format(df2.parse(fecha_fin))+"' AND F_StsFact <> 'C' GROUP BY F_FecEnt, F_ClaDoc, F_ClaCli  ORDER BY F_FecEnt, F_ClaDoc, F_ClaCli ");
+                        FolFact = con.consulta("Select F_FecEnt, F_ClaDoc, F_ClaCli  FROM tb_factura WHERE F_FecEnt BETWEEN '"+fecha_ini+"'  "
+                        + "AND '"+fecha_fin+"' AND F_StsFact <> 'C' GROUP BY F_FecEnt, F_ClaDoc, F_ClaCli  ORDER BY F_FecEnt, F_ClaDoc, F_ClaCli ");
                         while(FolFact.next()){
                                                         
                             con.actualizar("insert into tb_facagr values ('"+FolFact.getString(2)+"','"+FolFact.getString(3)+"','"+FolFact.getString(1)+"','')");                            
@@ -108,19 +108,22 @@ public class ReporteSecuencial extends HttpServlet {
                         // obtiene el último secuencial registrado
                         UltSecu = con.consulta("Select F_Secuencial, F_Fecsur, F_FacGNKLAgr From tb_txtis ORDER BY F_Secuencial DESC LIMIT 0,1");
                         if (UltSecu.next()){
-                            F_Secuencial = UltSecu.getString(1);
+                            F_UltSecuencial = UltSecu.getInt(1);
                             F_Fecsur  = UltSecu.getString(2);
                             F_FacGNKLAgr  = UltSecu.getString(3);        
                         }
+                        F_Secuencial = F_UltSecuencial;
                         ///----------------//////
                         TxT = con.consulta("SELECT * FROM tb_txtis LIMIT 0,1");
                         
                         // Valida datos de la factura
+                        LogLimpiar = Log.LogLimpiar();
                         FolFact = con.consulta("SELECT F_FolAgr FROM tb_facagr GROUP BY F_FolAgr ORDER BY F_FolAgr");
                         while(FolFact.next()){
-                            DatosFact = con.consulta("Select tb_factura.*, tb_facagr.* From tb_factura, tb_facagr WHERE tb_factura.F_ClaDoc = tb_facagr.F_Fol  AND F_FolAgr = '"+FolFact.getString(1)+"'");
+                            DatosFact = con.consulta("Select f.F_ClaCli,f.F_ClaPro From tb_factura f, tb_facagr a WHERE f.F_ClaDoc = a.F_Fol AND F_FolAgr = '"+FolFact.getString(1)+"'");
                             while(DatosFact.next()){
-                                
+                                LogArticulo = Log.LogErrorArticulo(DatosFact.getString(2));
+                                LogUnidad = Log.LogErrorUnidad(DatosFact.getString(1));
                             }
                         }
                         ////------------------//////
@@ -168,10 +171,10 @@ public class ReporteSecuencial extends HttpServlet {
                                 F_Origen = DatosFact.getString("F_Origen");
                                 F_SPArtIS = DatosFact.getString("F_SPArtIS");
                                 if (F_Origen.equals("1")){
-                                    F_IdOrg = " 1";
+                                    F_IdOrg = "1";
                                     F_PreVenIS = 0;
                                 }else{
-                                    F_IdOrg = " 2";
+                                    F_IdOrg = "2";
                                     F_PreVenIS = DatosFact.getDouble("F_PreVenIS");
                                 }
                                 if (F_SPArtIS.equals("1")){
@@ -180,8 +183,11 @@ public class ReporteSecuencial extends HttpServlet {
                                     F_IdePro = "0";
                                 }
                                 
-                                con.actualizar("INSERT INTO tb_txtis VALUES (0,'7577','"+DatosFact.getString("F_MunUniIS")+"','"+DatosFact.getString("F_LocUniIS")+"','"+DatosFact.getString("F_JurUniIS")+"','"+DatosFact.getString("F_ClaUniIS")+"',' 9999',' 9999','"+DatosFact.getString("F_MedUniIS")+"','"+DatosFact.getString("F_SUMArtIS")+"','   10','','"+DatosFact.getString("F_ClaArtIS")+"','"+DatosFact.getString("F_PreArtIS")+"','"+F_PreVenIS+"','"+DatosFact.getString("F_UnidadReq")+"','"+DatosFact.getString("F_Unidad")+"','0','"+DatosFact.getString("F_FecEnt")+"','','','','0','','"+DatosFact.getString("F_DesArtIS")+"','"+F_IdOrg+"','','"+DatosFact.getString("F_DesMedIS")+"','2','"+DatosFact.getString("F_ClaDoc")+"',curdate(),'"+F_IdePro+"','"+DatosFact.getString("F_RegUniIS")+"','0','"+DatosFact.getString("F_ClaDoc")+"','','','','','"+F_FolAgr+"','','','"+DatosFact.getString("F_Unidad")+"','','')");
+                                F_Secuencial = F_Secuencial + 1;
+                                
+                                con.actualizar("INSERT INTO tb_txtis VALUES ('"+F_Secuencial+"','7577','"+DatosFact.getString("F_MunUniIS")+"','"+DatosFact.getString("F_LocUniIS")+"','"+DatosFact.getString("F_JurUniIS")+"','"+DatosFact.getString("F_ClaUniIS")+"','9999','9999','"+DatosFact.getString("F_MedUniIS")+"','"+DatosFact.getString("F_SUMArtIS")+"','10','','"+DatosFact.getString("F_ClaArtIS")+"','"+DatosFact.getString("F_PreArtIS")+"','"+F_PreVenIS+"','"+DatosFact.getString("F_UnidadReq")+"','"+DatosFact.getString("F_Unidad")+"','0','"+DatosFact.getString("F_FecEnt")+"','','','','0','','"+DatosFact.getString("F_DesArtIS")+"','"+F_IdOrg+"','','"+DatosFact.getString("F_DesMedIS")+"','2','"+DatosFact.getString("F_ClaDoc")+"',curdate(),'"+F_IdePro+"','"+DatosFact.getString("F_RegUniIS")+"','0','"+DatosFact.getString("F_ClaDoc")+"','','','','','"+F_FolAgr+"','','','"+DatosFact.getString("F_Unidad")+"','','')");
                             }
+                            
                             FolFact = con.consulta("SELECT DISTINCT f_cladoc FROM tb_factura WHERE F_ClaDoc IN (SELECT F_Fol FROM tb_facagr WHERE F_FolAgr ='"+F_FolAgr+"') AND F_CantSur > 0");
                            while(FolFact.next()){
                                F_ClaDoc = FolFact.getString(1);                               
@@ -189,9 +195,11 @@ public class ReporteSecuencial extends HttpServlet {
                            }
                             con.actualizar("UPDATE tb_txtis SET F_Folios='"+F_Folios+"' WHERE F_FacGNKLAgr='"+F_FolAgr+"'");
                             F_Folios ="";
+                            F_Secuencial = F_Secuencial;
                         }
+                        F_Secuencial = 0;
                         out.println("<script>alert('Secuencial Generado Correctamente')</script>");
-                       out.println("<script>window.history.back()</script>");
+                       out.println("<script>window.location.href = 'Secuencial.jsp';</script>");
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }

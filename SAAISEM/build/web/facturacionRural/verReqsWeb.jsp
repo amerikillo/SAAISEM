@@ -77,13 +77,12 @@
         <div class="row">
             <form action="../DescargaReqRural" method="post">
                 <div class="col-sm-2 col-sm-offset-8">
-                    <input class="form-control" type="date" required name="F_FecSur" min="<%=df2.format(new Date())%>" />
                 </div>
                 <div class="col-sm-2">
                     <input name="F_IdReq" class="hidden" value="<%=request.getParameter("F_IdReq")%>" />
-
-                    <button class="btn btn-primary btn-block" name="accion" value="cargaReqRur" onclick="return confirm('¿Seguro que desea generar el folio?')">Generar Folio</button>
-
+                    <input name="F_ClaCli" class="" value="<%=rset.getString("F_ClaCli")%>" />
+                    <button class="btn btn-primary" data-toggle="modal" id="muestraModal" data-target="#myModal">Descargar Folio</button>
+                    <button class="hidden" type="submit" name="accion" value="cargaReqRur" id="cargaReqRur">Descargar Folio</button>
                 </div>  
             </form>
         </div>
@@ -127,7 +126,31 @@
         <%
             }
         %>
+
         <%@include file="../jspf/piePagina.jspf" %>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Seguro de descargar este requerimiento?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <button class="btn btn-primary btn-block" name="accion" value="cargaReqRur" id="btnModal" onclick="verificaDescarga()">Descargar Folio</button>
+                        <div class="text-center" id="imagenCarga">
+                        <img src="../imagenes/ajax-loader-1.gif" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- 
 ================================================== -->
         <!-- Se coloca al final del documento para que cargue mas rapido -->
@@ -138,9 +161,16 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script>
-                        $(document).ready(function() {
-                            $('#detReqRur').dataTable();
-                        });
+                            $(document).ready(function() {
+                                $('#detReqRur').dataTable();
+                                $('#imagenCarga').hide();
+                            });
+
+                            function verificaDescarga() {
+                                document.getElementById('btnModal').disabled=true;
+                                document.getElementById('cargaReqRur').click();
+                                $('#imagenCarga').show();
+                            }
         </script>
     </body>
 </html>

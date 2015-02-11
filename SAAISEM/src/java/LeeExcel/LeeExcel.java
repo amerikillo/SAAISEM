@@ -75,10 +75,17 @@ public class LeeExcel {
 
                 if (j == 0) {
                     try {
-                        String Clave = (vectorCellEachRowData.get(j).toString() + "");
+                        String Clave = (vectorCellEachRowData.get(j).toString() + "").trim();
                         /*NumberFormat formatter = new DecimalFormat("0000");
                          Clave = formatter.format(Double.parseDouble(Clave));*/
-                        qry = qry + "'" + Clave + "' , ";
+                        System.out.println(Clave);
+                        Clave.replaceAll("^\\s*", "");
+                        Clave.replaceAll(" ", "");
+                        Clave.replaceAll("&nbsp;", "");
+                        for (int x = 0; x < Clave.length(); x++) {
+                            System.out.println(Clave.charAt(x) + " = " + Clave.codePointAt(x));
+                        };
+                        qry = qry + "'" + Clave + "', ";
                     } catch (Exception e) {
                     }
                 } else if (j == 1) {
@@ -114,7 +121,7 @@ public class LeeExcel {
                 } else {
                     try {
                         String Clave = ((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
-                        qry = qry + "'" + Clave + "' , ";
+                        qry = qry + "'" + Clave.trim() + "' , ";
                     } catch (Exception e) {
                     }
                 }

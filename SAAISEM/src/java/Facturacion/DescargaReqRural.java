@@ -44,15 +44,24 @@ public class DescargaReqRural extends HttpServlet {
                 con.conectar();
                 String F_ClaUni = "", F_FecEnt = "", F_User = "", F_IdReq = "";
                 F_FecEnt = request.getParameter("F_FecSur");
-                con.insertar("delete from tb_reqruralesweb where F_IdReq = '" + request.getParameter("F_IdReq") + "'");
-                ResultSet rset = conReqRur.consulta("select * from v_requerimientos where F_IdReq = '" + request.getParameter("F_IdReq") + "' ");
+                con.insertar("delete from tb_reqruralesweb where F_IdReq = '" + request.getParameter("F_IdReq") + "' and F_ClaCli = '" + request.getParameter("F_ClaCli") + "' ");
+                ResultSet rset = conReqRur.consulta("select * from v_requerimientos where F_IdReq = '" + request.getParameter("F_IdReq") + "' and F_ClaCli = '" + request.getParameter("F_ClaCli") + "' ");
                 while (rset.next()) {
                     con.insertar("insert into tb_reqruralesweb values ('" + rset.getString("F_ClaCli") + "','" + rset.getString("F_IdReq") + "','" + rset.getString("F_StsReq") + "','" + rset.getString("F_FecEnt") + "','" + rset.getString("F_ClaPro") + "','" + rset.getString("F_Cant") + "','" + rset.getString("F_Obs") + "','" + rset.getString("F_Id") + "' )");
                     F_ClaUni = rset.getString("F_ClaCli");
                     //F_FecEnt = rset.getString("F_FecEnt");
                 }
-
-                GuardaGlobalReqRural(F_ClaUni, F_FecEnt, (String) sesion.getAttribute("nombre"), request.getParameter("F_IdReq"));
+                con.insertar("update tb_unireq set F_Status = '2' where F_ClaUni = '" + F_ClaUni + "' and F_Status = '0' ");
+                rset = con.consulta("select F_ClaPro, F_Cant from tb_reqruralesweb where F_IdReq = '" + request.getParameter("F_IdReq") + "' and F_ClaCli = '" + request.getParameter("F_ClaCli") + "'");
+                while (rset.next()) {
+                    try {
+                        con.insertar("insert into tb_unireq values('" + F_ClaUni + "','" + rset.getString("F_ClaPro") + "','0','" + rset.getString("F_Cant") + "',CURDATE(),'0','0')");
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
+                    }
+                }
+                conReqRur.ejecutar("update tb_requerimientos set F_StsReq = '6' where IdReq='"+request.getParameter("F_IdReq")+"'  and F_ClaCli = '" + request.getParameter("F_ClaCli") + "' ");
+                //GuardaGlobalReqRural(F_ClaUni, F_FecEnt, (String) sesion.getAttribute("nombre"), request.getParameter("F_IdReq"));
                 con.cierraConexion();
                 conReqRur.cierraConexion();
                 response.sendRedirect("facturacionRural/verReqsWeb.jsp");

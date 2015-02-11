@@ -65,7 +65,7 @@
                     <h3 class="panel-title">Carga de Facturas Savi</h3>
                 </div>
                 <div class="panel-body ">
-                    <form method="post" class="jumbotron"  action="FileUploadFactura" enctype="multipart/form-data" name="form1">
+                    <form method="post" action="FileUploadFactura" enctype="multipart/form-data" name="form1">
                         <div class="form-group">
                             <div class="form-group">
                                 <div class="col-lg-4 text-success">
@@ -95,11 +95,13 @@
                             <div class="row">                                    
                                 <label class="control-label col-lg-2" for="fecha_ini">Fecha Inicio</label>
                                 <div class="col-lg-2">
-                                    <input class="form-control" id="fecha_ini" name="fecha_ini" data-date-format="DD/MM/YYYY"  value="" />
+                                    <!--input class="form-control" id="fecha_ini" name="fecha_ini" data-date-format="DD/MM/YYYY"  value="" /-->
+                                    <input class="form-control" id="fecha_ini" name="fecha_ini" type="date" />
                                 </div>
                                 <label class="control-label col-lg-2" for="fecha_fin">Fecha Fin</label>
                                 <div class="col-lg-2">
-                                    <input class="form-control" id="fecha_fin" name="fecha_fin" data-date-format="dd/mm/yyyy"  value="" />
+                                    <!--input class="form-control" id="fecha_fin" name="fecha_fin" data-date-format="dd/mm/yyyy"  value="" /-->
+                                    <input class="form-control" id="fecha_fin" name="fecha_fin" type="date" />
                                 </div>
                                 <label class="control-label col-lg-2" for="fecha_fin">Relacionadas</label>
                                 <div class="col-lg-4">
@@ -111,7 +113,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-sm-10 text-center">
-                                    <button class="btn btn-sm btn-success" id="btn_capturar">MOSTRAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>
+                                    <button class="btn btn-block btn-success" id="btn_capturar">MOSTRAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>
                                 </div>
                                 <div>
                                     <label class="control-label col-lg-2" for="exportar"><a href="txtfact_gnr.jsp?f1=<%=fecha_ini%>&f2=<%=fecha_fin%>&ra=<%=radio%>">Exportar<label class="glyphicon glyphicon-export"></label></a></label>
@@ -119,6 +121,47 @@
                             </div>
                         </div>                        
                     </form>
+                <form class="form-horizontal" role="form" name="formulario_receta" id="formulario_receta" method="get" action="Caratula">   
+                <div class="panel-footer">
+                    <h4 class="col-sm-1">Facturas</h4>
+                        <div class="col-sm-3">
+                            <input class="form-control" id="fecha_ini1" name="fecha_ini1" type="hidden" value="<%=fecha_ini%>" />
+                            <input class="form-control" id="fecha_fin1" name="fecha_fin1" type="hidden" value="<%=fecha_fin%>" />
+                    <select class="form-control" name="folios" id="folios">
+                        <option value="">--Seleccione--</option>
+                        <%
+                        try {
+                            ResultSet rsetfact = null;
+
+                            con.conectar();
+                            if (fecha_ini == "" && fecha_fin == ""){
+                                rsetfact = con.consulta("SELECT F_FacGNKLAgr FROM tb_caratula WHERE F_FacGNKLAgr='1' GROUP BY F_FacGNKLAgr");                                   
+                            }else{                                        
+                                rsetfact = con.consulta("SELECT F_FacGNKLAgr FROM tb_caratula WHERE F_Fecsur >= '"+fecha_ini+"' and F_Fecsur <= '"+fecha_fin+"'  GROUP BY F_FacGNKLAgr");                                                                              
+                            }
+
+                            while (rsetfact.next()) {
+                                       
+                            %>
+                            <option value="<%=rsetfact.getString(1)%>"><%=rsetfact.getString(1)%></option>
+                            <%}
+                             con.cierraConexion();
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            %>
+                    </select>
+                        </div>
+                    <div class="col-sm-4">
+                        <button class="btn btn-block btn-warning" id="btn_capturar" name="ban" value="1" >GENERAR 1x1&nbsp;<label class="glyphicon glyphicon-search"></label></button>
+                    </div>
+                    <div class="col-sm-4">
+                    <button class="btn btn-block btn-info" id="btn_capturar"  name="ban" value="2">GENERAR TODOS&nbsp;<label class="glyphicon glyphicon-search"></label></button>
+                        </div>
+                </div>
+                                </form>
+                <br />
+                
                 <div class="panel-footer">
                             <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="datosProv">
                                 <thead>
@@ -136,12 +179,12 @@
                                     
                                     con.conectar();
                                     if (fecha_ini == "" && fecha_fin == ""){
-                                        rset = con.consulta("SELECT F_Fecsur,F_FacGNKLAgr,F_Idsur,F_IdePro,F_Cvesum,F_FacSAVI FROM tb_facturas where F_FacGNKLAgr=1");                                   
+                                        rset = con.consulta("SELECT date_format(F_Fecsur,'%d/%m/%Y') as F_Fecsur,F_FacGNKLAgr,F_Idsur,F_IdePro,F_Cvesum,F_FacSAVI FROM tb_facturas where F_FacGNKLAgr=1");                                   
                                     }else{
                                         if (radio.equals("si")){
-                                        rset = con.consulta("SELECT F_Fecsur,F_FacGNKLAgr,F_Idsur,F_IdePro,F_Cvesum,F_FacSAVI FROM tb_facturas WHERE F_Fecsur >= '"+fecha_ini+"' and F_Fecsur <= '"+fecha_fin+"' and F_FacSAVI !=''");                                       
+                                        rset = con.consulta("SELECT date_format(F_Fecsur,'%d/%m/%Y') as F_Fecsur,F_FacGNKLAgr,F_Idsur,F_IdePro,F_Cvesum,F_FacSAVI FROM tb_facturas WHERE F_Fecsur >= '"+fecha_ini+"' and F_Fecsur <= '"+fecha_fin+"' and F_FacSAVI !=''");                                       
                                         }else{
-                                        rset = con.consulta("SELECT F_Fecsur,F_FacGNKLAgr,F_Idsur,F_IdePro,F_Cvesum,F_FacSAVI FROM tb_facturas WHERE F_Fecsur >= '"+fecha_ini+"' and F_Fecsur <= '"+fecha_fin+"' and F_FacSAVI =''");                                       
+                                        rset = con.consulta("SELECT date_format(F_Fecsur,'%d/%m/%Y') as F_Fecsur,F_FacGNKLAgr,F_Idsur,F_IdePro,F_Cvesum,F_FacSAVI FROM tb_facturas WHERE F_Fecsur >= '"+fecha_ini+"' and F_Fecsur <= '"+fecha_fin+"' and F_FacSAVI =''");                                       
                                         }
                                         
                                     }
@@ -211,12 +254,7 @@
             </div>
         </div>
         <br><br><br>
-        <div class="navbar navbar-fixed-bottom navbar-inverse">
-            <div class="text-center text-muted">
-                GNK Logística || Desarrollo de Aplicaciones 2009 - 2015 <span class="glyphicon glyphicon-registration-mark"></span><br />
-                Todos los Derechos Reservados
-            </div>
-        </div>
+        <%@include file="../jspf/piePagina.jspf" %>
     </body>
 </html>
 
@@ -231,13 +269,22 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-    $("#fecha_ini").datepicker();
-    $("#fecha_fin").datepicker();
+    //$("#fecha_ini").datepicker();
+    //$("#fecha_fin").datepicker();
     
     </script>
     <script>
     $(document).ready(function() {
         $('#datosProv').dataTable();
     });
+     function valida_alta() {
+                var Nombre = document.getElementById('file1').value;
+
+                if (Nombre === "") {
+                    alert("Tiene campos vacíos, verifique.");
+                    return false;
+                }         
+                document.getElementById('Loader').style.display = 'block';
+            }
 </script>
 
