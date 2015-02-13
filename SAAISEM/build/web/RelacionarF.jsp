@@ -156,7 +156,7 @@
                         <button class="btn btn-block btn-warning" id="btn_capturar" name="ban" value="1" >GENERAR 1x1&nbsp;<label class="glyphicon glyphicon-search"></label></button>
                     </div>
                     <div class="col-sm-4">
-                    <button class="btn btn-block btn-info" id="btn_capturar"  name="ban" value="2">GENERAR TODOS&nbsp;<label class="glyphicon glyphicon-search"></label></button>
+                    <button class="btn btn-block btn-info" id="btn_capturar"  name="ban" value="1">GENERAR TODOS&nbsp;<label class="glyphicon glyphicon-search"></label></button>
                         </div>
                 </div>
                                 </form>

@@ -97,10 +97,6 @@
 				</textElement>
 				<text><![CDATA[REGION:]]></text>
 			</staticText>
-			<image>
-				<reportElement uuid="0d8e5d23-e1c1-494d-89a6-0341d59cc0b1" x="1" y="0" width="100" height="74"/>
-				<imageExpression><![CDATA["C:\\Users\\Sistemas\\Documents\\GitHub\\Secuencial\\gnklmex6\\web\\imagenes\\savi1.jpg"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement uuid="8a7b169d-4f72-471b-92a4-37154e4316ac" x="5" y="92" width="57" height="14"/>
 				<textElement>
@@ -192,6 +188,10 @@
 				</textElement>
 				<text><![CDATA[SUMINISTRO:]]></text>
 			</staticText>
+			<image>
+				<reportElement uuid="37dae5e2-9035-4e59-85e4-7dbf023572ee" x="3" y="0" width="127" height="64"/>
+				<imageExpression><![CDATA["C:\\Users\\Americo\\Documents\\GitHub\\SAAISEM\\SAAISEM\\web\\imagenes\\savi1.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<detail>

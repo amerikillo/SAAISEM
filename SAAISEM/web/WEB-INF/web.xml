@@ -168,17 +168,47 @@
         <servlet-name>CargaInsumoServlet</servlet-name>
         <servlet-class>CatalogoISEM.CargaInsumoServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>ExporTxt</servlet-name>
+        <servlet-class>ExportarTxt.ExporTxt</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExporTxtIs</servlet-name>
+        <servlet-class>ExportarTxt.ExporTxtIs</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportMedico</servlet-name>
+        <servlet-class>ExportarTxt.ExportMedico</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteImprimeAuto</servlet-name>
+        <servlet-class>servlets.ReporteImprimeAuto</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Caratula</servlet-name>
+        <servlet-class>servlets.Caratula</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>CargaUnidadesServlet</servlet-name>
         <servlet-class>CatalogoISEM.CargaUnidadesServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>CargaFacturas</servlet-name>
+        <servlet-class>LeeExcel.CargaFacturas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerFactXls</servlet-name>
+        <servlet-class>LeeExcel.LeerFactXls</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CargaUnidadesServlet</servlet-name>
         <url-pattern>/facturacion/CargaUnidadesServlet</url-pattern>
     </servlet-mapping>
     
+    <servlet-mapping>
+        <servlet-name>CargaFacturas</servlet-name>
+        <url-pattern>/CargaFacturas</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SubeOrdenSapServlet</servlet-name>
         <url-pattern>/SubeOrdenSapServlet</url-pattern>
@@ -346,6 +376,30 @@
     <servlet-mapping>
         <servlet-name>CargaInsumoServlet</servlet-name>
         <url-pattern>/facturacion/CargaInsumoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerFactXls</servlet-name>
+        <url-pattern>/LeerFactXls</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExporTxt</servlet-name>
+        <url-pattern>/ExporTxt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExporTxtIs</servlet-name>
+        <url-pattern>/ExporTxtIs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportMedico</servlet-name>
+        <url-pattern>/ExportMedico</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteImprimeAuto</servlet-name>
+        <url-pattern>/ReporteImprimeAuto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Caratula</servlet-name>
+        <url-pattern>/Caratula</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

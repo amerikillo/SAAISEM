@@ -17,14 +17,16 @@
 <%
 
 String factura="",Reportes="",Punto="",fecha1="",fecha2="",FoliosFact="",Mes="",Dia="",AA="",Fechas="",FecEntrega="";
-String C1="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\na.png";
-String C2="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\na.png";
-String C3="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\na.png";
-String C4="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\na.png";
-String C5="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\na.png";
-String C6="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\na.png";
-String C7="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\na.png";
-String C8="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\na.png";
+String path = getServletContext().getRealPath("/");
+out.println(path+"imagenes\\na.png");
+String C1=path+"imagenes\\na.png";
+String C2=path+"imagenes\\na.png";
+String C3=path+"imagenes\\na.png";
+String C4=path+"imagenes\\na.png";
+String C5=path+"imagenes\\na.png";
+String C6=path+"imagenes\\na.png";
+String C7=path+"imagenes\\na.png";
+String C8=path+"imagenes\\na.png";
 int ban=0,puntos=0,Fecha=0;
 Statement smtfolio=null;
 Statement smtfacturas=null;
@@ -38,7 +40,7 @@ try{
     fecha2 = request.getParameter("Fecha2");
 }catch(Exception e){}
 System.out.println(factura+"//"+ban);
-String F_Imagen = "C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png"; 
+String F_Imagen = path+"imagenes\\check2.png"; 
 %>
 <html>
     <%
@@ -96,21 +98,21 @@ if(ban == 1){
             System.out.println("punto:"+Punto);
             
             if(Punto.equals("1")){
-                C1 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C1 =path+"imagenes\\check2.png";
             }else if(Punto.equals("2")){
-                C2 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C2 =path+"imagenes\\check2.png";
             }else if(Punto.equals("3")){
-                C3 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C3 =path+"imagenes\\check2.png";
             }else if(Punto.equals("4")){
-                C4 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C4 =path+"imagenes\\check2.png";
             }else if(Punto.equals("5")){
-                C5 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C5 =path+"imagenes\\check2.png";
             }else if(Punto.equals("6")){
-                C6 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C6 =path+"imagenes\\check2.png";
             }else if(Punto.equals("7")){
-                C7 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C7 =path+"imagenes\\check2.png";
             }else{
-                C8 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C8 =path+"imagenes\\check2.png";
             }            
                       
         }
@@ -192,21 +194,21 @@ if(ban == 1){
             System.out.println("punto:"+Punto);
             
             if(Punto.equals("1")){
-                C1 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C1 =path+"imagenes\\check2.png";
             }else if(Punto.equals("2")){
-                C2 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C2 =path+"imagenes\\check2.png";
             }else if(Punto.equals("3")){
-                C3 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C3 =path+"imagenes\\check2.png";
             }else if(Punto.equals("4")){
-                C4 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C4 =path+"imagenes\\check2.png";
             }else if(Punto.equals("5")){
-                C5 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C5 =path+"imagenes\\check2.png";
             }else if(Punto.equals("6")){
-                C6 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C6 =path+"imagenes\\check2.png";
             }else if(Punto.equals("7")){
-                C7 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C7 =path+"imagenes\\check2.png";
             }else{
-                C8 ="C:\\Users\\Sistemas\\Documents\\GitHub\\SAAISEM2015\\SAAISEM\\web\\imagenes\\check2.png";
+                C8 =path+"imagenes\\check2.png";
             }            
                       
         } 

@@ -43,3 +43,9 @@ Temporary Items
 .apdisk
 
 *.class
+
+/SAAISEM/dist
+/SAAISEM/build
+
+SAAISEM/dist
+SAAISEM/dist
