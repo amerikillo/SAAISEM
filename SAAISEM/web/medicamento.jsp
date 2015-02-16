@@ -169,7 +169,7 @@
                                 %>
                             </tbody>
                         </table>
-                        <!--button class="btn btn-success btn-block" name="accion" value="Actualizar">Actualizar</button-->
+                        <button class="btn btn-success btn-block" name="accion" value="Actualizar">Actualizar</button>
                     </form>
                 </div>
             </div>

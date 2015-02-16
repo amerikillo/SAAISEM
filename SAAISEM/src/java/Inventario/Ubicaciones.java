@@ -126,12 +126,12 @@ public class Ubicaciones extends HttpServlet {
             if (F_IdLote != 0) {//Ya existe insumo en el desitno
                 con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLotDestino + CantMov) + "' where F_IdLote='" + F_IdLote + "'");
                 if (CBUbica.equals("MODULA")) {
-                    //conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                    conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
                 }
             } else {//No existe insumo en el destino
                 con.insertar("insert into tb_lote values(0,'" + F_ClaPro + "','" + F_ClaLot + "','" + F_FecCad + "','" + CantMov + "','" + F_FolLot + "','" + F_ClaOrg + "','" + UbicaMov + "','" + F_FecFab + "','" + F_Cb + "','" + F_ClaMar + "', '" + F_Origen + "')");
                 if (CBUbica.equals("MODULA")) {
-                    //conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                    conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
                 }
             }
             con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLot - CantMov) + "' where F_IdLote = '" + idLote + "' ");

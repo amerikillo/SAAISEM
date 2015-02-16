@@ -174,7 +174,7 @@
         <hr/>
         <h3>Total de Piezas: <%=formatter.format(totalPiezas)%></h3>
         <hr />
-        <!--h3>Modula</h3>
+        <h3>Modula</h3>
         <table border="1" class="table table-bordered table-condensed table-striped" id="existModula">
             <thead>
                 <tr>
@@ -220,8 +220,7 @@
                         */
                 %>
             </tbody>
-        </table-->
-    </body>
+        </table>
     <!-- 
     ================================================== -->
     <!-- Se coloca al final del documento para que cargue mas rapido -->
@@ -237,4 +236,5 @@
             $('#existModula').dataTable();
         });
     </script>
+    </body>
 </html>
