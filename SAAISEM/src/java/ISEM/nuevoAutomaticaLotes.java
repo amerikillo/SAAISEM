@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -68,6 +70,39 @@ public class nuevoAutomaticaLotes extends HttpServlet {
             if (request.getParameter("accion").equals("GuardarAbiertaVerifica")) {
                 try {
                     con.conectar();
+
+                    ResultSet rsetComTemp = con.consulta("select F_IdCom, F_ClaPro, F_Lote, F_FecCad, F_FecFab, F_Marca from tb_compratemp where F_OrdCom='" + request.getParameter("vOrden") + "' and F_FolRemi = '" + request.getParameter("vRemi") + "' ");
+                    while (rsetComTemp.next()) {
+
+                        Calendar c1 = GregorianCalendar.getInstance();
+                        String F_FecCadAct = "", F_MarcaAct = "";
+                        F_FecCadAct = request.getParameter("F_FecCad" + rsetComTemp.getString("F_IdCom"));
+                        F_MarcaAct = request.getParameter("F_Marca" + rsetComTemp.getString("F_IdCom"));
+                        String Tipo = "";
+                        //String cadu = df2.format(df3.parse(F_FecCadAct));
+                        c1.setTime(df.parse(F_FecCadAct));
+
+                        ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + rsetComTemp.getString("F_ClaPro") + "'");
+                        while (rset_medica.next()) {
+                            Tipo = rset_medica.getString("F_TipMed");
+                            if (Tipo.equals("2504")) {
+                                c1.add(Calendar.YEAR, -3);
+                            } else {
+                                c1.add(Calendar.YEAR, -5);
+                            }
+                        }
+
+                        String fecFab = (df.format(c1.getTime()));
+
+                        ResultSet rset2 = con.consulta("select F_ClaMar from tb_marca where F_DesMar = '" + F_MarcaAct + "'");
+                        while (rset2.next()) {
+                            F_MarcaAct = rset2.getString("F_ClaMar");
+                        }
+
+                        con.insertar("update tb_compratemp set F_Cb = '" + request.getParameter("F_Cb" + rsetComTemp.getString("F_IdCom")) + "', F_FecCad = '" + F_FecCadAct + "', F_FecFab='" + fecFab + "', F_Marca = '" + F_MarcaAct + "' where F_IdCom='" + rsetComTemp.getString("F_IdCom") + "'");
+
+                        con.insertar("insert into tb_cb values (0,'" + request.getParameter("F_Cb" + rsetComTemp.getString("F_IdCom")) + "','" + rsetComTemp.getString("F_ClaPro") + "','" + rsetComTemp.getString("F_Lote") + "','" + rsetComTemp.getString("F_FecCad") + "','" + rsetComTemp.getString("F_FecFab") + "','" + rsetComTemp.getString("F_Marca") + "')");
+                    }
                     //ConectionDB_SQLServer conModula = new ConectionDB_SQLServer();
                     //conModula.conectar();
                     //consql.conectar();
@@ -180,7 +215,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                                     //conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_Lote + "','1','" + (cantidad) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df3.format(new Date()) + "')");
                                 }
                             } else { //Lote sin ubicacion
-                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "', '" + F_Ori + "')");
+                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "', '" + F_Ori + "','0','0')");
                                 if (Ubicacion.equals("MODULA")) {
                                     //conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_Lote + "','1','" + (F_Piezas) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df3.format(new Date()) + "')");
                                 }
@@ -191,7 +226,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                             while (rset_Ind.next()) {
                                 FolioLote = rset_Ind.getString("F_IndLote");
                                 FolLot = Integer.parseInt(rset_Ind.getString("F_IndLote"));
-                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "','" + F_Ori + "')");
+                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "','" + F_Ori + "','0','0')");
                                 if (Ubicacion.equals("MODULA")) {
                                     //conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_Lote + "','1','" + (F_Piezas) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df3.format(new Date()) + "')");
                                 }
@@ -224,7 +259,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                     /*
                      *Para Abastecer modula
                      */
-                   //modula.AbastoModula(F_OrdCom, F_FolRemi);
+                    //modula.AbastoModula(F_OrdCom, F_FolRemi);
                     /*
                     
                      */
@@ -249,11 +284,44 @@ public class nuevoAutomaticaLotes extends HttpServlet {
             }
             if (request.getParameter("accion").equals("GuardarVerifica")) {
                 try {
-
                     //ConectionDB_SQLServer conModula = new ConectionDB_SQLServer();
                     con.conectar();
+
+                    ResultSet rsetComTemp = con.consulta("select F_IdCom, F_ClaPro, F_Lote, F_FecCad, F_FecFab, F_Marca from tb_compratemp where F_OrdCom='" + request.getParameter("vOrden") + "' and F_FolRemi = '" + request.getParameter("vRemi") + "' ");
+                    while (rsetComTemp.next()) {
+
+                        Calendar c1 = GregorianCalendar.getInstance();
+                        String F_FecCadAct = "", F_MarcaAct = "";
+                        F_FecCadAct = request.getParameter("F_FecCad" + rsetComTemp.getString("F_IdCom"));
+                        F_MarcaAct = request.getParameter("F_Marca" + rsetComTemp.getString("F_IdCom"));
+                        String Tipo = "";
+                        //String cadu = df2.format(df3.parse(F_FecCadAct));
+                        c1.setTime(df.parse(F_FecCadAct));
+
+                        ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + rsetComTemp.getString("F_ClaPro") + "'");
+                        while (rset_medica.next()) {
+                            Tipo = rset_medica.getString("F_TipMed");
+                            if (Tipo.equals("2504")) {
+                                c1.add(Calendar.YEAR, -3);
+                            } else {
+                                c1.add(Calendar.YEAR, -5);
+                            }
+                        }
+
+                        String fecFab = (df.format(c1.getTime()));
+
+                        ResultSet rset2 = con.consulta("select F_ClaMar from tb_marca where F_DesMar = '" + F_MarcaAct + "'");
+                        while (rset2.next()) {
+                            F_MarcaAct = rset2.getString("F_ClaMar");
+                        }
+
+                        con.insertar("update tb_compratemp set F_Cb = '" + request.getParameter("F_Cb" + rsetComTemp.getString("F_IdCom")) + "', F_FecCad = '" + F_FecCadAct + "', F_FecFab='" + fecFab + "', F_Marca = '" + F_MarcaAct + "' where F_IdCom='" + rsetComTemp.getString("F_IdCom") + "'");
+
+                        con.insertar("insert into tb_cb values (0,'" + request.getParameter("F_Cb" + rsetComTemp.getString("F_IdCom")) + "','" + rsetComTemp.getString("F_ClaPro") + "','" + rsetComTemp.getString("F_Lote") + "','" + F_FecCadAct + "','" + fecFab + "','" + F_MarcaAct + "')");
+                    }
                     //conModula.conectar();
                     //consql.conectar();
+
                     String F_ClaPro = "", F_Lote = "", F_FecCad = "", F_FecFab = "", F_Marca = "", F_Provee = "", F_Cb = "", F_Tarimas = "", F_Costo = "", F_ImpTo = "", F_ComTot = "", F_User = "", F_FolRemi = "", F_OrdCom = "";
                     String FolioLote = "", ExiLote = "", F_Caja = "", F_Resto = "", F_Piezas = "", F_Obser = "", F_Ori = "";
 
@@ -354,22 +422,22 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                                     //conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_Lote + "','1','" + (cantidad) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df3.format(new Date()) + "')");
                                 }
                             } else { //Lote sin ubicacion
-                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "','" + F_Ori + "')");
+                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "','" + F_Ori + "','0','0')");
                                 if (Ubicacion.equals("MODULA")) {
                                     //conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_Lote + "','1','" + (F_Piezas) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df3.format(new Date()) + "')");
                                 }
-                                con.insertar("insert into tb_lote_repisem values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
+                                //con.insertar("insert into tb_lote_repisem values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "','','')");
                             }
                         } else { //Lote Inexistente
                             ResultSet rset_Ind = con.consulta("SELECT F_IndLote FROM tb_indice");
                             while (rset_Ind.next()) {
                                 FolioLote = rset_Ind.getString("F_IndLote");
                                 FolLot = Integer.parseInt(rset_Ind.getString("F_IndLote"));
-                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "', '" + F_Ori + "' )");
+                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "', '" + F_Ori + "','0','0' )");
                                 if (Ubicacion.equals("MODULA")) {
                                     //conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_Lote + "','1','" + (F_Piezas) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df3.format(new Date()) + "')");
                                 }
-                                con.insertar("insert into tb_lote_repisem values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
+                                //con.insertar("insert into tb_lote_repisem values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','" + Ubicacion + "','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "','','')");
                                 FolioLot = FolLot + 1;
                                 con.actualizar("update tb_indice set F_IndLote='" + FolioLot + "'");
                             }

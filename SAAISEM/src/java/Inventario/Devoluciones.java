@@ -88,7 +88,7 @@ public class Devoluciones extends HttpServlet {
                     String F_FolLot = "";
 
                     con.insertar("update tb_lote set F_ExiLot = '0' where F_IdLote = '" + request.getParameter("IdLote") + "' ");
-                    ResultSet rset2 = con.consulta("select F_FolLot, F_IdLote, F_Ubica from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_FecCad = '" + request.getParameter("F_FecCad") + "' and F_Ubica=('NUEVA' or 'REJA' or 'REDFRIA')");
+                    ResultSet rset2 = con.consulta("select F_FolLot, F_IdLote, F_Ubica from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_FecCad = '" + request.getParameter("F_FecCad") + "' AND F_Ubica in ('NUEVA', 'REJA', 'REDFRIA')");
                     String F_Ubica = "";
                     while (rset2.next()) {
                         F_FolLot = rset2.getString("F_FolLot");

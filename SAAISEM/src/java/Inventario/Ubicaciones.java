@@ -112,37 +112,44 @@ public class Ubicaciones extends HttpServlet {
             F_ExiLot = rset.getInt("F_ExiLot");
             F_Origen = rset.getString("F_Origen");
         }
-        if ((F_ExiLot - CantMov) >= 0) {
-            rset = con.consulta("select F_ClaUbi from tb_ubica where F_Cb= '" + CBUbica + "' ");
-            while (rset.next()) {
-                UbicaMov = rset.getString("F_ClaUbi");
-            }
-            rset = con.consulta("select F_IdLote, F_ExiLot from tb_lote where F_ClaPro= '" + F_ClaPro + "' and F_ClaLot = '" + F_ClaLot + "' and F_FecCad = '" + F_FecCad + "' and F_Ubica = '" + UbicaMov + "' and F_Origen = '" + F_Origen + "' ");
-            while (rset.next()) {
-                F_ExiLotDestino = rset.getInt("F_ExiLot");
-                F_IdLote = rset.getInt("F_IdLote");
-            }
 
-            if (F_IdLote != 0) {//Ya existe insumo en el desitno
-                con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLotDestino + CantMov) + "' where F_IdLote='" + F_IdLote + "'");
-                if (CBUbica.equals("MODULA")) {
-                    conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+        if (F_ExiLot - CantMov >= 0) {
+            if ((F_ExiLot - CantMov) >= 0) {
+                rset = con.consulta("select F_ClaUbi from tb_ubica where F_Cb= '" + CBUbica + "' ");
+                while (rset.next()) {
+                    UbicaMov = rset.getString("F_ClaUbi");
                 }
-            } else {//No existe insumo en el destino
-                con.insertar("insert into tb_lote values(0,'" + F_ClaPro + "','" + F_ClaLot + "','" + F_FecCad + "','" + CantMov + "','" + F_FolLot + "','" + F_ClaOrg + "','" + UbicaMov + "','" + F_FecFab + "','" + F_Cb + "','" + F_ClaMar + "', '" + F_Origen + "')");
-                if (CBUbica.equals("MODULA")) {
-                    conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                rset = con.consulta("select F_IdLote, F_ExiLot from tb_lote where F_ClaPro= '" + F_ClaPro + "' and F_ClaLot = '" + F_ClaLot + "' and F_FecCad = '" + F_FecCad + "' and F_Ubica = '" + UbicaMov + "' and F_Origen = '" + F_Origen + "' ");
+                while (rset.next()) {
+                    F_ExiLotDestino = rset.getInt("F_ExiLot");
+                    F_IdLote = rset.getInt("F_IdLote");
                 }
+
+                if (F_IdLote != 0) {//Ya existe insumo en el desitno
+                    con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLotDestino + CantMov) + "' where F_IdLote='" + F_IdLote + "'");
+                    if (CBUbica.equals("MODULA")) {
+                        conModula.conectar();
+                        conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                        conModula.cierraConexion();
+                    }
+                } else {//No existe insumo en el destino
+                    con.insertar("insert into tb_lote values(0,'" + F_ClaPro + "','" + F_ClaLot + "','" + F_FecCad + "','" + CantMov + "','" + F_FolLot + "','" + F_ClaOrg + "','" + UbicaMov + "','" + F_FecFab + "','" + F_Cb + "','" + F_ClaMar + "', '" + F_Origen + "')");
+                    if (CBUbica.equals("MODULA")) {
+                        conModula.conectar();
+                        conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                        conModula.cierraConexion();
+                    }
+                }
+                con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLot - CantMov) + "' where F_IdLote = '" + idLote + "' ");
+
+                con.insertar("insert into tb_movinv values (0,CURDATE(),'0','1000','" + F_ClaPro + "','" + CantMov + "','" + objDev.devuelveCosto(F_ClaPro) + "','" + objDev.devuelveImporte(F_ClaPro, CantMov) + "', '-1','" + F_FolLot + "','" + F_Ubica + "','" + F_ClaOrg + "',CURTIME(),'" + Nombre + "')");
+                con.insertar("insert into tb_movinv values (0,CURDATE(),'0','1000','" + F_ClaPro + "','" + CantMov + "','" + objDev.devuelveCosto(F_ClaPro) + "','" + objDev.devuelveImporte(F_ClaPro, CantMov) + "', '1','" + F_FolLot + "','" + UbicaMov + "','" + F_ClaOrg + "',CURTIME(),'" + Nombre + "')");
+
             }
-            con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLot - CantMov) + "' where F_IdLote = '" + idLote + "' ");
-
-            con.insertar("insert into tb_movinv values (0,CURDATE(),'0','1000','" + F_ClaPro + "','" + CantMov + "','" + objDev.devuelveCosto(F_ClaPro) + "','" + objDev.devuelveImporte(F_ClaPro, CantMov) + "', '-1','" + F_FolLot + "','" + F_Ubica + "','" + F_ClaOrg + "',CURTIME(),'" + Nombre + "')");
-            con.insertar("insert into tb_movinv values (0,CURDATE(),'0','1000','" + F_ClaPro + "','" + CantMov + "','" + objDev.devuelveCosto(F_ClaPro) + "','" + objDev.devuelveImporte(F_ClaPro, CantMov) + "', '1','" + F_FolLot + "','" + UbicaMov + "','" + F_ClaOrg + "',CURTIME(),'" + Nombre + "')");
-
-        }
-        rset = con.consulta("select F_IdLote from tb_lote where F_FolLot = '" + F_FolLot + "' and F_Ubica = '" + UbicaMov + "' ");
-        while (rset.next()) {
-            idLoteNuevo = rset.getInt("F_IdLote");
+            rset = con.consulta("select F_IdLote from tb_lote where F_FolLot = '" + F_FolLot + "' and F_Ubica = '" + UbicaMov + "' ");
+            while (rset.next()) {
+                idLoteNuevo = rset.getInt("F_IdLote");
+            }
         }
         //conModula.cierraConexion();
         con.cierraConexion();

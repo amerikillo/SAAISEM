@@ -97,7 +97,7 @@ public class FacturacionManual extends HttpServlet {
                          */
                         String idLote = "";
                         int CantLote = 0;
-                        ResultSet rsetLote = con.consulta("select F_IdLote, SUM(F_ExiLot) from tb_lote where F_FolLot ='" + FolLote + "' and F_Ubica = 'NUEVA' group by F_IdLote");
+                        ResultSet rsetLote = con.consulta("select F_IdLote, SUM(F_ExiLot) from tb_lote where F_FolLot ='" + FolLote + "' AND F_Ubica in ('NUEVA', 'REJA', 'REDFRIA') group by F_IdLote");
                         while (rsetLote.next()) {
                             idLote = rsetLote.getString("F_IdLote");
                             CantLote = rsetLote.getInt(2);
