@@ -25,14 +25,14 @@ import conn.*;
  * @author CEDIS TOLUCA3
  */
 public class SubeOrdenSapServlet extends HttpServlet {
-    
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ConectionDB con = new ConectionDB();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String Unidad = "";
         LeeExcelSAP lee = new LeeExcelSAP();
-        
+
         boolean isMultiPart = ServletFileUpload.isMultipartContent(request);
         if (isMultiPart) {
             ServletFileUpload upload = new ServletFileUpload();
@@ -52,10 +52,14 @@ public class SubeOrdenSapServlet extends HttpServlet {
                         String path = getServletContext().getRealPath("/");
                         if (SubeOrdenSAP.processFile(path, item)) {
                             //response.getWriter().println("file uploaded successfully");
-                            if (lee.obtieneArchivo(path, item.getName(), (String) sesion.getAttribute("nombre"))) {
-                                out.println("<script>alert('Se cargó el Folio Correctamente')</script>");
-                                out.println("<script>window.location='SAP/cargarOrdenSAP.jsp'</script>");
+                            String mensaje = "";
+                            try {
+                                mensaje = lee.obtieneArchivo(path, item.getName(), (String) sesion.getAttribute("nombre"));
+                            } catch (Exception e) {
+                                mensaje = e.getMessage();
                             }
+                            out.println("<script>alert('" + mensaje + "')</script>");
+                            out.println("<script>window.location='SAP/cargarOrdenSAP.jsp'</script>");
                             //response.sendRedirect("cargaFotosCensos.jsp");
                         } else {
                             //response.getWriter().println("file uploading falied");

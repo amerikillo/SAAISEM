@@ -80,13 +80,14 @@
                 }
             %>
         </h4>
-        <form action="factura.jsp" method="post">
+        <form action="<%=request.getParameter("pagina")%>" method="post">
             <input type="text" class="hidden" id="F_FecEnt" name="F_FecEnt" value="<%=request.getParameter("F_FecEnt")%>" />
             <button class="btn btn-default" type="submit">Regresar</button>
         </form>
         <form action="RequerimientosUnidades" method="post" >
             <input type="text" class="hidden" id="F_FecEnt" name="F_FecEnt" value="<%=request.getParameter("F_FecEnt")%>" />
             <input name="F_ClaUni" class="hidden" value="<%=Clave%>" />
+            <input name="pagina" class="hidden" value="<%=request.getParameter("pagina")%>" />
             <div class="row">
                 <div class="col-sm-2 col-sm-offset-10">
                     <button class="btn btn-warning btn-block" name="accion" value="actualizaRequerimiento">Actualizar</button>
@@ -109,7 +110,7 @@
                 <tr class="odd gradeX">
                     <td><%=rset.getString(1)%></td>
                     <td><%=rset.getString(2)%></td>
-                    <td ><small><input name="<%=rset.getString(1)%>" type="number" class="text-right form-control" value="<%=rset.getInt(4)%>" /></small></td>
+                    <td ><small><input name="<%=rset.getString(1).trim()%>" type="number" class="text-right form-control" value="<%=rset.getInt(4)%>" /></small></td>
                 </tr>
                 <%
                         }

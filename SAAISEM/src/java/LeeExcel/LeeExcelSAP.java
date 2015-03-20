@@ -23,11 +23,11 @@ public class LeeExcelSAP {
     private Vector vectorDataExcelXLSX = new Vector();
     ConectionDB con = new ConectionDB();
 
-    public boolean obtieneArchivo(String path, String file, String usua) {
+    public String obtieneArchivo(String path, String file, String usua) {
         String excelXLSXFileName = path + "/exceles/" + file;
         vectorDataExcelXLSX = readDataExcelXLSX(excelXLSXFileName);
-        displayDataExcelXLSX(vectorDataExcelXLSX, usua);
-        return true;
+        String mensaje = displayDataExcelXLSX(vectorDataExcelXLSX, usua);
+        return mensaje;
     }
 
     public Vector readDataExcelXLSX(String fileName) {
@@ -65,7 +65,8 @@ public class LeeExcelSAP {
         return vectorData;
     }
 
-    public void displayDataExcelXLSX(Vector vectorData, String usua) {
+    public String displayDataExcelXLSX(Vector vectorData, String usua) {
+        String mensaje = "Se cargó correctamente";
         // Looping every row data in vector
 
         for (int i = 1; i < vectorData.size(); i++) {
@@ -87,20 +88,20 @@ public class LeeExcelSAP {
                 }
 
                 String F_OrdCom = "";
-                F_OrdCom = (vectorCellEachRowData.get(5).toString() + "").trim();
+                F_OrdCom = (vectorCellEachRowData.get(7).toString() + "").trim();
 
                 String F_ClaLot = "";
-                F_ClaLot = (vectorCellEachRowData.get(10).toString() + "").trim();
+                F_ClaLot = (vectorCellEachRowData.get(2).toString() + "").trim();
 
                 String F_Remi = "";
-                F_Remi = (vectorCellEachRowData.get(15).toString() + "").trim();
+                F_Remi = (vectorCellEachRowData.get(6).toString() + "").trim();
 
                 String F_Cant = "";
-                F_Cant = (vectorCellEachRowData.get(16).toString() + "").trim();
+                F_Cant = (vectorCellEachRowData.get(3).toString() + "").trim();
 
                 String F_Proveedor = "";
                 try {
-                    F_Proveedor = ((int) Double.parseDouble(vectorCellEachRowData.get(17).toString()) + "").trim();
+                    F_Proveedor = ((int) Double.parseDouble(vectorCellEachRowData.get(15).toString()) + "").trim();
                 } catch (Exception e) {
                     F_Proveedor = "-";
                 }
@@ -257,14 +258,17 @@ public class LeeExcelSAP {
                     try {
                         con.insertar(qry);
                     } catch (Exception e) {
+                        mensaje = e.getMessage();
                         System.out.println(e.getMessage());
                     }
                     con.cierraConexion();
                 } catch (Exception e) {
+                        mensaje = e.getMessage();
                     System.out.println(e.getMessage());
                 }
             }
         }
+        return mensaje;
     }
 
     public String agrega(String clave) {

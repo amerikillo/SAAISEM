@@ -149,6 +149,10 @@
         <servlet-class>Operaciones.Rutas</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SubeRutasServlet</servlet-name>
+        <servlet-class>in.co.sneh.controller.SubeRutasServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SubeOrdenSapServlet</servlet-name>
         <servlet-class>in.co.sneh.controller.SubeOrdenSapServlet</servlet-class>
     </servlet>
@@ -167,6 +171,106 @@
     <servlet>
         <servlet-name>CargaInsumoServlet</servlet-name>
         <servlet-class>CatalogoISEM.CargaInsumoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargaUnidadesServlet</servlet-name>
+        <servlet-class>CatalogoISEM.CargaUnidadesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadLocalidad</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadLocalidad</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadMunicipio</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadMunicipio</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadJurisdiccion</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadJurisdiccion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadRegion</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadRegion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadDoctores</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadDoctores</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerLocalidad</servlet-name>
+        <servlet-class>CatalogoISEM.LeerLocalidad</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerDoctores</servlet-name>
+        <servlet-class>CatalogoISEM.LeerDoctores</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerRegion</servlet-name>
+        <servlet-class>CatalogoISEM.LeerRegion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerJurisdiccion</servlet-name>
+        <servlet-class>CatalogoISEM.LeerJurisdiccion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerMunicipio</servlet-name>
+        <servlet-class>CatalogoISEM.LeerMunicipio</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargaDoctores</servlet-name>
+        <servlet-class>CatalogoISEM.CargaDoctores</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargaJurisdiccion</servlet-name>
+        <servlet-class>CatalogoISEM.CargaJurisdiccion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargaLocalidad</servlet-name>
+        <servlet-class>CatalogoISEM.CargaLocalidad</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargaMunicipio</servlet-name>
+        <servlet-class>CatalogoISEM.CargaMunicipio</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargaRegion</servlet-name>
+        <servlet-class>CatalogoISEM.CargaRegion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadDoct</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadDoct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadJuris</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadJuris</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadLocal</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadLocal</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadMuni</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadMuni</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadReg</servlet-name>
+        <servlet-class>CatalogoISEM.FileUploadReg</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadFactura</servlet-name>
+        <servlet-class>in.co.sneh.controller.FileUploadFactura</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadFact</servlet-name>
+        <servlet-class>in.co.sneh.model.FileUploadFact</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargaFacturas</servlet-name>
+        <servlet-class>LeeExcel.CargaFacturas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LeerFactXls</servlet-name>
+        <servlet-class>LeeExcel.LeerFactXls</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ExporTxt</servlet-name>
@@ -188,26 +292,13 @@
         <servlet-name>Caratula</servlet-name>
         <servlet-class>servlets.Caratula</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>CargaUnidadesServlet</servlet-name>
-        <servlet-class>CatalogoISEM.CargaUnidadesServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CargaFacturas</servlet-name>
-        <servlet-class>LeeExcel.CargaFacturas</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LeerFactXls</servlet-name>
-        <servlet-class>LeeExcel.LeerFactXls</servlet-class>
-    </servlet>
+    <servlet-mapping>
+        <servlet-name>SubeRutasServlet</servlet-name>
+        <url-pattern>/SubeRutasServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CargaUnidadesServlet</servlet-name>
         <url-pattern>/facturacion/CargaUnidadesServlet</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>CargaFacturas</servlet-name>
-        <url-pattern>/CargaFacturas</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SubeOrdenSapServlet</servlet-name>
@@ -376,6 +467,98 @@
     <servlet-mapping>
         <servlet-name>CargaInsumoServlet</servlet-name>
         <url-pattern>/facturacion/CargaInsumoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadLocalidad</servlet-name>
+        <url-pattern>/FileUploadLocalidad</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadMunicipio</servlet-name>
+        <url-pattern>/FileUploadMunicipio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadJurisdiccion</servlet-name>
+        <url-pattern>/FileUploadJurisdiccion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadRegion</servlet-name>
+        <url-pattern>/FileUploadRegion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadDoctores</servlet-name>
+        <url-pattern>/FileUploadDoctores</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerLocalidad</servlet-name>
+        <url-pattern>/LeerLocalidad</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerDoctores</servlet-name>
+        <url-pattern>/LeerDoctores</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerRegion</servlet-name>
+        <url-pattern>/LeerRegion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerJurisdiccion</servlet-name>
+        <url-pattern>/LeerJurisdiccion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeerMunicipio</servlet-name>
+        <url-pattern>/LeerMunicipio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargaDoctores</servlet-name>
+        <url-pattern>/CargaDoctores</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargaJurisdiccion</servlet-name>
+        <url-pattern>/CargaJurisdiccion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargaLocalidad</servlet-name>
+        <url-pattern>/CargaLocalidad</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargaMunicipio</servlet-name>
+        <url-pattern>/CargaMunicipio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargaRegion</servlet-name>
+        <url-pattern>/CargaRegion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadDoct</servlet-name>
+        <url-pattern>/FileUploadDoct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadJuris</servlet-name>
+        <url-pattern>/FileUploadJuris</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadLocal</servlet-name>
+        <url-pattern>/FileUploadLocal</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadMuni</servlet-name>
+        <url-pattern>/FileUploadMuni</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadReg</servlet-name>
+        <url-pattern>/FileUploadReg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadFactura</servlet-name>
+        <url-pattern>/FileUploadFactura</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadFact</servlet-name>
+        <url-pattern>/FileUploadFact</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargaFacturas</servlet-name>
+        <url-pattern>/CargaFacturas</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LeerFactXls</servlet-name>

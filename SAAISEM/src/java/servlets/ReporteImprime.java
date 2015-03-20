@@ -48,10 +48,10 @@ public class ReporteImprime extends HttpServlet {
             ResultSet TxtSecuenc=null;
             String folio="",F_FacGNKLAgr="";
             String F_Region="",F_CveJur="",F_Cvemun="",F_CveLoc="",F_CveUni="",F_Cvepro="",F_Fecsur="";
-            String F_FecIni="",F_FecFin="",F_FolCon="",F_Title="",F_Surti="",F_Cober="",F_Sumi="",F_Idsur="";
+            String F_FecIni="",F_FecFin="",F_FolCon="",F_Title="",F_Surti="",F_Cober="",F_Sumi="";
             String F_DesSur="",F_Descob="",F_DesSum="",F_Dia2="";
             int F_Dia=0,F_Dia1=0,F_Mes=0,F_Mes1=0,F_Ano=0,F_Ano1=0,NumReg=0;
-            int F_SecIni=0,F_SecFin=0,F_SecIniC=0,F_SecFinC=0,PzsReq=0,PzsSur=0,PzsNOSur=0,vp_Reporte=0,F_IdePro=0,F_Cvesum=0;
+            int F_SecIni=0,F_SecFin=0,F_SecIniC=0,F_SecFinC=0,PzsReq=0,PzsSur=0,PzsNOSur=0,vp_Reporte=0,F_Idsur=0,F_IdePro=0,F_Cvesum=0;
             double F_Cosmed =0.0, CosServ=0.0, CosServSub=0.0,F_CosServ=0.0,F_IVA=0.0,F_Total=0.0,IVA=0.0,Total=0.0,CosNOSur=0.0;
             int PzsReqC=0,PzsSurC=0,PzsNOSurC=0;
             double CosNOSurC=0.0,TotalC=0.0,F_CosServC=0.0,F_CosmedC=0.0,IVAC=0.0,CosMed=0.0;
@@ -154,35 +154,35 @@ public class ReporteImprime extends HttpServlet {
                     for (int Reporte = 1; Reporte<=8; Reporte++){
                        
                             if (Reporte == 1 ){
-                                F_Idsur=" 1";
+                                F_Idsur=1;
                                 F_IdePro=0;
                                 F_Cvesum=1;
                             }else if (Reporte == 2 ){
-                                F_Idsur=" 1";
+                                F_Idsur=1;
                                 F_IdePro=1;
                                 F_Cvesum=1;
                             }else if (Reporte == 3 ){
-                                F_Idsur=" 1";
+                                F_Idsur=1;
                                 F_IdePro=0;
                                 F_Cvesum=2;
                             }else if (Reporte == 4 ){
-                                F_Idsur=" 1";
+                                F_Idsur=1;
                                 F_IdePro=1;
                                 F_Cvesum=2;
                             }else if (Reporte ==  5){
-                                F_Idsur=" 2";
+                                F_Idsur=2;
                                 F_IdePro=0;
                                 F_Cvesum=1;
                             }else if (Reporte ==  6){
-                                F_Idsur=" 2";
+                                F_Idsur=2;
                                 F_IdePro=1;
                                 F_Cvesum=1;
                             }else if (Reporte ==  7){
-                                F_Idsur=" 2";
+                                F_Idsur=2;
                                 F_IdePro=0;
                                 F_Cvesum=2;
                             }else if (Reporte ==  8){
-                                F_Idsur=" 2";
+                                F_Idsur=2;
                                 F_IdePro=1;
                                 F_Cvesum=2;
                             }
@@ -230,7 +230,7 @@ public class ReporteImprime extends HttpServlet {
                             }
                             
                             F_CosServ = TxtSecuenc.getInt("F_Cansur") * CosServSub;
-                            if( (F_Idsur.equals(" 2")) && (F_Cvesum == 2)){
+                            if( (F_Idsur == 2) && (F_Cvesum == 2)){
                                   F_IVA = (F_CosServ + F_Cosmed) * 0.16;  
                             }else{                                
                                 F_IVA = F_CosServ * 0.16; 
@@ -246,7 +246,7 @@ public class ReporteImprime extends HttpServlet {
                             }
                             
                             F_Title = "REPORTE CONCENTRADO No "+F_FolCon;
-                            if (F_Idsur.equals(" 1")){
+                            if (F_Idsur == 1){
                                 F_Surti = "001 ADMINISTRACION";
                                 F_DesSur="ADM.";
                             }else{
@@ -298,7 +298,14 @@ public class ReporteImprime extends HttpServlet {
                     }
                     
                     con.actualizar("INSERT INTO tb_imprepval VALUES (0,'','','','','"+PzsReqC+"','"+PzsSurC+"','"+F_CosmedC+"','"+F_CosServC+"','"+TotalC+"','"+IVAC+"','"+(TotalC+IVAC)+"','"+PzsNOSurC+"','"+CosNOSurC+"','','','','','"+F_FacGNKLAgr+"','"+F_Contrato+"','"+F_FacGNKLAgr+"')");
-
+                    PzsReqC = 0;
+                    PzsSurC = 0; 
+                    F_CosmedC = 0;
+                    F_CosServC = 0;
+                    TotalC=0;
+                    IVAC=0;
+                    PzsNOSurC=0;
+                    CosNOSurC=0;
                     
                     // REPORTE CONCENTRADO
                     
@@ -318,35 +325,35 @@ public class ReporteImprime extends HttpServlet {
                     for (int Reporteq = 1; Reporteq<=8; Reporteq++){
                        
                             if (Reporteq == 1 ){
-                                F_Idsur=" 1";
+                                F_Idsur=1;
                                 F_IdePro=0;
                                 F_Cvesum=1;
                             }else if (Reporteq == 2 ){
-                                F_Idsur=" 1";
+                                F_Idsur=1;
                                 F_IdePro=1;
                                 F_Cvesum=1;
                             }else if (Reporteq == 3 ){
-                                F_Idsur=" 1";
+                                F_Idsur=1;
                                 F_IdePro=0;
                                 F_Cvesum=2;
                             }else if (Reporteq == 4 ){
-                                F_Idsur=" 1";
+                                F_Idsur=1;
                                 F_IdePro=1;
                                 F_Cvesum=2;
                             }else if (Reporteq ==  5){
-                                F_Idsur=" 2";
+                                F_Idsur=2;
                                 F_IdePro=0;
                                 F_Cvesum=1;
                             }else if (Reporteq ==  6){
-                                F_Idsur=" 2";
+                                F_Idsur=2;
                                 F_IdePro=1;
                                 F_Cvesum=1;
                             }else if (Reporteq ==  7){
-                                F_Idsur=" 2";
+                                F_Idsur=2;
                                 F_IdePro=0;
                                 F_Cvesum=2;
                             }else if (Reporteq ==  8){
-                                F_Idsur=" 2";
+                                F_Idsur=2;
                                 F_IdePro=1;
                                 F_Cvesum=2;
                             }
@@ -397,7 +404,7 @@ public class ReporteImprime extends HttpServlet {
                             }
                             
                             F_CosServ = TxtSecuenc.getInt("F_Cansur") * CosServSub;
-                            if( (F_Idsur.equals(" 2")) && (F_Cvesum == 2)){
+                            if( (F_Idsur == 2) && (F_Cvesum == 2)){
                                   F_IVA = (F_CosServ + F_Cosmed) * 0.16;  
                             }else{                                
                                 F_IVA = F_CosServ * 0.16; 
@@ -416,7 +423,7 @@ public class ReporteImprime extends HttpServlet {
                             con.actualizar("INSERT INTO tb_imprepreq VALUES (0,'','','','"+PzsReq+"','"+PzsSur+"','"+PzsNOSur+"','0','"+CosMed+"','"+F_CosServ+"','"+IVA+"','"+Total+"','','','','','"+F_FolCon+"','"+F_Contrato+"','"+F_FacGNKLAgr+"')");
                             
                             F_Title = "REPORTE REQUERIMIENTO No "+F_FolCon;
-                            if (F_Idsur.equals(" 1")){
+                            if (F_Idsur == 1){
                                 F_Surti = "001 ADMINISTRACION";
                                 F_DesSur="ADM.";
                             }else{
@@ -453,6 +460,7 @@ public class ReporteImprime extends HttpServlet {
                             CosMed=0;
                             }                           
                     }
+                    out.println("<script>window.print('ReportesPuntos/ReporteHorizontal.jsp)</script>"); 
                     out.println("<script>window.history.back()</script>");
             }
             con.cierraConexion();

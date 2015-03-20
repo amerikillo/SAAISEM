@@ -3,9 +3,11 @@ package LeeExcel;
 import conn.ConectionDB;
 import java.io.FileInputStream;
 import java.sql.ResultSet;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Vector;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -66,6 +68,8 @@ public class LeeExcel {
 
     public void displayDataExcelXLSX(Vector vectorData) {
         // Looping every row data in vector
+        DateFormat df1 = new SimpleDateFormat("dd-MMM-yyyy");
+        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 
         for (int i = 0; i < vectorData.size(); i++) {
             Vector vectorCellEachRowData = (Vector) vectorData.get(i);
@@ -87,12 +91,16 @@ public class LeeExcel {
                         };
                         qry = qry + "'" + Clave + "', ";
                     } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
                 } else if (j == 1) {
                     System.out.println("algo");
                     try {
                         String ClaPro = ((vectorCellEachRowData.get(j).toString()) + "");
                         DecimalFormat formatter = new DecimalFormat("0000.00");
+                        if (ClaPro.equals("260.02") || ClaPro.equals("801.01") || ClaPro.equals("0260.02") || ClaPro.equals("0801.01")) {
+                            formatter = new DecimalFormat("000.00");
+                        }
                         DecimalFormatSymbols custom = new DecimalFormatSymbols();
                         custom.setDecimalSeparator('.');
                         custom.setGroupingSeparator(',');
@@ -103,13 +111,15 @@ public class LeeExcel {
                         if (punto.length > 1) {
                             System.out.println(ClaPro + "***" + punto[0] + "////" + punto[1]);
                             if (punto[1].equals("01")) {
-                                ClaPro = agrega(punto[0]) + ".01";
+                                ClaPro = (punto[0]) + ".01";
                             } else if (punto[1].equals("02")) {
-                                ClaPro = agrega(punto[0]) + ".02";
+                                ClaPro = (punto[0]) + ".02";
+                            } else if (punto[1].equals("10")) {
+                                ClaPro = (punto[0]) + ".1";
                             } else if (punto[1].equals("00")) {
-                                ClaPro = agrega(punto[0]);
+                                ClaPro = (punto[0]);
                             } else {
-                                ClaPro = agrega(punto[0]);
+                                ClaPro = (punto[0]);
                             }
                             System.out.println(ClaPro);
                         }
@@ -118,15 +128,25 @@ public class LeeExcel {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
-                } else {
+                } else if (j == 2) {
+                    qry = qry + "'0' , ";
+                } else if (j == 3) {
                     try {
                         String Clave = ((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
                         qry = qry + "'" + Clave.trim() + "' , ";
                     } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
                 }
             }
-            qry = qry + "curdate(), 0, '0')"; // agregar campos fuera del excel
+            String F_Fecha = "";
+            try {
+                F_Fecha = (vectorCellEachRowData.get(2).toString());
+                F_Fecha = df2.format(df1.parse(F_Fecha));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            qry = qry + "curdate(), 0, '0','" + F_Fecha + "')"; // agregar campos fuera del excel
             try {
                 con.conectar();
                 try {
@@ -136,6 +156,7 @@ public class LeeExcel {
                 }
                 con.cierraConexion();
             } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }
