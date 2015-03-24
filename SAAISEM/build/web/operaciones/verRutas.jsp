@@ -4,13 +4,22 @@
     Author     : Americo
 --%>
 
+<%@page import="java.text.DecimalFormatSymbols"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="conn.*" %>
 <!DOCTYPE html>
-<%    HttpSession sesion = request.getSession();
+<%    DecimalFormat formatter = new DecimalFormat("000");
+    DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
+    DecimalFormatSymbols custom = new DecimalFormatSymbols();
+    custom.setDecimalSeparator('.');
+    custom.setGroupingSeparator(',');
+    formatter.setDecimalFormatSymbols(custom);
+    formatterDecimal.setDecimalFormatSymbols(custom);
+    HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
@@ -22,6 +31,7 @@
     String F_Anio = "";
     String F_Mes = "";
     String F_Juris = "";
+    String JurisUsu = "";
     try {
         F_Anio = request.getParameter("F_Anio");
     } catch (Exception e) {
@@ -32,12 +42,18 @@
     }
     try {
         F_Juris = request.getParameter("F_Juris");
+        F_Juris = formatter.format(Integer.parseInt(F_Juris));
+
     } catch (Exception e) {
     }
 
     try {
         con.conectar();
+        ResultSet rset = con.consulta("select F_Juris from tb_usuario where F_Usu = '" + usua + "' ");
+        while (rset.next()) {
+            JurisUsu = rset.getString("F_Juris");
 
+        }
         con.cierraConexion();
     } catch (Exception e) {
 
@@ -60,31 +76,23 @@
             <%@include file="../jspf/menuPrincipal.jspf" %>
             <div class="row">
                 <form action="verRutas.jsp" method="post">
-                    <h4 class="col-sm-2">Seleccione Juris</h4>
+                    <h4 class="col-sm-2">Seleccione Ruta:</h4>
                     <div class="col-sm-2">
                         <select name="F_Juris" class="form-control" onchange="SelectMuni(this.form);" required>
                             <option>Seleccione</option>
-                            <%
-                                try {
-                                    con.conectar();
-                                    ResultSet rset = con.consulta("select DISTINCT F_ClaJur from tb_uniatn; ");
-                                    while (rset.next()) {
+                            <%                            for (int i = 1; i <= 18; i++) {
                             %>
-                            <option value="<%=rset.getString("F_ClaJur")%>">Juris <%=rset.getString("F_ClaJur")%></option>
+                            <option value="<%=i%>"><%=i%></option>
                             <%
-                                    }
-                                    con.cierraConexion();
-                                } catch (Exception e) {
-                                    System.out.println(e.getMessage());
                                 }
                             %>
                         </select>
                     </div>
-                    <h4 class="col-sm-2">Seleccione Año</h4>
+                    <h4 class="col-sm-2">Seleccione Año:</h4>
                     <div class="col-sm-2">
                         <select name="F_Anio" class="form-control" required>
                             <option>Seleccione</option>
-                            <%                            for (int i = 2010; i <= 2020; i++) {
+                            <%                            for (int i = 2014; i <= 2020; i++) {
                             %>
                             <option value="<%=i%>"><%=i%></option>
                             <%
@@ -162,7 +170,7 @@
                                 break;
                         }
             %>
-            <h2>Jurisdicción <%=F_Juris%> - <%=MesLetra%> <%=F_Anio%> </h2>
+            <h2>Ruta <%=F_Juris%> - <%=MesLetra%> <%=F_Anio%> </h2>
             <%
                 } catch (Exception e) {
 
@@ -181,6 +189,7 @@
                         }
                         try {
                             F_Juris = request.getParameter("F_Juris");
+                            F_Juris = formatter.format(Integer.parseInt(F_Juris));
                         } catch (Exception e) {
                         }
                         try {
@@ -305,13 +314,20 @@
                 <tbody>
                     <%
                         int idReg = 1;
-                        ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli, d.F_LocPla, d.F_Juris, d.F_Ruta, d.F_ModCli, d.F_MunCli from tb_uniatn u, tb_detcli d where u.F_ClaCli=d.F_ClaCli and u.F_ClaJur = '" + F_Juris + "' and u.F_StsCli = 'A' order by d.F_Ruta");
+                        ResultSet rset = con.consulta("SELECT	u.F_ClaCli,	u.F_NomCli,	fr.F_LocPlano,	u.F_ClaJur,	fr.F_Ruta,	d.F_ModCli,	d.F_MunCli FROM	tb_uniatn u,	tb_detcli d,	tb_fecharuta fr WHERE u.F_ClaCli = d.F_ClaCli AND fr.F_ClaUni = d.F_ClaCli AND fr.F_Ruta LIKE '%" + F_Juris + "%' AND u.F_StsCli = 'A' and u.F_ClaJurNum in (" + JurisUsu + ") group by u.F_ClaCli ORDER BY	d.F_Ruta");
                         while (rset.next()) {
+                            ResultSet rsetCab = con.consulta("select F_Ruta, F_LocPlano from tb_fecharuta where F_ClaUni = '" + rset.getString("F_ClaCli") + "' and MONTH(F_Fecha) = '" + (Integer.parseInt(F_Mes) - 1) + "' and YEAR(F_Fecha) = '" + F_Anio + "' ");
+                            String F_Ruta = "";
+                            String F_LocPlano = "";
+                            while (rsetCab.next()) {
+                                F_Ruta = rsetCab.getString("F_Ruta");
+                                F_LocPlano = rsetCab.getString("F_LocPlano");
+                            }
                     %>
                     <tr>
-                        <td><small><%=rset.getString("F_Ruta")%></small></td>
-                        <td><small><%=rset.getString("F_LocPla")%></small></td>
-                        <td><small><%=rset.getString("F_Juris")%></small></td>
+                        <td><small><%=F_Ruta%></small></td>
+                        <td><small><%=F_LocPlano%></small></td>
+                        <td><small><%=rset.getString("F_ClaJur")%></small></td>
                         <td><small><%=rset.getString("F_ModCli")%></small></td>
                         <td><small><%=rset.getString("F_ClaCli")%> - <%=rset.getString("F_NomCli")%></small></td>
                         <td><small><%=rset.getString("F_MunCli")%></small></td>
@@ -375,7 +391,7 @@
                             }
                             con.cierraConexion();
                         } catch (Exception e) {
-
+                            System.out.println(e.getMessage());
                         }
                     %>
                 </tbody>
@@ -396,9 +412,9 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script>
-                                $(document).ready(function() {
-                                    $('#tablaRuta').dataTable();
-                                });
+                            $(document).ready(function() {
+                                $('#tablaRuta').dataTable();
+                            });
         </script> 
     </body>
 </html>

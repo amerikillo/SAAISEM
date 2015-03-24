@@ -55,7 +55,7 @@ public class DescargaReqRural extends HttpServlet {
                 rset = con.consulta("select F_ClaPro, F_Cant from tb_reqruralesweb where F_IdReq = '" + request.getParameter("F_IdReq") + "' and F_ClaCli = '" + request.getParameter("F_ClaCli") + "'");
                 while (rset.next()) {
                     try {
-                        con.insertar("insert into tb_unireq values('" + F_ClaUni + "','" + rset.getString("F_ClaPro") + "','0','" + rset.getString("F_Cant") + "',CURDATE(),'0','0')");
+                        con.insertar("insert into tb_unireq values('" + F_ClaUni + "','" + rset.getString("F_ClaPro") + "','0','" + rset.getString("F_Cant") + "',CURDATE(),'0','0','" + rset.getString("F_Cant") + "')");
                     } catch (Exception e) {
                         out.println(e.getMessage());
                     }

@@ -90,6 +90,7 @@
                                 if (tipo.equals("5") || tipo.equals("7") || tipo.equals("2")) {
                             %>
                         <li><a href="/SAAISEM/factura.jsp">Facturación Automática</a></li>
+                        <li><a href="/SAAISEM/facturaAuto.jsp">Facturación CEAPS</a></li>
                         <li><a href="/SAAISEM/facturacionManual.jsp">Facturación Manual</a></li>
                         <li><a href="/SAAISEM/facturacionRural/verReqsWeb.jsp">Facturación Web</a></li>
                         <li class="divider"></li>
@@ -148,11 +149,12 @@
                         <%
                             if (tipo.equals("8")) {
                         %>
-                        <li><a href="#" onclick="window.open('/SAAISEM/operaciones/adminRutas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Administrar Rutas</a></li>
+                        <li><a href="/SAAISEM/operaciones/adminRutas.jsp" >Administrar Rutas</a></li>
+                        <li><a href="/SAAISEM/operaciones/subeRutas.jsp">Subir Rutas</a></li>
                             <%
                                 }
                             %>
-                        <li><a href="/SAAISEM/operaciones/verRutas.jsp">Consultar Rutas</a></li>
+                        <li><a href="#" onclick="window.open('/SAAISEM/operaciones/verRutas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Consultar Rutas</a></li>
                     </ul>
                 </li>
                 <%

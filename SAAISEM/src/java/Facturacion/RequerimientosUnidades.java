@@ -42,18 +42,22 @@ public class RequerimientosUnidades extends HttpServlet {
                     try {
 
                         con.conectar();
-                        ResultSet rset = con.consulta("select F_ClaPro from tb_unireq where F_ClaUni = '" + request.getParameter("F_ClaUni") + "' and F_Status=0");
+                        ResultSet rset = con.consulta("select F_ClaPro from tb_unireq where F_ClaUni = '" + request.getParameter("F_ClaUni") + "' and F_Status=0 and  F_PiezasReq != 0"  );
                         while (rset.next()) {
-                            con.insertar("update tb_unireq set F_PiezasReq = '" + request.getParameter(rset.getString("F_ClaPro")) + "' where F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_ClaUni = '" + request.getParameter("F_ClaUni") + "' and F_Status='0'");
+                            String ClaPro = rset.getString("F_ClaPro");
+                            String F_NCant = request.getParameter(ClaPro.trim());
+                            out.println(ClaPro);
+                            out.println(F_NCant);
+                            con.insertar("update tb_unireq set F_PiezasReq = '" + F_NCant + "' where F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_ClaUni = '" + request.getParameter("F_ClaUni") + "' and F_Status='0'");
                         }
                         con.cierraConexion();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
-                response.setContentType("text/html");
-                request.setAttribute("F_FecEnt", request.getParameter("F_FecEnt"));
-                request.setAttribute("F_ClaUni", request.getParameter("F_ClaUni"));
-                request.getRequestDispatcher("detRequerimiento.jsp").forward(request, response);
+                    response.setContentType("text/html");
+                    request.setAttribute("F_FecEnt", request.getParameter("F_FecEnt"));
+                    request.setAttribute("F_ClaUni", request.getParameter("F_ClaUni"));
+                    request.getRequestDispatcher("detRequerimiento.jsp").forward(request, response);
                 }
             } catch (Exception e) {
             }

@@ -149,11 +149,12 @@
                         <%
                             if (tipo.equals("8")) {
                         %>
-                        <li><a href="#" onclick="window.open('/SAAISEM/operaciones/adminRutas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Administrar Rutas</a></li>
+                        <li><a href="/SAAISEM/operaciones/adminRutas.jsp" >Administrar Rutas</a></li>
+                        <li><a href="/SAAISEM/operaciones/subeRutas.jsp">Subir Rutas</a></li>
                             <%
                                 }
                             %>
-                        <li><a href="/SAAISEM/operaciones/verRutas.jsp">Consultar Rutas</a></li>
+                        <li><a href="#" onclick="window.open('/SAAISEM/operaciones/verRutas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Consultar Rutas</a></li>
                     </ul>
                 </li>
                 <%

@@ -56,12 +56,17 @@
         <h4>
             Unidad: 
             <%
-                String F_NomCli = "";
+                String F_NomCli = "", F_CantSol = "";
                 try {
                     con.conectar();
                     ResultSet rset = con.consulta("select  F_NomCli from tb_uniatn where F_ClaCli = '" + Clave + "'");
                     while (rset.next()) {
                         F_NomCli = rset.getString("F_NomCli");
+                    }
+
+                    rset = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, SUM(REQ.F_PiezasReq) as F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + Clave + "' and F_Status =0 and F_PiezasReq != 0");
+                    while (rset.next()) {
+                        F_CantSol = rset.getString("F_PiezasReq");
                     }
                     con.cierraConexion();
                 } catch (Exception e) {
@@ -70,6 +75,7 @@
             %>
             <%=Clave%> | <%=F_NomCli%>
         </h4>
+        <h4>Total de Piezas: <%=formatter.format(Integer.parseInt(F_CantSol))%></h4>
         <h4><%
             try {
             %>
@@ -81,11 +87,13 @@
             %>
         </h4>
         <form action="<%=request.getParameter("pagina")%>" method="post">
-            <input type="text" class="hidden" id="F_FecEnt" name="F_FecEnt" value="<%=request.getParameter("F_FecEnt")%>" />
+            <input type="text" class="hidden" id="F_Ruta" name="F_Ruta" value="<%=request.getParameter("F_Ruta")%>" />
+            <input type="text" class="hidden" id="F_Mes" name="F_Mes" value="<%=request.getParameter("F_Mes")%>" />
             <button class="btn btn-default" type="submit">Regresar</button>
         </form>
         <form action="RequerimientosUnidades" method="post" >
-            <input type="text" class="hidden" id="F_FecEnt" name="F_FecEnt" value="<%=request.getParameter("F_FecEnt")%>" />
+            <input type="text" class="hidden" id="F_Ruta" name="F_Ruta" value="<%=request.getParameter("F_Ruta")%>" />
+            <input type="text" class="hidden" id="F_Mes" name="F_Mes" value="<%=request.getParameter("F_Mes")%>" />
             <input name="F_ClaUni" class="hidden" value="<%=Clave%>" />
             <input name="pagina" class="hidden" value="<%=request.getParameter("pagina")%>" />
             <div class="row">
@@ -99,18 +107,31 @@
                     <td>Clave</td>
                     <td>Descripción</td>
                     <td>Piezas</td>
+                    <td>Existencia</td>
                 </tr>
                 <%
                     try {
 
                         con.conectar();
-                        ResultSet rset = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, REQ.F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + Clave + "' and F_Status =0");
+                        ResultSet rset = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, REQ.F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + Clave + "' and F_Status =0 and F_PiezasReq != 0");
                         while (rset.next()) {
+                            int ExiLot = 0;
+                            ResultSet rset2 = con.consulta("select sum(F_ExiLot) from tb_lote where F_ClaPro='" + rset.getString(1) + "'");
+                            while (rset2.next()) {
+                                ExiLot = rset2.getInt(1);
+                            }
                 %>
-                <tr class="odd gradeX">
+                <tr
+                    <%
+                        if (rset.getInt(4) > ExiLot) {
+                            out.println("class='danger'");
+                        }
+                    %>
+                    >
                     <td><%=rset.getString(1)%></td>
                     <td><%=rset.getString(2)%></td>
                     <td ><small><input name="<%=rset.getString(1).trim()%>" type="number" class="text-right form-control" value="<%=rset.getInt(4)%>" /></small></td>
+                    <td class="text-right"><%=formatter.format(ExiLot)%></td>
                 </tr>
                 <%
                         }

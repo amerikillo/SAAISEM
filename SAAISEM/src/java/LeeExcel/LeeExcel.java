@@ -140,13 +140,15 @@ public class LeeExcel {
                 }
             }
             String F_Fecha = "";
+            String Solicitado = "";
             try {
                 F_Fecha = (vectorCellEachRowData.get(2).toString());
                 F_Fecha = df2.format(df1.parse(F_Fecha));
+                Solicitado = ((vectorCellEachRowData.get(3).toString()) + "");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            qry = qry + "curdate(), 0, '0','" + F_Fecha + "')"; // agregar campos fuera del excel
+            qry = qry + "curdate(), 0, '0','" + F_Fecha + "','" + Solicitado + "')"; // agregar campos fuera del excel
             try {
                 con.conectar();
                 try {

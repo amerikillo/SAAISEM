@@ -137,7 +137,8 @@ public class CargaExcelReqRural {
                     }
                 }
             }
-            qry = qry + "curdate(),'" + idFact + "', 0, 0)"; // agregar campos fuera del excel
+            String Solicitado = ((vectorCellEachRowData.get(3).toString()) + "");
+            qry = qry + "curdate(),'" + idFact + "', 0, 0,'" + Solicitado + "')"; // agregar campos fuera del excel
             try {
                 con.conectar();
                 try {

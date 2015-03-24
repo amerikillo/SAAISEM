@@ -39,7 +39,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            <!--%@include file="../jspf/menuPrincipal.jspf" %-->
+            <%@include file="../jspf/menuPrincipal.jspf" %>
         </div>
         <div class="container">
             <div class="panel panel-primary">
@@ -47,7 +47,7 @@
                     <h3 class="panel-title">Carga de Rutas</h3>
                 </div>
                 <div class="panel-body ">
-                    <form method="post" class="jumbotron"  action="../SubeRutasServlet" enctype="multipart/form-data" name="form1">
+                    <form method="post" class="jumbotron"  action="../SubeRutasServlet" enctype="multipart/form-data" name="form1" onsubmit="subeRuta()">
                         <div class="form-group">
                             <div class="form-group">
                                 <div class="col-lg-4 text-success">
@@ -59,17 +59,15 @@
                                 </div-->
                                 <label for="Nombre" class="col-xs-2 control-label">Nombre Archivo*</label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" type="file" name="file1" id="file1" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>                                    
+                                    <input class="form-control" type="file" name="file1" id="file1" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required=""/>                                    
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();"> Cargar Archivo</button>
+                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" id="btnSubeRuta" onclick=""> Cargar Archivo</button>
+                        <a class="btn btn-block btn-success" href="formatoRutas.jsp" >Descargar Formato</a>
                     </form>
-                    <div style="display: none;" class="text-center" id="Loader">
-                        <img src="imagenes/ajax-loader-1.gif" height="150" />
-                    </div>
-                    <div>
-                        <h6>Los campos marcados con * son obligatorios</h6>
+                    <div  class="text-center" id="Loader">
+                        <img src="../imagenes/ajax-loader-1.gif" height="150" />
                     </div>
                 </div>
             </div>
@@ -90,5 +88,14 @@
         <script src="../js/jquery-1.9.1.js"></script>
         <script src="../js/bootstrap.js"></script>
         <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script>
+                        $(document).ready(function() {
+                            $('#Loader').toggle();
+                        });
+                        function subeRuta() {
+                            $('#btnSubeRuta').attr('disabled', true);
+                            $('#Loader').toggle();
+                        }
+        </script>
     </body>
 </html>

@@ -23,6 +23,7 @@
     formatterDecimal.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
+    String tipoUni = "", F_ClaCli = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
         tipo = (String) sesion.getAttribute("Tipo");
@@ -74,8 +75,10 @@
         while (rset.next()) {
             Fecha = rset.getString(1);
         }
+
         con.cierraConexion();
     } catch (Exception e) {
+        System.out.println(e.getMessage());
 
     }
 %>
@@ -115,12 +118,13 @@
                                     <option value="">Unidad</option>
                                     <%                                        try {
                                             con.conectar();
-                                            ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli, f.F_IdFact from tb_uniatn u, tb_facttemp f where u.F_StsCli = 'A' and f.F_ClaCli = u.F_ClaCli and f.F_StsFact <5 group by u.F_ClaCli, f.F_IdFact");
+                                            ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli, f.F_IdFact from tb_uniatn u, tb_facttemp f where u.F_StsCli = 'A' and f.F_ClaCli = u.F_ClaCli and f.F_StsFact <5 group by u.F_ClaCli, f.F_IdFact order by f.F_IdFact");
                                             while (rset.next()) {
                                     %>
                                     <option value="<%=rset.getString(3)%>"
                                             <%
                                                 if (Clave.equals(rset.getString(3))) {
+                                                    F_ClaCli = rset.getString("F_ClaCli");
                                                     out.println("selected");
                                                 }
                                             %>
@@ -376,11 +380,26 @@
                     <div class="hidden">
                         <textarea id="Obs" name="Obs"></textarea>
                         <input id="F_Req" name="F_Req" />
+                        <input id="F_Tipo" name="F_Tipo" />
                     </div>
                 </form>
             </div>
         </div>
         <%@include file="jspf/piePagina.jspf" %>
+
+        <%
+            try {
+                con.conectar();
+                ResultSet rset = con.consulta("select F_Tipo from tb_uniatn where F_ClaCli = '" + F_ClaCli + "'");
+                while (rset.next()) {
+                    tipoUni = rset.getString(1);
+                }
+                con.cierraConexion();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.println(tipoUni);
+        %>
 
         <!--
                 Modal
@@ -390,7 +409,22 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <div class="col-sm-5">
+                            <h4>Tipo</h4>
+                            <div class="col-sm-12">
+                                <select class="form-control" name="tipo" id="tipo">
+                                    <%
+                                        if (tipoUni.equals("RURAL")) {
+                                    %>
+                                    <option selected="">ORDINARIO</option>
+                                    <option>EXTRAORDINARIO</option>
+                                    <%
+                                    } else if (tipoUni.equals("CEAPS")) {
+                                    %>
+                                    <option selected="">TRANSFERENCIA</option>
+                                    <%
+                                        }
+                                    %>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -444,6 +478,8 @@
                                         document.getElementById('Obs').value = observaciones;
                                         var req = document.getElementById('Requerimiento').value;
                                         document.getElementById('F_Req').value = req;
+                                        var tipo = document.getElementById('tipo').value;
+                                        document.getElementById('F_Tipo').value = tipo;
 
                                         document.getElementById('Facturar').click();
                                     }

@@ -75,88 +75,35 @@ public class LeeExcelRutas {
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         for (int i = 1; i < vectorData.size(); i++) {
             Vector vectorCellEachRowData = (Vector) vectorData.get(i);
-            String F_Origen = "", F_Costo, F_ImpTo = "", F_ComTot = "";
-            String F_ClaPro = "";
             if (!vectorCellEachRowData.get(0).toString().equals("")) {
-                String F_ClaUni = "";
-                F_ClaUni = (vectorCellEachRowData.get(2).toString() + "").trim();
-
-                String F_Fecha = "";
-                F_ClaLot = (vectorCellEachRowData.get(2).toString() + "").trim();
-
-                String F_Remi = "";
-                F_Remi = (vectorCellEachRowData.get(6).toString() + "").trim();
-
-                String F_Cant = "";
-                F_Cant = (vectorCellEachRowData.get(3).toString() + "").trim();
-
-                String F_Proveedor = "";
-                try {
-                    F_Proveedor = ((int) Double.parseDouble(vectorCellEachRowData.get(15).toString()) + "").trim();
-                } catch (Exception e) {
-                    F_Proveedor = "-";
-                }
-                String Tipo = "";
-                Double Costo = 0.0, IVA = 0.0, IVAPro = 0.0, Monto = 0.0, MontoIva = 0.0;
-                Double Piezas = Double.parseDouble(F_Cant);
-
-                try {
-
-                    con.conectar();
-                    ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo, F_Origen FROM tb_medica WHERE F_ClaPro='" + F_ClaPro + "'");
-                    while (rset_medica.next()) {
-                        F_Origen = rset_medica.getString("F_Origen");
-                        Tipo = rset_medica.getString("F_TipMed");
-                        Costo = Double.parseDouble(rset_medica.getString("F_Costo"));
-                        if (Tipo.equals("2504")) {
-                            //c1.add(Calendar.YEAR, -3);
-                            IVA = 0.0;
-                        } else {
-                            //c1.add(Calendar.YEAR, -5);
-                            IVA = 0.16;
-                        }
-                    }
-                    con.cierraConexion();
-
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                IVAPro = ((Piezas) * Costo) * IVA;
-                Monto = (Piezas) * Costo;
-                MontoIva = Monto + IVAPro;
-
-                String F_FecCad = "0000-00-00", F_FecFab = "0000-00-00", F_ClaMar = "999";
-                try {
-
-                    con.conectar();
-                    ResultSet rset_medica = con.consulta("SELECT F_FecCad,F_FecFab, F_ClaMar FROM tb_lote WHERE F_ClaPro='" + F_ClaPro + "' and F_ClaLot = '" + F_ClaLot + "' ");
-                    while (rset_medica.next()) {
-                        F_FecCad = rset_medica.getString("F_FecCad");
-                        F_FecFab = rset_medica.getString("F_FecFab");
-
-                    }
-
-                    rset_medica = con.consulta("SELECT F_ClaMar FROM tb_lote WHERE F_ClaPro='" + F_ClaPro + "' and F_ClaOrg = '" + F_Proveedor + "' ");
-                    while (rset_medica.next()) {
-                        F_ClaMar = rset_medica.getString("F_ClaMar");
-
-                    }
-
-                    rset_medica = con.consulta("SELECT F_ClaProve FROM tb_proveedor WHERE F_ClaSap = '" + F_Proveedor + "'  ");
-                    while (rset_medica.next()) {
-                        F_Proveedor = rset_medica.getString("F_ClaProve");
-
-                    }
-                    con.cierraConexion();
-
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-
-                String qry = "insert into tb_compratemp values ('0', CURDATE(), '" + F_ClaPro + "', '" + F_ClaLot + "', '" + F_FecCad + "', '" + F_FecFab + "', '" + F_ClaMar + "', '" + F_Proveedor + "', '', 1,1,'" + F_Cant + "',0,0,0,'" + Costo + "','" + IVAPro + "','" + MontoIva + "','','" + F_Remi + "', '" + F_OrdCom + "','" + F_Proveedor + "','" + usua + "', '" + 2 + "', '" + F_Origen + "' )";
-
                 try {
                     con.conectar();
+                    int banExiste = 0;
+                    String F_Id = "";
+                    String F_ClaUni = "";
+                    F_ClaUni = (vectorCellEachRowData.get(2).toString() + "").trim();
+
+                    String F_Fecha = "";
+                    F_Fecha = df2.format((df1.parse((vectorCellEachRowData.get(6).toString() + "").trim())));
+
+                    String F_Ruta = "";
+                    F_Ruta = (vectorCellEachRowData.get(4).toString() + "").trim();
+
+                    String F_LocPlano = "";
+                    F_LocPlano = (vectorCellEachRowData.get(5).toString() + "").trim();
+
+                    ResultSet rset = con.consulta("select F_Id from tb_fecharuta where F_ClaUni = '" + F_ClaUni + "' and YEAR(F_Fecha) = YEAR('" + F_Fecha + "') and MONTH(F_Fecha) = MONTH('" + F_Fecha + "') ");
+                    while (rset.next()) {
+                        F_Id = rset.getString("F_Id");
+                        banExiste = 1;
+                    }
+                    String qry = "";
+                    if (banExiste == 0) {
+                        qry = "insert into tb_fecharuta values ('" + F_ClaUni + "','" + F_Fecha + "','" + F_Ruta + "','" + F_LocPlano + "','0')";
+                    } else {
+                        qry = "update tb_fecharuta set F_Ruta = '" + F_Ruta + "', F_LocPlano = '" + F_LocPlano + "', F_Fecha='" + F_Fecha + "' where F_Id = '" + F_Id + "'";
+                    }
+
                     try {
                         con.insertar(qry);
                     } catch (Exception e) {
@@ -165,7 +112,7 @@ public class LeeExcelRutas {
                     }
                     con.cierraConexion();
                 } catch (Exception e) {
-                        mensaje = e.getMessage();
+                    mensaje = e.getMessage();
                     System.out.println(e.getMessage());
                 }
             }

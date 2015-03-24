@@ -329,6 +329,16 @@ public class Facturacion extends HttpServlet {
                 String Clave = "", FolioLote = "";
                 int piezas = 0, existencia = 0, diferencia = 0, X = 0, FolioFactura = 0, FolFact = 0, Tipo = 0, Org = 0, piezasDif = 0;
 
+                String[] claveschk = request.getParameterValues("chkUniFact");
+                String Unidades = "";
+                for (int i = 0; i < claveschk.length; i++) {
+                    if (i == (claveschk.length - 1)) {
+                        Unidades = Unidades + "'" + claveschk[i] + "'";
+                    } else {
+                        Unidades = Unidades + "'" + claveschk[i] + "',";
+                    }
+                }
+                out.println(Unidades);
                 try {
 
                     con.conectar();
@@ -341,7 +351,7 @@ public class Facturacion extends HttpServlet {
                      FechaE = Fechaa.getString("STR_TO_DATE(" + FechaE + ", '%d/%m/%Y')");
                      }*/
 
-                    ResultSet rset = con.consulta("select f.F_ClaUni from tb_fecharuta f, tb_uniatn u where f.F_ClaUni = u.F_ClaCli and f.F_Fecha = '" + request.getParameter("F_FecEnt") + "' and u.F_ClaJurNum in (" + request.getParameter("F_Juris") + ") ");
+                    ResultSet rset = con.consulta("select f.F_ClaUni from tb_fecharuta f, tb_uniatn u where f.F_ClaUni = u.F_ClaCli and f.F_Fecha = '" + request.getParameter("F_FecEnt") + "' and u.F_ClaJurNum in (" + request.getParameter("F_Juris") + ") and f.F_ClaUni in (" + Unidades + ") ");
                     while (rset.next()) {
                         ResultSet FolioFact = con.consulta("SELECT F_IndGlobal FROM tb_indice");
                         while (FolioFact.next()) {
