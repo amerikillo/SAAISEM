@@ -42,7 +42,7 @@ public class RequerimientosUnidades extends HttpServlet {
                     try {
 
                         con.conectar();
-                        ResultSet rset = con.consulta("select F_ClaPro from tb_unireq where F_ClaUni = '" + request.getParameter("F_ClaUni") + "' and F_Status=0 and  F_PiezasReq != 0"  );
+                        ResultSet rset = con.consulta("select F_ClaPro from tb_unireq where F_ClaUni = '" + request.getParameter("F_ClaUni") + "' and F_Status=0 and  F_PiezasReq != 0");
                         while (rset.next()) {
                             String ClaPro = rset.getString("F_ClaPro");
                             String F_NCant = request.getParameter(ClaPro.trim());
@@ -64,6 +64,10 @@ public class RequerimientosUnidades extends HttpServlet {
         } finally {
             out.close();
         }
+    }
+
+    public void actualizaReqs(String Unidades) {
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

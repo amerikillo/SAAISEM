@@ -44,8 +44,9 @@ Temporary Items
 
 *.class
 
-/SAAISEM/dist
-/SAAISEM/build
 
 SAAISEM/dist
 SAAISEM/build
+
+/SAAISEM/dist
+/SAAISEM/build

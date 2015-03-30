@@ -82,7 +82,7 @@
             <%@include file="jspf/menuPrincipal.jspf" %>
         </div>
         <div class="container">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Facturación aútomatica</h3>
                 </div>
@@ -138,7 +138,7 @@
                         int banReq1 = 0, banReq = 0;
                         try {
                             con.conectar();
-                            ResultSet rset = con.consulta("select f.F_ClaUni from tb_fecharuta f, tb_uniatn u where f.F_ClaUni = u.F_ClaCli and f.F_Ruta like '%" + F_Ruta + "%' and MONTH(F_Fecha) = '"+request.getParameter("F_Mes")+"' " + where + " group by f.F_ClaUni");
+                            ResultSet rset = con.consulta("select f.F_ClaUni from tb_fecharuta f, tb_uniatn u where f.F_ClaUni = u.F_ClaCli and f.F_Ruta like '%" + F_Ruta + "%' and MONTH(F_Fecha) = '" + request.getParameter("F_Mes") + "' " + where + " group by f.F_ClaUni");
                             while (rset.next()) {
                                 String F_NomCli = "";
                                 ResultSet rset2 = con.consulta("select  F_NomCli from tb_uniatn where F_ClaCli = '" + rset.getString("F_ClaUni") + "'");
@@ -161,103 +161,155 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-
                     <form action="Facturacion" method="post">
-                        <table class="table table-bordered table-condensed table-striped">
-                            <tr>
-                                <td>No Unidad</td>
-                                <td>Ruta</td>
-                                <td>Nombre</td>
-                                <td>Cant</td>
-                                <td>Ver detalle</td>
-                                <td>Eliminar</td>
-                                <td></td>
-                            </tr>
-                            <%
-                                banReq = 0;
-                                try {
-                                    con.conectar();
-                                    ResultSet rset = con.consulta("select f.F_ClaUni,f.F_Ruta, f.F_Fecha from tb_fecharuta f, tb_uniatn u where f.F_ClaUni = u.F_ClaCli and f.F_Ruta like '%" + F_Ruta + "%' and MONTH(F_Fecha) = '"+request.getParameter("F_Mes")+"' " + where + " group by f.F_ClaUni");
-                                    while (rset.next()) {
-                                        String F_NomCli = "";
+                        <%
+                            banReq = 0;
+                            try {
+                                con.conectar();
+                                ResultSet rset = con.consulta("select f.F_ClaUni,f.F_Ruta, f.F_Fecha from tb_fecharuta f, tb_uniatn u, tb_unireq ur where u.F_claCli = ur.F_ClaUni and f.F_ClaUni = u.F_ClaCli and f.F_Ruta like '%" + F_Ruta + "%' and MONTH(f.F_Fecha) = '" + request.getParameter("F_Mes") + "' " + where + " group by f.F_ClaUni");
+                                while (rset.next()) {
+                                    String F_NomCli = "";
 
-                                        banReq = 0;
-                                        int F_PiezasReq = 0;
-                                        ResultSet rset2 = con.consulta("select  F_ClaCli, F_NomCli from tb_uniatn where F_ClaCli = '" + rset.getString(1) + "' group by F_ClaCli");
-                                        while (rset2.next()) {
+                                    banReq = 0;
+                                    int F_PiezasReq = 0;
+                                    ResultSet rset2 = con.consulta("select  F_ClaCli, F_NomCli from tb_uniatn where F_ClaCli = '" + rset.getString(1) + "' group by F_ClaCli");
+                                    while (rset2.next()) {
 
-                                            F_NomCli = rset2.getString("F_NomCli");
+                                        F_NomCli = rset2.getString("F_NomCli");
 
-                                        }
-                                        ResultSet rset3 = con.consulta("select F_ClaUni, sum(F_PiezasReq) as F_PiezasReq from tb_unireq where F_Status = '0' and F_ClaUni = '" + rset.getString(1) + "' group by F_ClaUni");
-                                        while (rset3.next()) {
-                                            banReq = 1;
-                                            F_PiezasReq = (rset3.getInt("F_PiezasReq"));
-                                        }
-                            %>
-                            <tr>
-                                <td><%=rset.getString(1)%></td>
-                                <td><%=rset.getString(2)%></td>
-                                <td><%=F_NomCli%></td>
-                                <td class="text-right"><%=formatter.format(F_PiezasReq)%></td>
-                                <td>
-                                    <%
-                                        if (banReq == 1) {
-                                    %>
-                                    <!--form action="detRequerimiento.jsp" method="post"-->
-                                    <input name="pagina" class="hidden" value="factura.jsp">
-                                    <input name="F_ClaUni" value="<%=rset.getString(1)%>" class="hidden" />
-                                    <input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" />
-                                    <a class="btn btn-block btn-sm btn-primary" href="detRequerimiento.jsp?F_ClaUni=<%=rset.getString(1)%>&F_Ruta=<%=F_Ruta%>&F_Mes=<%=request.getParameter("F_Mes")%>&pagina=factura.jsp" ><span class="glyphicon glyphicon-search"></span></a>
-                                    <!--/form-->
-                                    <%
-                                        }
-                                    %>
-                                </td>
-                                <td>
-
-                                    <%
-                                        if (banReq == 1) {
-                                    %>
-                                    <!--form action="Facturacion" method="post"-->
-                                    <input name="F_ClaUni" value="<%=rset.getString(1)%>" class="hidden" />
-                                    <input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" />
-                                    <button class="btn btn-block btn-sm btn-warning" name="accion" value="cancelar"><span class="glyphicon glyphicon-remove"></span></button>
-                                    <!--/form-->
-                                    <%
-                                        }
-                                    %>
-                                </td>
-                                <td>
-                                    <%
-                                        if (banReq == 1) {
-                                    %>
-                                    <input type="checkbox" name="chkUniFact" value="<%=rset.getString("F_ClaUni")%>">
-                                    <%
-                                        }
-                                    %>
-                                </td>
-                            </tr>
-                            <%
                                     }
-                                    con.cierraConexion();
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                    ResultSet rset3 = con.consulta("select F_ClaUni, sum(F_PiezasReq) as F_PiezasReq from tb_unireq where F_Status = '0' and F_ClaUni = '" + rset.getString(1) + "' group by F_ClaUni");
+                                    while (rset3.next()) {
+                                        banReq = 1;
+                                        F_PiezasReq = (rset3.getInt("F_PiezasReq"));
+                                    }
+                                    if (F_PiezasReq != 0) {
+                        %>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+
+                                <%
+                                    if (banReq == 1) {
+                                %>
+                                <input type="checkbox" name="chkUniFact" value="<%=rset.getString("F_ClaUni")%>">
+                                <%
+                                    }
+                                %>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#<%=rset.getString(1)%>" style="color:black" aria-expanded="true" aria-controls="collapseOne"><%=rset.getString(1)%> |  <%=F_NomCli%></a>
+                            </div>
+                            <div id="<%=rset.getString(1)%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body">
+                                    <div class="row">
+
+                                        <h4 class="col-sm-2">
+                                            Ruta: 
+                                            <%=rset.getString(2)%>
+                                        </h4>
+                                        <h4 class="col-sm-2">
+                                            Piezas: <%=formatter.format(F_PiezasReq)%>
+                                        </h4>
+                                        <div class="col-sm-2">
+                                            <%
+                                                if (banReq == 1) {
+                                            %>
+                                            <!--form action="detRequerimiento.jsp" method="post"-->
+                                            <input name="pagina" class="hidden" value="factura.jsp">
+                                            <input name="F_ClaUni" value="<%=rset.getString(1)%>" class="hidden" />
+                                            <input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" />
+                                            <a class="btn btn-block btn-sm btn-primary" href="detRequerimiento.jsp?F_ClaUni=<%=rset.getString(1)%>&F_Ruta=<%=F_Ruta%>&F_Mes=<%=request.getParameter("F_Mes")%>&pagina=factura.jsp" ><span class="glyphicon glyphicon-search"></span></a>
+                                            <!--/form-->
+                                            <%
+                                                }
+                                            %>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <%
+                                                if (banReq == 1) {
+                                            %>
+                                            <!--form action="Facturacion" method="post"-->
+                                            <input name="F_ClaUni" value="<%=rset.getString(1)%>" class="hidden" />
+                                            <input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" />
+                                            <button class="btn btn-block btn-sm btn-warning" name="accion" value="cancelar"><span class="glyphicon glyphicon-remove"></span></button>
+                                            <!--/form-->
+                                            <%
+                                                }
+                                            %>
+                                        </div>
+
+                                    </div>
+                                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-condensed" id="datosProv">
+                                        <tr>
+                                            <td>Unidad</td>
+                                            <td>Clave</td>
+                                            <td>Descripción</td>
+                                            <td>Piezas Sol</td>
+                                            <td>Piezas Sur</td>
+                                            <td>Existencia</td>
+                                        </tr>
+                                        <%
+                                            try {
+                                                int ExiLot = 0, ExiSol = 0, TotalSur = 0;
+                                                ResultSet rsetR1 = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, REQ.F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + rset.getString("F_ClaUni") + "' and F_Status =0 and F_PiezasReq != 0");
+                                                while (rsetR1.next()) {
+
+                                                    ResultSet rsetR2 = con.consulta("select sum(F_ExiLot) from tb_lote where F_ClaPro='" + rsetR1.getString(1) + "'");
+                                                    while (rsetR2.next()) {
+                                                        ExiLot = rsetR2.getInt(1);
+                                                    }
+                                        %>
+                                        <tr
+                                            <%
+                                                if (rsetR1.getInt(4) > ExiLot) {
+                                                    out.println("class='danger'");
+                                                    ExiSol = ExiLot;
+                                                } else {
+                                                    ExiSol = rsetR1.getInt(4);
+                                                }
+                                                TotalSur = TotalSur + ExiSol;
+
+                                            %>
+                                            >
+                                            <td><%=rset.getString("F_ClaUni")%></td>
+                                            <td><%=rsetR1.getString(1)%></td>
+                                            <td><%=rsetR1.getString(2)%></td>
+                                            <td><%=rsetR1.getInt(4)%></td>
+                                            <td ><small><input name="<%=rset.getString(1)%>_<%=rsetR1.getString(1).trim()%>" type="number" class="text-right form-control" value="<%=ExiSol%>" /></small></td>
+                                            <td class="text-right"><%=formatter.format(ExiLot)%></td>
+                                        </tr>                 
+                                        <%
+                                            }
+                                        %>
+                                        <h4>Total de Piezas a Facturar: <%=formatter.format(TotalSur)%></h4>
+                                        <%
+                                            } catch (Exception e) {
+                                                out.println(e.getMessage());
+                                            }
+                                        %>
+
+                                    </table> 
+                                </div>
+                            </div>
+                        </div>
+                        <%
+                                    }
                                 }
-                            %>
-                        </table>
+
+                                con.cierraConexion();
+                            } catch (Exception e) {
+                                out.println(e.getMessage());
+                            }
+                        %>
                         <%
                             if (banReq1 == 1) {
                         %>
                         <input name="F_FecEnt" class="hidden" value="<%= request.getParameter("F_FecEnt")%>" />
                         <input name="F_Juris" class="hidden" value="<%=UsuaJuris%>" />
-                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardarGlobal" id="" onclick="return validaRemision()">Generar Folio(s)</button> 
+                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardarGlobal" onclick="return validaRemision()">Generar Folio(s)</button> 
 
-                    <%
-                        }
-                    %>
+                        <%
+                            }
+                        %>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -298,19 +350,19 @@
         <script src="js/dataTables.bootstrap.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
         <script>
-                                $(document).ready(function() {
-                            $('#datosProv').dataTable();
+                            $(document).ready(function() {
+                                $('#datosProv').dataTable();
                             });
-                                function validaRemision() {
+                            function validaRemision() {
                                 var confirmacion = confirm('Seguro que desea generar los Folios');
-                                    if (confirmacion === true) {
+                                if (confirmacion === true) {
                                     $('#myModal').modal();
                                     $('#btnGeneraFolio').prop('disabled', true);
-                                return true;
-                                    } else {
-                                return false;
+                                    return true;
+                                } else {
+                                    return false;
+                                }
                             }
-                    }
 
         </script> 
 
