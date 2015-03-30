@@ -118,7 +118,7 @@
                 </div>
                 <div class="panel-footer">
                     <form method="post" action="Medicamentos">
-                        <table class="table table-striped table-bordered" id="datosProv">
+                        <table class="table table-striped table-bordered" id="datosProv111">
                             <thead>
                                 <tr>
                                     <td>CLAVE</td>
@@ -126,8 +126,8 @@
                                     <td>Descripción</td>
                                     <td>Tipo Medicamento</td>
                                     <td>Costo</td>
-                                    <!--td>Max</td>
-                                    <td>Min</td-->
+                                    <td>Max</td>
+                                    <td>Min</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,7 +136,7 @@
                                         con.conectar();
                                         int tipo = 0;
                                         String DesTipo = "";
-                                        ResultSet rset = con.consulta("SELECT m.* FROM tb_medica m, tb_artiis a where m.F_ClaPro = a.F_ClaInt ORDER BY F_DesPro ASC");
+                                        ResultSet rset = con.consulta("SELECT m.* FROM tb_medica m, tb_artiis a where m.F_ClaPro = a.F_ClaInt ORDER BY F_ClaPro+0 ASC");
                                         while (rset.next()) {
                                             int max = 0, min = 0;
                                             ResultSet rset2 = con.consulta("select F_Max, F_Min from tb_maxmodula where F_ClaPro = '" + rset.getString("F_ClaPro") + "'");
@@ -157,8 +157,8 @@
                                     <td><small><%=rset.getString(2)%></small></td>
                                     <td><small><%=DesTipo%></small></td>
                                     <td class="text-right"><small>$ <%=formatterDecimal.format(rset.getDouble(5))%></small></td>  
-                                    <!--td><input type="number" name="Max<%=rset.getString(1)%>" class="form-control input-sm text-right" value="<%=(max)%>" /></td>  
-                                    <td><input type="number" name="Min<%=rset.getString(1)%>" class="form-control input-sm text-right" value="<%=(min)%>" /></td-->
+                                    <td><input type="number" name="Max<%=rset.getString(1)%>" class="form-control input-sm text-right" value="<%=(max)%>" /></td>  
+                                    <td><input type="number" name="Min<%=rset.getString(1)%>" class="form-control input-sm text-right" value="<%=(min)%>" /></td>
                                 </tr>
                                 <%
                                         }

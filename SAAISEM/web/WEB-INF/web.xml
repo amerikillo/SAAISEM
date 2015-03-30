@@ -292,6 +292,10 @@
         <servlet-name>Caratula</servlet-name>
         <servlet-class>servlets.Caratula</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AbasteceConcentrado</servlet-name>
+        <servlet-class>Modula.AbasteceConcentrado</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubeRutasServlet</servlet-name>
         <url-pattern>/SubeRutasServlet</url-pattern>
@@ -583,6 +587,10 @@
     <servlet-mapping>
         <servlet-name>Caratula</servlet-name>
         <url-pattern>/Caratula</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AbasteceConcentrado</servlet-name>
+        <url-pattern>/AbasteceConcentrado</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

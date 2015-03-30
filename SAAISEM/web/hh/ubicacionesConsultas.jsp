@@ -30,29 +30,29 @@
     try {
         if (request.getParameter("accion").equals("buscar")) {
             if (!request.getParameter("F_ClaPro").equals("") && request.getParameter("F_ClaPro") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen, F_IdLote from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "'";
             }
             if (!request.getParameter("F_ClaLot").equals("") && request.getParameter("F_ClaLot") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen, F_IdLote from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "'";
             }
             if (!request.getParameter("F_Ubica").equals("") && request.getParameter("F_Ubica") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen, F_IdLote from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "'";
             }
             if (!request.getParameter("F_Cb").equals("") && request.getParameter("F_Cb") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen, F_IdLote from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "'";
             }
         }
         if (request.getParameter("accion").equals("porUbicar")) {
 
-            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
+            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen, F_IdLote from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where  F_Ubica='NUEVA'";
         }
         if (request.getParameter("accion").equals("mostrarTodas")) {
-            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen from v_existencias where F_ExiLot!=0";
+            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_Origen, F_IdLote from v_existencias where F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias";
         }
 
@@ -131,6 +131,8 @@
                     <td>Caducidad</td>
                     <td>Ubicación</td>
                     <td>Piezas</td>
+                    <td>Modula</td>
+                    <td>Cantidad</td>
                     <td></td>
                 </tr>
             </thead>
@@ -140,19 +142,55 @@
                         con.conectar();
                         rset2 = con.consulta(qry2);
                         while (rset2.next()) {
-                            ResultSet rset3 = con.consulta("select F_DesOri from tb_origen where F_ClaOri = '"+rset2.getString("F_Origen")+"' ");
+                            ResultSet rset3 = con.consulta("select F_DesOri from tb_origen where F_ClaOri = '" + rset2.getString("F_Origen") + "' ");
                             String F_Origen = "";
-                            while(rset3.next()){
+                            while (rset3.next()) {
                                 F_Origen = rset3.getString("F_DesOri");
                             }
+
+                            String F_StsMod = "0", F_CantMod = "";
+                            rset3 = con.consulta("select SUM(F_Cant) as F_Cant, F_StsMod from tb_facttemp where F_IdLot = '" + rset2.getString("F_IdLote") + "' and F_StsFact<5");
+                            while (rset3.next()) {
+                                F_StsMod = rset3.getString("F_StsMod");
+                                F_CantMod = rset3.getString("F_Cant");
+                            }
+                            if (F_StsMod == null) {
+                                F_StsMod = "";
+                                F_CantMod = "";
+                            }
                 %>
-                <tr>
+                <tr <%
+                    if (F_StsMod.equals("1") || F_StsMod.equals("2")) {
+                        out.println("class='info'");
+                    }
+                    %>
+                    >
                     <td><a href="#" title="<%=rset2.getString("F_DesPro")%>"><%=rset2.getString("F_ClaPro")%></a></td>
                     <td><%=F_Origen%></td>
                     <td><%=rset2.getString("F_ClaLot")%></td>
                     <td><%=rset2.getString("F_FecCad")%></td>
                     <td><%=rset2.getString("F_DesUbi")%></td>
                     <td><%=formatter.format(rset2.getInt("F_ExiLot"))%></td>
+                    <td>
+                        <%
+                            if (F_StsMod.equals("1")) {
+                                out.println("En Abasto");
+                            }
+                        %>
+                        
+                        <%
+                            if (F_StsMod.equals("2")) {
+                                out.println("En Modula");
+                            }
+                        %>
+                    </td>
+                    <td>
+                        <%
+                            if (F_StsMod.equals("1")||F_StsMod.equals("2")) {
+                                out.println(F_CantMod);
+                            }
+                        %>
+                    </td>
                     <td>
                         <form action="../Ubicaciones/indexValida.jsp" method="post">
                             <input name="folio" value="<%=rset2.getString("F_FolLot")%>" class="hidden" />
@@ -188,9 +226,9 @@
                 </tr>
             </thead>
             <tbody>
-                <% /*
+                <%
                     try {
-                       
+
                         conModula.conectar();
                         con.conectar();
                         ResultSet rset4 = conModula.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0 order by SCO_ARTICOLO");
@@ -199,42 +237,42 @@
                             ResultSet rset5 = con.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + rset4.getString("SCO_ARTICOLO") + "'");
                             while (rset5.next()) {
                                 Descrip = rset5.getString(1);
-                            }*/
+                            }
                 %>
                 <tr>
-                    <td><%//=rset4.getString("SCO_ARTICOLO")%></td>
-                    <td><%//=Descrip%></td>
-                    <td><%//=rset4.getString("SCO_SUB1")%></td>
-                    <td><%//=rset4.getString("SCO_DSCAD")%></td>
-                    <td><%//=rset4.getString("UDC_UDC")%></td>
-                    <td><%//=rset4.getString("SCO_POSI")%></td>
-                    <td><%//=formatter.format(rset4.getInt("SCO_GIAC"))%></td>
+                    <td><%=rset4.getString("SCO_ARTICOLO")%></td>
+                    <td><%=Descrip%></td>
+                    <td><%=rset4.getString("SCO_SUB1")%></td>
+                    <td><%=rset4.getString("SCO_DSCAD")%></td>
+                    <td><%=rset4.getString("UDC_UDC")%></td>
+                    <td><%=rset4.getString("SCO_POSI")%></td>
+                    <td><%=formatter.format(rset4.getInt("SCO_GIAC"))%></td>
                 </tr>
                 <%
-                      /*  }
+                        }
                         conModula.cierraConexion();
                         con.cierraConexion();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
-                        */
+
                 %>
             </tbody>
         </table>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="../js/jquery.dataTables.js"></script>
-    <script src="../js/dataTables.bootstrap.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#tablaUbicaciones').dataTable();
-            $('#existModula').dataTable();
-        });
-    </script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/jquery.dataTables.js"></script>
+        <script src="../js/dataTables.bootstrap.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#tablaUbicaciones').dataTable();
+                $('#existModula').dataTable();
+            });
+        </script>
     </body>
 </html>

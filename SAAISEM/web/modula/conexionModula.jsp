@@ -98,14 +98,38 @@
         <%
             try {
                 con.conectar();
-
-                ResultSet rset = con.consulta("select * from VIEW_MODULA_EXISTENCIA_MIN");
+        %>
+        <table class="table table-bordered table-condensed">
+            <tr>
+                <td>Clave</td>
+                <td>Existencias</td>
+                <td>Ingresos</td>
+                <td>Salidas</td>
+            </tr>
+            <%
+                ResultSet rset = con.consulta("select * from VIEW_MODULA_EXISTENCIA_MIN order by ART_ARTICOLO asc");
                 while (rset.next()) {
-                    out.println(rset.getString(1)+"---"+rset.getString(2)+"---"+rset.getString(3)+"---"+rset.getString(4)+"<br/>");
+                    //out.println(rset.getString(1) + "---" + rset.getString(2) + "---" + rset.getString(3) + "---" + rset.getString(4) + "<br/>");
+                    %>
+                    <tr>
+                <td><%=rset.getString(1)%></td>
+                <td><%=rset.getString(2)%></td>
+                <td><%=rset.getString(3)%></td>
+                <td><%=rset.getString(4)%></td>
+            </tr>
+                    <%
+                }
+
+            %>
+
+        </table>
+        <%                        rset = con.consulta("SELECT COLUMN_NAME 'All_Columns' FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='VIEW_MODULA_EXISTENCIA_MIN' ");
+                while (rset.next()) {
+                    out.println(rset.getString(1) + "<br/>");
                 }
                 con.cierraConexion();
             } catch (Exception e) {
-
+                System.out.println(e.getMessage());
             }
         %>
     </body>

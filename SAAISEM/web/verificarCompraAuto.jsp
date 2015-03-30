@@ -168,23 +168,29 @@
                                                 //tln(e.getMessage());
                                             }
 
-                                            ResultSet rset2 = con.consulta("select F_Cb, F_ClaMar from tb_lote where F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_ClaLot = '" + rset.getString("F_Lote") + "' group by F_ClaPro");
-                                            while (rset2.next()) {
-                                                F_Cb = rset2.getString("F_Cb");
-                                                F_Marca = rset2.getString("F_ClaMar");
-                                            }
-
+                                            F_Cb = rset.getString("F_Cb");
                                             if (F_Cb.equals("")) {
-                                                rset2 = con.consulta("select F_Cb, F_ClaMar from tb_cb where F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_ClaLot = '" + rset.getString("F_Lote") + "' group by F_ClaPro");
+
+                                                ResultSet rset2 = con.consulta("select F_Cb, F_ClaMar from tb_lote where F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_ClaLot = '" + rset.getString("F_Lote") + "' group by F_ClaPro");
                                                 while (rset2.next()) {
                                                     F_Cb = rset2.getString("F_Cb");
                                                     F_Marca = rset2.getString("F_ClaMar");
                                                 }
                                             }
 
-                                            rset2 = con.consulta("select F_DesMar from tb_marca where F_ClaMar = '" + F_Marca + "'");
-                                            while (rset2.next()) {
-                                                F_Marca = rset2.getString("F_DesMar");
+                                            if (F_Cb.equals("")) {
+                                                ResultSet rset2 = con.consulta("select F_Cb, F_ClaMar from tb_cb where F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_ClaLot = '" + rset.getString("F_Lote") + "' group by F_ClaPro");
+                                                while (rset2.next()) {
+                                                    F_Cb = rset2.getString("F_Cb");
+                                                    F_Marca = rset2.getString("F_ClaMar");
+                                                }
+                                            }
+                                            F_Marca = rset.getString("F_DesMar");
+                                            if (F_Marca.equals("")) {
+                                                ResultSet rset2 = con.consulta("select F_DesMar from tb_marca where F_ClaMar = '" + F_Marca + "'");
+                                                while (rset2.next()) {
+                                                    F_Marca = rset2.getString("F_DesMar");
+                                                }
                                             }
 
                                 %>

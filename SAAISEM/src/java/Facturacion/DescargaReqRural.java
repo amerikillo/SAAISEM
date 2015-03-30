@@ -129,14 +129,14 @@ public class DescargaReqRural extends HttpServlet {
                                 if (piezas > existencia) {
                                     diferencia = piezas - existencia;
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
-                                    con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + existencia + "')");
+                                    con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + existencia + "','0')");
                                     piezasDif = 0;
                                     piezas = diferencia;
                                 } else {
                                     diferencia = existencia - piezas;
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                     if (piezas > 0) {
-                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + piezas + "')");
+                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + piezas + "','0')");
                                         con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                     }
                                     piezasDif = diferencia;
@@ -160,7 +160,7 @@ public class DescargaReqRural extends HttpServlet {
                                     diferencia = piezas - existencia;
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
 
-                                    con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + existencia + "')");
+                                    con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + existencia + "','0')");
                                     piezasDif = 0;
                                     piezas = diferencia;
                                 } else {
@@ -168,7 +168,7 @@ public class DescargaReqRural extends HttpServlet {
                                     con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
 
                                     if (piezas >= 1) {
-                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + piezas + "')");
+                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + piezas + "','0')");
                                         con.actualizar("UPDATE tb_lotetemp" + Usuario + " SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                     }
                                     piezasDif = diferencia;
@@ -180,7 +180,7 @@ public class DescargaReqRural extends HttpServlet {
 
                     /**/
                     if (diferencia > 0 && piezasDif == 0) {
-                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','0','" + FechaE + "','0','0','','" + diferencia + "')");
+                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','0','" + FechaE + "','0','0','','" + diferencia + "','0')");
                         diferencia = 0;
                         piezasDif = 0;
                     }

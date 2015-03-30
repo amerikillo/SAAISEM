@@ -106,16 +106,17 @@
                 <tr>
                     <td>Clave</td>
                     <td>Descripción</td>
-                    <td>Piezas</td>
+                    <td>Piezas Sol</td>
+                    <td>Piezas Sur</td>
                     <td>Existencia</td>
                 </tr>
                 <%
                     try {
-
+                        int ExiLot = 0, ExiSol=0, TotalSur=0;
                         con.conectar();
                         ResultSet rset = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, REQ.F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + Clave + "' and F_Status =0 and F_PiezasReq != 0");
                         while (rset.next()) {
-                            int ExiLot = 0;
+                            
                             ResultSet rset2 = con.consulta("select sum(F_ExiLot) from tb_lote where F_ClaPro='" + rset.getString(1) + "'");
                             while (rset2.next()) {
                                 ExiLot = rset2.getInt(1);
@@ -125,21 +126,31 @@
                     <%
                         if (rset.getInt(4) > ExiLot) {
                             out.println("class='danger'");
+                            ExiSol = ExiLot;
+                        }else{
+                            ExiSol = rset.getInt(4);
                         }
+                        TotalSur = TotalSur + ExiSol;
+                        
                     %>
                     >
                     <td><%=rset.getString(1)%></td>
                     <td><%=rset.getString(2)%></td>
-                    <td ><small><input name="<%=rset.getString(1).trim()%>" type="number" class="text-right form-control" value="<%=rset.getInt(4)%>" /></small></td>
+                    <td><%=rset.getInt(4)%></td>
+                    <td ><small><input name="<%=rset.getString(1).trim()%>" type="number" class="text-right form-control" value="<%=ExiSol%>" /></small></td>
                     <td class="text-right"><%=formatter.format(ExiLot)%></td>
-                </tr>
+                </tr>                 
                 <%
                         }
+                 %>
+                 <h4>Total de Piezas a Facturar: <%=formatter.format(TotalSur)%></h4>
+                 <%
                         con.cierraConexion();
                     } catch (Exception e) {
                     }
                 %>
-            </table>
+               
+            </table>            
         </form>
         <!-- 
         ================================================== -->
