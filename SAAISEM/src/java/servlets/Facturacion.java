@@ -46,6 +46,29 @@ public class Facturacion extends HttpServlet {
         ConectionDB con = new ConectionDB();
         //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
         try {
+            if (request.getParameter("accion").equals("recalendarizarRemis")) {
+                con.conectar();
+
+                try {
+                    String[] claveschk = request.getParameterValues("checkRemis");
+                    String remisionesReCal = "";
+                    for (int i = 0; i < claveschk.length; i++) {
+                        if (i == (claveschk.length - 1)) {
+                            remisionesReCal = remisionesReCal + "'" + claveschk[i] + "'";
+                        } else {
+                            remisionesReCal = remisionesReCal + "'" + claveschk[i] + "',";
+                        }
+                    }
+                    out.println(remisionesReCal);
+                    
+                    con.insertar("update tb_factura set F_FecEnt = '" + request.getParameter("F_FecEnt") + "' where F_ClaDoc in (" + remisionesReCal + ")");
+                    out.println("<script>alert('Actualización correcta')</script>");
+                } catch (Exception e) {
+                    out.println("<script>alert('Error al actualizar')</script>");
+                }
+                out.println("<script>window.location='facturacion/cambioFechas.jsp'</script>");
+                con.cierraConexion();
+            }
             if (request.getParameter("accion").equals("validarVariasAuditor")) {
                 con.conectar();
                 String[] claveschk = request.getParameterValues("chkId");
@@ -349,8 +372,8 @@ public class Facturacion extends HttpServlet {
                     ResultSet rset = con.consulta("select F_ClaPro, F_ClaUni from tb_unireq where F_ClaUni in( " + Unidades + ") and F_Status=0 and  F_PiezasReq != 0");
                     while (rset.next()) {
                         String ClaPro = rset.getString("F_ClaPro");
-                        String F_NCant = request.getParameter(rset.getString("F_ClaUni") +"_"+ ClaPro.trim());
-                        con.insertar("update tb_unireq set F_PiezasReq = '" + F_NCant + "' where F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_ClaUni = '" + request.getParameter("F_ClaUni") + "' and F_Status='0'");
+                        String F_NCant = request.getParameter(rset.getString("F_ClaUni") + "_" + ClaPro.trim());
+                        con.insertar("update tb_unireq set F_PiezasReq = '" + F_NCant + "' where F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_ClaUni = '" + rset.getString("F_ClaUni") + "' and F_Status='0'");
                     }
                     con.cierraConexion();
                 } catch (Exception e) {
@@ -482,9 +505,13 @@ public class Facturacion extends HttpServlet {
 
                         }
                         con.actualizar("update tb_unireq set F_Status='2' where F_ClaUni='" + ClaUni + "' and F_Status='0' ");
-                        RequerimientoModula reqMod = new RequerimientoModula();
-                        reqMod.enviaRequerimiento(FolFact + "");
-                        response.sendRedirect("reimpConcentrado.jsp");
+                        try {
+                            /*RequerimientoModula reqMod = new RequerimientoModula();
+                             reqMod.enviaRequerimiento(FolFact + "");*/
+                        } catch (Exception e) {
+                            out.println("<script>alert('Error conexión MODULA')</script>");
+                        }
+                        //response.sendRedirect("reimpConcentrado.jsp");
                         /*
                          * Cierra Ciclo
                          */
@@ -497,6 +524,7 @@ public class Facturacion extends HttpServlet {
                     System.out.println(e.getMessage());
                     System.out.println(e.getLocalizedMessage());
                 }
+                out.println("<script>window.location='reimpConcentrado.jsp'</script>");
                 //out.println("<script>window.open('reimpGlobalReq.jsp?fol_gnkl=" + FolFact + "','_blank')</script>");
                 //out.println("<script>window.open('reimpGlobalMarbetes.jsp?fol_gnkl=" + FolFact + "','_blank')</script>");
             }

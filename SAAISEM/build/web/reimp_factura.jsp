@@ -59,7 +59,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            
+
             <%@include file="../jspf/menuPrincipal.jspf" %>
 
             <div class="row">
@@ -79,8 +79,7 @@
                                     <td>No. Folio</td>
                                     <td>Punto de Entrega</td>
                                     <td>Fecha de Entrega</td>
-                                    <td>Admon</td>
-                                    <td>Venta</td>
+                                    <td>Folio</td>
                                     <td>Ver Factura</td>
                                     <td>Devolución</td>
                                     <td>Reportes</td>
@@ -108,12 +107,6 @@
                                     <td><%=rset.getString("F_FecEnt")%></td>
                                     <td>
                                         <form action="reimpFactura.jsp" target="_blank">
-                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <button class="btn btn-block btn-primary"><span class="glyphicon glyphicon-print"></span></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="reimpFacturaComun.jsp" target="_blank">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
                                             <button class="btn btn-block btn-primary"><span class="glyphicon glyphicon-print"></span></button>
                                         </form>
@@ -181,28 +174,27 @@
             </div>
         </div>
         <%@include file="../jspf/piePagina.jspf" %>
+
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
+                                                $(document).ready(function() {
+                                                    $('#datosCompras').dataTable();
+                                                });
+        </script>
+        <script>
+            $(function() {
+                $("#fecha").datepicker();
+                $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+            });
+        </script>
     </body>
 </html>
-
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script>
-                                        $(document).ready(function() {
-                                            $('#datosCompras').dataTable();
-                                        });
-</script>
-<script>
-    $(function() {
-        $("#fecha").datepicker();
-        $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
-</script>

@@ -14,7 +14,7 @@ import java.sql.Statement;
  *
  * @author wence
  */
-public class ConectionDB_SQLServer {
+public class ConRequerimiento {
 
 //variables miembro
     private String usuario;
@@ -30,7 +30,7 @@ public class ConectionDB_SQLServer {
 
 //CONSTRUCTORES
     //Constructor que toma los datos de conexion por medio de parametros
-    public ConectionDB_SQLServer(String usuario, String clave, String url, String driverClassName) {
+    public ConRequerimiento(String usuario, String clave, String url, String driverClassName) {
         this.usuario = usuario;
         this.clave = clave;
         this.url = url;
@@ -39,12 +39,17 @@ public class ConectionDB_SQLServer {
 
     //Constructor que crea la conexion sin parametros con unos definidos en la clase
     //(meter los datos correspondientes)
-    public ConectionDB_SQLServer() {
+    public ConRequerimiento() {
         //poner los datos apropiados
-        this.usuario = "SYSTEM_ESPAÑ";
-        this.clave = "SYS123";
-        this.url = "jdbc:sqlserver://192.168.0.245\\BUSINESS\\SQLEXPRESS:49457;databaseName=HOST_IMPEXP_GNK";
-        this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
+        /* this.usuario = "isemusr";
+         this.clave = "AfQaufdC7S";
+         this.url = "jdbc:mysql://162.209.67.250:3306/isemcc";
+         this.driverClassName = "org.gjt.mm.mysql.Driver";*/
+        this.usuario = "root";
+        this.clave = "eve9397";
+        this.url = "jdbc:mysql://localhost:3306/gnklmex_reqrurales";
+        this.driverClassName = "org.gjt.mm.mysql.Driver";
     }
 
     //metodos para recuperar los datos de conexion
@@ -61,6 +66,14 @@ public class ConectionDB_SQLServer {
     }
 
     public Connection getConn() {
+        try {
+            Class.forName(this.driverClassName).newInstance();
+            this.conn = DriverManager.getConnection(this.url, this.usuario, this.clave);
+//            System.out.println("Se conectó de FORMA EXITOSA ");
+
+        } catch (Exception err) {
+            System.out.println("Error " + err.getMessage());
+        }
         return conn;
     }
 
@@ -90,15 +103,14 @@ public class ConectionDB_SQLServer {
     }
 
 //la conexion propiamente dicha
-    public boolean conectar() throws SQLException {
+    public void conectar() throws SQLException {
         try {
             Class.forName(this.driverClassName).newInstance();
             this.conn = DriverManager.getConnection(this.url, this.usuario, this.clave);
-//           System.out.println("Se conectó de FORMA EXITOSA ");
-            return true;
+//            System.out.println("Se conectó de FORMA EXITOSA ");
+
         } catch (Exception err) {
             System.out.println("Error " + err.getMessage());
-            return false;
         }
     }
     //Cerrar la conexion
@@ -113,11 +125,29 @@ public class ConectionDB_SQLServer {
         System.out.println(consulta);
         return this.estancia.executeQuery(consulta);
     }
-//METODO PARA EJECUTAR
-    public int ejecutar(String ejecuta) throws SQLException {
-        System.out.println(ejecuta);
+
+    // -------------------
+    public void actualizar(String actualiza) throws SQLException {
+        System.out.println(actualiza);
+        this.estancia = (Statement) conn.createStatement();
+        estancia.executeUpdate(actualiza);
+        //this.conn.commit();
+    }
+
+    public ResultSet borrar(String borra) throws SQLException {
         Statement st = (Statement) this.conn.createStatement();
-        return st.executeUpdate(ejecuta);
+        return (ResultSet) st.executeQuery(borra);
+    }
+
+    public void borrar2(String borra) throws SQLException {
+        this.estancia = (Statement) conn.createStatement();
+        estancia.executeUpdate(borra);
+    }
+
+    public int insertar(String inserta) throws SQLException {
+        System.out.println(inserta);
+        Statement st = (Statement) this.conn.createStatement();
+        return st.executeUpdate(inserta);
     }
 }
 /**/

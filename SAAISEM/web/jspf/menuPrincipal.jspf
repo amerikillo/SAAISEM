@@ -109,6 +109,7 @@
                         <li><a href="/SAAISEM/reimpConcentrado.jsp">Reimpresión Folios a Remisionar</a></li>
                         <li><a href="/SAAISEM/comparativoGlobal.jsp">Folios a Remisionar</a></li>
                         <li><a href="/SAAISEM/facturacion/concentradoxRuta.jsp">Concentrados por Ruta</a></li>
+                        <li><a href="/SAAISEM/facturacion/cambioFechas.jsp">Cambiar Fecha de Remisiones</a></li>
                         <li class="divider"></li>
                         <li><a href="/SAAISEM/Secuencial.jsp">Generar Secuencial</a></li>
                         <li><a href="/SAAISEM/RelacionarF.jsp">Relacionar Facturas</a></li>
@@ -187,6 +188,12 @@
                         <li><a href="/SAAISEM/RelacionarF.jsp">Relacionar Facturas</a></li>
                         <li><a href="/SAAISEM/CatalogoIsem/Txt.jsp">TXT</a></li>
                         <li><a href="/SAAISEM/ReportesPuntos/GeneraReporte.jsp">Reportes A</a></li>                        
+                    </ul>
+                </li>
+				<li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Requerimientos<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/SAAISEM/ExportarReque.jsp">Exportar Requerimiento</a></li>                        
                     </ul>
                 </li>
                 <!--li class="dropdown">

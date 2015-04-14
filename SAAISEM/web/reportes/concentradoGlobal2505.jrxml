@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="concentradoGlobal" language="groovy" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="fa04e4c5-5205-47c6-b26f-79faf959ff59">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idFact" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Americo\\Documents\\GitHub\\SAAISEM\\SAAISEM\\web\\reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	u.F_NomCli,
+	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y'),
+	l.F_ClaPro,
+	l.F_ClaLot,
+	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'),
+	(f.F_Cant+0) as F_Cant,
+	l.F_Ubica,
+	f.F_IdFact,
+	l.F_Cb,
+	p.F_Pzs,
+	(f.F_Cant DIV p.F_Pzs),
+	(f.F_Cant MOD p.F_Pzs),
+	m.F_DesPro,
+	f.F_Id,
+	m.F_ClaSap,
+	m.F_Costo,
+	@rownum:=@rownum+1 as rownum,
+	(f.F_Cant*m.F_Costo) as F_Importe,
+	u.F_Direc,
+	f.F_CantSol
+FROM
+	(SELECT @rownum:=0) as rownum,
+	tb_facttemp f,
+	tb_lote l,
+	tb_uniatn u,
+	tb_pzxcaja p,
+	tb_medica m
+WHERE
+	f.F_IdLot = l.F_IdLote
+AND f.F_ClaCli = u.F_ClaCli
+AND p.F_ClaPro = l.F_ClaPro
+AND m.F_ClaPro = l.F_ClaPro
+AND l.F_ClaPro = m.F_ClaPro
+AND m.F_TipMed = '2505'
+AND F_IdFact = $P{idFact}
+group by
+f.F_Id;]]>
+	</queryString>
+	<field name="F_NomCli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DATE_FORMAT(f.F_FecEnt, &apos;%d/%m/%Y&apos;)" class="java.lang.String"/>
+	<field name="F_ClaPro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_ClaLot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DATE_FORMAT(l.F_FecCad, &apos;%d/%m/%Y&apos;)" class="java.lang.String"/>
+	<field name="F_Cant" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Ubica" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_IdFact" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Cb" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Pzs" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="(f.F_Cant DIV p.F_Pzs)" class="java.lang.Long"/>
+	<field name="(f.F_Cant MOD p.F_Pzs)" class="java.lang.Double"/>
+	<field name="F_DesPro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_ClaSap" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Costo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rownum" class="java.lang.Long"/>
+	<field name="F_Importe" class="java.lang.Double"/>
+	<field name="F_Direc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_CantSol" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="(f.F_Cant DIV p.F_Pzs)_1" class="java.lang.Long" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{(f.F_Cant DIV p.F_Pzs)}]]></variableExpression>
+	</variable>
+	<variable name="(f.F_Cant MOD p.F_Pzs)_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{(f.F_Cant MOD p.F_Pzs)}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="f.F_Cant+0_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_2" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_3" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="(f.F_Cant DIV p.F_Pzs)_2" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{(f.F_Cant DIV p.F_Pzs)}]]></variableExpression>
+	</variable>
+	<variable name="(f.F_Cant MOD p.F_Pzs)_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{(f.F_Cant MOD p.F_Pzs)}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_4" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_5" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="F_Importe_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Importe}]]></variableExpression>
+	</variable>
+	<variable name="F_Importe_2" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Importe}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_6" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<variable name="F_Cant_7" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Cant}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField>
+				<reportElement uuid="01db694b-de64-467a-8a0f-8dd5ff6680b7" x="181" y="0" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0e630cfc-2cba-4258-b38f-2adec11d542e" x="243" y="0" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATE_FORMAT(l.F_FecCad, '%d/%m/%Y')}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="64abfbc0-523b-454d-b9ff-72248bdae34f" x="3" y="0" width="50" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###,##0" isBlankWhenNull="true">
+				<reportElement uuid="0b6a3f5b-26fe-4397-a4c3-d938cc35cf46" x="289" y="0" width="50" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_CantSol}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="b1ab397b-9946-4f91-9239-a89a42a71031" x="0" y="8" width="566" height="1" forecolor="#000000"/>
+			</line>
+			<textField>
+				<reportElement uuid="9e723926-9f0e-4913-81da-a75665de8795" stretchType="RelativeToBandHeight" x="53" y="0" width="123" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_DesPro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###,##0" isBlankWhenNull="true">
+				<reportElement uuid="6dc9a9ce-b2c2-4326-973c-4a435110a247" x="332" y="0" width="50" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Cant}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="74fee49f-4641-4308-a9a4-12cdf4284bca" x="378" y="0" width="52" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Costo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="cc4b49db-138f-4cf4-9007-1732f0e5b4eb" x="432" y="0" width="52" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="2"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="10">
+			<textField pattern="#,##0">
+				<reportElement uuid="9a0a334f-ee9d-4a2f-8048-fe59486b1d5f" x="333" y="0" width="50" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{F_Cant_7}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4c5b261f-8b4f-4ce2-9f73-e3a21add9c95" x="56" y="0" width="210" height="10"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[SubTotal Mat. de Curación (2505)]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement uuid="1338b89b-7389-44be-9c4c-3891b6f534d9" x="289" y="0" width="50" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{F_Cant_6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="a6157aae-5d88-42db-82d8-669c29ffb38a" x="432" y="0" width="52" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{F_Importe_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

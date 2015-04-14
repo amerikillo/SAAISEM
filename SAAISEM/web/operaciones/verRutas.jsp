@@ -73,7 +73,7 @@
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
 
-            <%@include file="../jspf/menuPrincipal.jspf" %>
+            <!--%@include file="../jspf/menuPrincipal.jspf" %-->
             <div class="row">
                 <form action="verRutas.jsp" method="post">
                     <h4 class="col-sm-2">Seleccione Ruta:</h4>
@@ -316,7 +316,7 @@
                         int idReg = 1;
                         ResultSet rset = con.consulta("SELECT	u.F_ClaCli,	u.F_NomCli,	fr.F_LocPlano,	u.F_ClaJur,	fr.F_Ruta,	d.F_ModCli,	d.F_MunCli FROM	tb_uniatn u,	tb_detcli d,	tb_fecharuta fr WHERE u.F_ClaCli = d.F_ClaCli AND fr.F_ClaUni = d.F_ClaCli AND fr.F_Ruta LIKE '%" + F_Juris + "%' AND u.F_StsCli = 'A' and u.F_ClaJurNum in (" + JurisUsu + ") group by u.F_ClaCli ORDER BY	d.F_Ruta");
                         while (rset.next()) {
-                            ResultSet rsetCab = con.consulta("select F_Ruta, F_LocPlano from tb_fecharuta where F_ClaUni = '" + rset.getString("F_ClaCli") + "' and MONTH(F_Fecha) = '" + (Integer.parseInt(F_Mes) - 1) + "' and YEAR(F_Fecha) = '" + F_Anio + "' ");
+                            ResultSet rsetCab = con.consulta("select F_Ruta, F_LocPlano from tb_fecharuta where F_ClaUni = '" + rset.getString("F_ClaCli") + "' and MONTH(F_Fecha) = '" + (Integer.parseInt(F_Mes)+1) + "' and YEAR(F_Fecha) = '" + F_Anio + "' ");
                             String F_Ruta = "";
                             String F_LocPlano = "";
                             while (rsetCab.next()) {

@@ -84,12 +84,11 @@
                                     <td>No. Folio</td>
                                     <td>Punto de entrega</td>
                                     <td>Orden de Compra</td>
-                                    <td>Folio Admon</td>
-                                    <td>Folio Venta</td>
+                                    <td>Folio</td>
                                     <td>Marbetes</td>
                                     <td>Excel</td>
                                     <td>Cancelar</td>
-                                    <!--td>Reenviar</td-->
+                                    <td>Reenviar</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -118,12 +117,6 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="reimpGlobalMarbetes.jsp" target="_blank">
-                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_IdFact")%>">
-                                            <button class="btn btn-block btn-primary">Imprimir</button>
-                                        </form>
-                                    </td>
-                                    <td>
                                         <a class="btn btn-block btn-primary" href="gnrConcentrado.jsp?fol_gnkl=<%=rset.getString("F_IdFact")%>" target="_blank">Descargar</a>
                                     </td>
                                     <td>
@@ -138,13 +131,13 @@
                                                 %>
                                         </form>
                                     </td>
-                                    <!--td>
+                                    <td>
                                         <form action="FacturacionManual" method="post">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_IdFact")%>">
                                             <button class="btn btn-block btn-info" name="accion" value="ReenviarFactura" onclick="return confirm('Seguro de Reenviar este concentrado?')"><span class="glyphicon glyphicon-upload"></span></button>
 
                                         </form>
-                                    </td-->
+                                    </td>
                                 </tr>
                                 <%
                                             }
