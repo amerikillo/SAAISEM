@@ -42,35 +42,7 @@ public class Medicamentos extends HttpServlet {
             /*
              *Para actualizar Registros
              */
-            if (request.getParameter("accion").equals("actualizar")) {
-                //consql.conectar();
-                con.conectar();
-                try {
-                    String clave = request.getParameter("Clave");
-                    try {
-                        int largoClave = request.getParameter("Clave").length();
-                        int espacios = 5 - largoClave;
-                        for (int i = 1; i <= espacios; i++) {
-                            clave = " " + clave;
-                        }
-                    } catch (Exception e) {
-                    }
-                    //consql.actualizar("update TB_Provee set F_ClaPrv='" + clave + "', F_NomPrv='" + request.getParameter("Nombre").toUpperCase() + "', F_Dir='" + request.getParameter("Direccion").toUpperCase() + "', F_Col='" + request.getParameter("Colonia").toUpperCase() + "', F_Pob='" + request.getParameter("Poblacion").toUpperCase() + "', F_CP='" + request.getParameter("CP").toUpperCase() + "', F_RFC='" + request.getParameter("RFC").toUpperCase() + "', F_Con='" + request.getParameter("CON").toUpperCase() + "', F_Cls='" + request.getParameter("CLS").toUpperCase() + "', F_Tel='" + request.getParameter("Telefono").toUpperCase() + "', F_Fax='" + request.getParameter("FAX").toUpperCase() + "', F_Mail='" + request.getParameter("Mail").toUpperCase() + "', F_Obs='" + request.getParameter("Observaciones").toUpperCase() + "' where F_ClaPrv='" + request.getParameter("id").toUpperCase() + "';");
-
-                    con.actualizar("update provee_all set F_ClaPrv='" + clave + "', F_nomprov='" + request.getParameter("Nombre").toUpperCase() + "', F_Dir='" + request.getParameter("Direccion").toUpperCase() + "', F_Col='" + request.getParameter("Colonia").toUpperCase() + "', F_Pob='" + request.getParameter("Poblacion").toUpperCase() + "', F_CP='" + request.getParameter("CP").toUpperCase() + "', F_RFC='" + request.getParameter("RFC").toUpperCase() + "', F_Con='" + request.getParameter("CON").toUpperCase() + "', F_Cls='" + request.getParameter("CLS").toUpperCase() + "', F_Tel='" + request.getParameter("Telefono").toUpperCase() + "', F_Fax='" + request.getParameter("FAX").toUpperCase() + "', F_Mail='" + request.getParameter("Mail").toUpperCase() + "', F_Obs='" + request.getParameter("Observaciones").toUpperCase() + "' where F_ClaPrv='" + request.getParameter("id").toUpperCase() + "';");
-
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-
-                    out.println("<script>alert('Ya esta registrado ese proveedor')</script>");
-                    out.println("<script>window.location='editar_proveedor.jsp'</script>");
-                }
-                con.cierraConexion();
-                //consql.cierraConexion();
-
-                out.println("<script>alert('Proveedor actualizado correctamente.')</script>");
-                out.println("<script>window.location='catalogo.jsp'</script>");
-            }
+            
             /*
              *Manda al jsp el id del registro a editar
              */
@@ -120,9 +92,9 @@ public class Medicamentos extends HttpServlet {
 
                         } else {
                             TpMed = Integer.parseInt(request.getParameter("list_medica").toUpperCase());
-                            //conModula.ejecutar("insert into IMP_ARTICOLI (ART_OPERAZIONE, ART_ARTICOLO, ART_DES, ART_UMI, ART_MIN, ART_PROY) values ('I','" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','PZ','" + request.getParameter("Min").toUpperCase() + "', 'ISSEMyM')");
+                            conModula.ejecutar("insert into IMP_ARTICOLI (ART_OPERAZIONE, ART_ARTICOLO, ART_DES, ART_UMI, ART_MIN, ART_PROY) values ('I','" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','PZ','" + request.getParameter("Min").toUpperCase() + "', 'ISSEMyM')");
                             con.insertar("insert into tb_medica values ('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','A','" + TpMed + "','" + request.getParameter("Costo").toUpperCase() + "','" + request.getParameter("PresPro").toUpperCase() + "','" + request.getParameter("F_Origen").toUpperCase() + "','" + request.getParameter("SAP").toUpperCase() + "');");
-                            //con.insertar("insert into tb_maxmodula values('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Max").toUpperCase() + "','" + request.getParameter("Min").toUpperCase() + "','0')");
+                            con.insertar("insert into tb_maxmodula values('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Max").toUpperCase() + "','" + request.getParameter("Min").toUpperCase() + "','0')");
                         }
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
@@ -152,7 +124,7 @@ public class Medicamentos extends HttpServlet {
                         }
                         if (banMedicamento == 0) {
                             try {
-                                con.insertar("insert into tb_maxmodula values('" + rset.getString("F_ClaPro") + "','" + request.getParameter("Max" + rset.getString("F_ClaPro")) + "','" + request.getParameter("Min" + rset.getString("F_ClaPro")) + "','0')");
+                                con.insertar("insert into tb_maxmodula values('" + rset.getString("F_ClaPro") + "','" + request.getParameter("Max" + rset.getString("F_ClaPro").trim()) + "','" + request.getParameter("Min" + rset.getString("F_ClaPro").trim()) + "','0')");
                             } catch (Exception e) {
                             }
                         } else {

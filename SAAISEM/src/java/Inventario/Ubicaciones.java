@@ -49,12 +49,13 @@ public class Ubicaciones extends HttpServlet {
                 if (request.getParameter("accion").equals("Redistribucion")) {
 
                     if (validaUbicacion(request.getParameter("F_ClaUbi"))) {
-                        int nIdLote = Reubica(request.getParameter("F_IdLote"), request.getParameter("F_ClaUbi"), request.getParameter("CantMov"), (String) sesion.getAttribute("nombre"));
+                        String mensaje = Reubica(request.getParameter("F_IdLote"), request.getParameter("F_ClaUbi"), request.getParameter("CantMov"), (String) sesion.getAttribute("nombre"));
 
-                        ReubicaApartado(request.getParameter("F_IdLote"), nIdLote);
-                        response.sendRedirect("hh/insumoNuevoRedist.jsp");
+                        //ReubicaApartado(request.getParameter("F_IdLote"), nIdLote);
+                        //response.sendRedirect("hh/insumoNuevoRedist.jsp");
+                        out.println("<script>alert('" + mensaje + "')</script>");
+                        out.println("<script>window.location='hh/insumoNuevoRedist.jsp'</script>");
                     } else {
-
                         out.println("<script>alert('Ubicación no válida')</script>");
                         out.println("<script>window.location='hh/insumoNuevoRedist.jsp'</script>");
                     }
@@ -84,8 +85,9 @@ public class Ubicaciones extends HttpServlet {
         }
     }
 
-    public int Reubica(String idLote, String CBUbica, String cantMov, String Nombre) throws SQLException, ParseException {
+    public String Reubica(String idLote, String CBUbica, String cantMov, String Nombre) throws SQLException, ParseException {
         int idLoteNuevo = 0;
+        String mensaje = "Reubicación correcta";
         Devoluciones objDev = new Devoluciones();
         ConectionDB con = new ConectionDB();
         ConectionDB_SQLServer conModula = new ConectionDB_SQLServer();
@@ -96,7 +98,7 @@ public class Ubicaciones extends HttpServlet {
         DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
         DateFormat df2 = new SimpleDateFormat("yyyyMMdd");
         DateFormat df3 = new SimpleDateFormat("yyyy-MM-dd");
-        String F_ClaPro = "", F_ClaLot = "", F_FecCad = "", F_FolLot = "", F_ClaOrg = "", F_Ubica = "", F_FecFab = "", F_Cb = "", F_ClaMar = "", F_Origen = "";
+        String F_ClaPro = "", F_ClaLot = "", F_FecCad = "", F_FolLot = "", F_ClaOrg = "", F_Ubica = "", F_FecFab = "", F_Cb = "", F_ClaMar = "", F_Origen = "", F_UniMed = "";
         int F_ExiLot = 0, F_IdLote = 0, F_ExiLotDestino = 0;
         ResultSet rset = con.consulta("select * from tb_lote where F_IdLote = '" + idLote + "' ");
         while (rset.next()) {
@@ -111,6 +113,7 @@ public class Ubicaciones extends HttpServlet {
             F_ClaMar = rset.getString("F_ClaMar");
             F_ExiLot = rset.getInt("F_ExiLot");
             F_Origen = rset.getString("F_Origen");
+            F_UniMed = rset.getString("F_UniMed");
         }
 
         if (F_ExiLot - CantMov >= 0) {
@@ -128,16 +131,30 @@ public class Ubicaciones extends HttpServlet {
                 if (F_IdLote != 0) {//Ya existe insumo en el desitno
                     con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLotDestino + CantMov) + "' where F_IdLote='" + F_IdLote + "'");
                     if (CBUbica.equals("MODULA")) {
-                        conModula.conectar();
-                        conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
-                        conModula.cierraConexion();
+                        try {
+
+                            conModula.conectar();
+                            conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                            conModula.cierraConexion();
+                        } catch (Exception e) {
+                            System.out.println(e);
+                            System.out.println(e.getMessage());
+                            mensaje = e.toString();
+                        }
                     }
                 } else {//No existe insumo en el destino
-                    con.insertar("insert into tb_lote values(0,'" + F_ClaPro + "','" + F_ClaLot + "','" + F_FecCad + "','" + CantMov + "','" + F_FolLot + "','" + F_ClaOrg + "','" + UbicaMov + "','" + F_FecFab + "','" + F_Cb + "','" + F_ClaMar + "', '" + F_Origen + "')");
+                    con.insertar("insert into tb_lote values(0,'" + F_ClaPro + "','" + F_ClaLot + "','" + F_FecCad + "','" + CantMov + "','" + F_FolLot + "','" + F_ClaOrg + "','" + UbicaMov + "','" + F_FecFab + "','" + F_Cb + "','" + F_ClaMar + "', '" + F_Origen + "','" + F_ClaOrg + "','" + F_UniMed + "')");
                     if (CBUbica.equals("MODULA")) {
-                        conModula.conectar();
-                        conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
-                        conModula.cierraConexion();
+                        try {
+
+                            conModula.conectar();
+                            conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+                            conModula.cierraConexion();
+                        } catch (Exception e) {
+                            System.out.println(e);
+                            System.out.println(e.getMessage());
+                            mensaje = e.toString();
+                        }
                     }
                 }
                 con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLot - CantMov) + "' where F_IdLote = '" + idLote + "' ");
@@ -153,7 +170,7 @@ public class Ubicaciones extends HttpServlet {
         }
         //conModula.cierraConexion();
         con.cierraConexion();
-        return idLoteNuevo;
+        return mensaje;
     }
 
     public void ReubicaApartado(String idLote, int nidLote) throws SQLException {
