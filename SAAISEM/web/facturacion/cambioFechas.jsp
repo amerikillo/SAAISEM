@@ -62,15 +62,19 @@
 
             <%@include file="../jspf/menuPrincipal.jspf" %>
 
-            <div class="row">
-                <h3 class="col-sm-3">Administrar Remisiones</h3>
-                <div class="col-sm-2 col-sm-offset-7">
-                    <br/>
-                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCambioFecha" id="btnRecalendarizar" >Recalendarizar</button>
+            <form action="../Facturacion" method="post" id="formCambioFechas">
+                <div class="row">
+                    <h3 class="col-sm-6">Recalendarizar/Imprimir Múltiples Remisiones</h3>
+                    <div class="col-sm-2 col-sm-offset-2">
+                        <br/>
+                        <button type="submit" class="btn btn-info btn-block" id="btnImpMult" name="accion" value="impRemisMultples" >Impresiones Múltiples</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <br/>
+                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCambioFecha" id="btnRecalendarizar" >Recalendarizar</button>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <form action="../Facturacion" method="post" id="formCambioFechas">
+                <div>
                     <input class="hidden" name="accion" value="recalendarizarRemis"  />
                     <input class="hidden" id="F_FecEnt" name="F_FecEnt" value=""  />
                     <div class="panel panel-primary">
@@ -119,8 +123,8 @@
                             </table>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
 
         <!-- Modal -->
@@ -172,10 +176,12 @@
                                         $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
 
                                         $('#btnRecalendarizar').attr('disabled', true);
+                                        $('#btnImpMult').attr('disabled', true);
                                     });
 
                                     function activarBtnReCal() {
                                         $('#btnRecalendarizar').attr('disabled', false);
+                                        $('#btnImpMult').attr('disabled', false);
                                     }
 
                                     function confirmaModal() {

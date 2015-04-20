@@ -111,6 +111,8 @@
                         <li><a href="/SAAISEM/facturacion/concentradoxRuta.jsp">Concentrados por Ruta</a></li>
                         <li><a href="/SAAISEM/facturacion/cambioFechas.jsp">Cambiar Fecha de Remisiones</a></li>
                         <li class="divider"></li>
+                        <li><a href="/SAAISEM/facturacion/listaInventarios.jsp">Inventarios</a></li>
+                        <li class="divider"></li>
                         <li><a href="/SAAISEM/Secuencial.jsp">Generar Secuencial</a></li>
                         <li><a href="/SAAISEM/RelacionarF.jsp">Relacionar Facturas</a></li>
 
