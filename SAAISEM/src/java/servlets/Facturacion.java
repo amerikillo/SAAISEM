@@ -729,12 +729,13 @@ public class Facturacion extends HttpServlet {
 
                     con.conectar();
 
-                    ResultSet rsetFactTemp = con.consulta("select F_Id, F_IdFact from tb_factemp where F_ClaCli in () and F_StsFact<5 group by F_IdFact");
+                    ResultSet rsetFactTemp = con.consulta("select F_Id, F_IdFact, F_ClaCli from tb_facttemp where F_ClaCli in (" + Unidades + ") and F_StsFact<5 group by F_IdFact");
 //consql.conectar();
 
                     while (rsetFactTemp.next()) {
                         FolioFactura = 0;
-                        String idFact = "";
+                        String idFact = rsetFactTemp.getString("F_IdFact");
+                        String F_ClaCli = rsetFactTemp.getString("F_ClaCli");
                         FechaE = request.getParameter("Fecha");
                         ResultSet FolioFact = con.consulta("SELECT F_IndFact FROM tb_indice");
                         while (FolioFact.next()) {
@@ -742,13 +743,13 @@ public class Facturacion extends HttpServlet {
                         }
                         FolFact = FolioFactura + 1;
                         con.actualizar("update tb_indice set F_IndFact='" + FolFact + "'");
-                        byte[] a = request.getParameter("Obs").getBytes("ISO-8859-1");
-                        String Observaciones = (new String(a, "UTF-8")).toUpperCase();
-                        String req = request.getParameter("F_Req").toUpperCase();
+                        //byte[] a = request.getParameter("Obs").getBytes("ISO-8859-1");
+                        String Observaciones = "";//(new String(a, "UTF-8")).toUpperCase();
+                        String req = "";//request.getParameter("F_Req").toUpperCase();
                         if (req.equals("")) {
                             req = "00000";
                         }
-                        String qryFact = "select f.F_ClaCli, l.F_FolLot, l.F_IdLote, l.F_ClaPro, l.F_ClaLot, l.F_FecCad, m.F_TipMed, m.F_Costo, p.F_ClaProve, f.F_Cant, l.F_ExiLot, l.F_Ubica, f.F_IdFact, f.F_Id, f.F_FecEnt, f.F_CantSol  from tb_facttemp f, tb_lote l, tb_medica m, tb_proveedor p where f.F_IdLot = l.F_IdLote AND l.F_ClaPro = m.F_ClaPro AND l.F_ClaOrg = p.F_ClaProve and f.F_IdFact = '" + request.getParameter("Nombre") + "' and f.F_StsFact=4 AND (f.F_ClaCli = (" + rsetFactTemp.getString("F_IdFact") + ")) ";
+                        String qryFact = "select f.F_ClaCli, l.F_FolLot, l.F_IdLote, l.F_ClaPro, l.F_ClaLot, l.F_FecCad, m.F_TipMed, m.F_Costo, p.F_ClaProve, f.F_Cant, l.F_ExiLot, l.F_Ubica, f.F_IdFact, f.F_Id, f.F_FecEnt, f.F_CantSol  from tb_facttemp f, tb_lote l, tb_medica m, tb_proveedor p where f.F_IdLot = l.F_IdLote AND l.F_ClaPro = m.F_ClaPro AND l.F_ClaOrg = p.F_ClaProve and f.F_IdFact = '" + idFact + "' and f.F_StsFact<5 AND f.F_ClaCli = '" + F_ClaCli + "' ";
                         ResultSet rset = con.consulta(qryFact);
                         while (rset.next()) {
                             idFact = rset.getString("F_IdFact");
@@ -825,7 +826,7 @@ public class Facturacion extends HttpServlet {
                             }
                         }
 
-                        con.insertar("insert into tb_obserfact values ('" + idFact + "','" + Observaciones + "',0,'" + request.getParameter("F_Req").toUpperCase() + "', '" + request.getParameter("F_Tipo") + "')");
+                        con.insertar("insert into tb_obserfact values ('" + idFact + "','" + Observaciones + "',0,'', 'ORDINARIO')");
                         out.println("<script>window.open('reimpFactura.jsp?fol_gnkl=" + idFact + "','_blank')</script>");
                         //Finaliza
                         //consql.cierraConexion();

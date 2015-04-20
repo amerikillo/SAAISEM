@@ -228,7 +228,6 @@
                                     </div>
                                     <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-condensed" id="datosProv">
                                         <tr>
-                                            <td>Unidad</td>
                                             <td>Clave</td>
                                             <td>Descripción</td>
                                             <td>Piezas Sol</td>
@@ -258,7 +257,6 @@
 
                                             %>
                                             >
-                                            <td><%=rset.getString("F_ClaUni")%></td>
                                             <td><%=rsetR1.getString(1)%></td>
                                             <td><%=rsetR1.getString(2)%></td>
                                             <td><%=rsetR1.getInt(4)%></td>
@@ -304,7 +302,7 @@
                         %>
                         <input name="F_FecEnt" class="hidden" value="<%=F_FecEnt%>" />
                         <input name="F_Juris" class="hidden" value="<%=UsuaJuris%>" />
-                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardarGlobal" onclick="return validaRemision()">Generar Folio(s)</button> 
+                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="generarRemision" onclick="return validaRemision()">Generar Folio(s)</button> 
 
                         <%
                             }
