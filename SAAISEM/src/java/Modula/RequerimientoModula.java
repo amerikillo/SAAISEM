@@ -24,7 +24,7 @@ public class RequerimientoModula {
             con.conectar();
             conModula.conectar();
             try {
-                conModula.ejecutar("delete from IMP_ORDINI_RIGHE where RIG_ORDINE='" + F_IdFact + "'");
+                 conModula.ejecutar("delete from IMP_ORDINI_RIGHE where RIG_ORDINE='" + F_IdFact + "'");
                 conModula.ejecutar("delete from IMP_ORDINI where ORD_ORDINE='" + F_IdFact + "'");
                 ResultSet rset = con.consulta("select F_ClaCli, F_FecEnt, F_IdFact from v_folioremisiones where F_IdFact = '" + F_IdFact + "' group by F_IdFact");
                 while (rset.next()) {

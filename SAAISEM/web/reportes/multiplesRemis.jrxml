@@ -10,7 +10,7 @@
 		<defaultValueExpression><![CDATA["C:\\Users\\Americo\\Documents\\GitHub\\SAAISEM\\SAAISEM\\web\\reportes\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select F_ClaDoc from tb_factura where F_ClaDoc in ($P{remisionesReImp}) group by F_ClaDoc]]>
+		<![CDATA[select F_ClaDoc from tb_factura where F_ClaDoc = ($P{remisionesReImp}) group by F_ClaDoc]]>
 	</queryString>
 	<field name="F_ClaDoc" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
