@@ -73,17 +73,17 @@
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
             <%@include file="jspf/menuPrincipal.jspf" %>
-            <form action="verificarCompraAuto.jsp" method="post">
+            <form action="compraAuto4.jsp" method="post">
                 <br/>
                 <div class="row">
-                    <h3>Validación Recibo</h3>
+                    <h3>Ingresos Recibo</h3>
                     <h4 class="col-sm-2">Elegir Remisión: </h4>
                     <div class="col-sm-9">
                         <select class="form-control" name="NoCompra" onchange="this.form.submit();">
                             <option value="">-- Proveedor -- Orden de Compra --</option>
                             <%                                try {
                                     con.conectar();
-                                    ResultSet rset = con.consulta("SELECT c.F_OrdCom, p.F_NomPro, c.F_FolRemi FROM tb_compratemp c, tb_proveedor p WHERE c.F_Provee = p.F_ClaProve and c.F_Estado = '2' GROUP BY c.F_OrdCom, c.F_FolRemi");
+                                    ResultSet rset = con.consulta("SELECT c.F_OrdCom, p.F_NomPro, c.F_FolRemi FROM tb_compratemp c, tb_proveedor p WHERE c.F_Provee = p.F_ClaProve and c.F_Estado = '0' GROUP BY c.F_OrdCom, c.F_FolRemi");
                                     while (rset.next()) {
                             %>
                             <option value="<%=rset.getString(1)%>,<%=rset.getString(3)%>"><%=rset.getString(2)%> - <%=rset.getString(1)%> - <%=rset.getString(3)%></option>
@@ -159,7 +159,7 @@
                                     int banBtn = 0;
                                     try {
                                         con.conectar();
-                                        ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi, C.F_Obser, C.F_Origen, MAR.F_ClaMar, MAR.F_DesMar FROM tb_compratemp C INNER JOIN tb_medica M  ON C.F_ClaPro=M.F_ClaPro INNER JOIN tb_marca MAR ON C.F_Marca = MAR.F_ClaMar  WHERE F_OrdCom='" + vOrden + "' and F_FolRemi = '" + vRemi + "'  and F_Estado = '2'");
+                                        ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi, C.F_Obser, C.F_Origen, MAR.F_ClaMar, MAR.F_DesMar FROM tb_compratemp C INNER JOIN tb_medica M  ON C.F_ClaPro=M.F_ClaPro INNER JOIN tb_marca MAR ON C.F_Marca = MAR.F_ClaMar  WHERE F_OrdCom='" + vOrden + "' and F_FolRemi = '" + vRemi + "'  and F_Estado = '0'");
                                         while (rset.next()) {
                                             banBtn = 1;
                                             String F_FecCad = "", F_Cb = "", F_Marca = "";
@@ -208,7 +208,7 @@
                                     <td><%=formatterDecimal.format(rset.getDouble("C.F_Costo"))%></td>
                                     <td><%=formatterDecimal.format(rset.getDouble("C.F_ImpTo"))%></td>          
                                     <td><%=formatterDecimal.format(rset.getDouble("C.F_ComTot"))%></td>
-                                    <td><input class="form-control" value="<%=F_Cb%>" name="F_Cb<%=rset.getString("F_IdCom")%>" required  /></td>
+                                    <td><input class="form-control" value="<%=F_Cb%>" name="F_Cb<%=rset.getString("F_IdCom")%>" required /></td>
                                     <td>
                                         <%
                                             if (F_FecCad.equals("")) {
@@ -224,11 +224,6 @@
                                     </td>
                                     <td>
                                         <input value="<%=F_Marca%>" class="form-control" name="F_Marca<%=rset.getString("F_IdCom")%>" id="marca<%=rset.getString("F_IdCom")%>" onkeyup="descripMarc()" required />
-                                        <!--form method="get" action="Modificaciones">
-                                            <input name="id" type="text" style="" class="hidden" value="<%=rset.getString(7)%>" />
-                                            <button class="btn btn-warning" name="accion" value="modificarVerifica"><span class="glyphicon glyphicon-pencil" ></span></button>
-                                            <button class="btn btn-danger" onclick="return confirm('¿Seguro de que desea eliminar?');" name="accion" value="eliminarVerifica"><span class="glyphicon glyphicon-remove"></span></button>
-                                        </form-->
                                     </td>
                                 </tr>
                                 <%
@@ -264,8 +259,7 @@
                                         return validaCompra();">Remisión Abierta</button>
                             </div-->
                             <div class="col-lg-3">
-                                <button  value="GuardarVerifica" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
-                                        return validaCompra();">Confirmar Remisión</button>
+                                <button  value="VerificaRemi" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');">Validar Remisión</button>
                             </div>
                         </div>
                     </div>
@@ -401,7 +395,7 @@
             <%
                 try {
                     con.conectar();
-                    ResultSet rset = con.consulta("SELECT F_IdCom FROM tb_compratemp C INNER JOIN tb_medica M  ON C.F_ClaPro=M.F_ClaPro INNER JOIN tb_marca MAR ON C.F_Marca = MAR.F_ClaMar  WHERE F_OrdCom='" + vOrden + "' and F_FolRemi = '" + vRemi + "'  and F_Estado = '2'");
+                    ResultSet rset = con.consulta("SELECT F_IdCom FROM tb_compratemp C INNER JOIN tb_medica M  ON C.F_ClaPro=M.F_ClaPro INNER JOIN tb_marca MAR ON C.F_Marca = MAR.F_ClaMar  WHERE F_OrdCom='" + vOrden + "' and F_FolRemi = '" + vRemi + "'  and F_Estado = '0'");
                     while (rset.next()) {
 
             %>

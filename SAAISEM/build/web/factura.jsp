@@ -196,6 +196,17 @@
                                     }
                                 %>
                                 <a data-toggle="collapse" data-parent="#accordion" href="#111<%=rset.getString(1)%>" style="color:black" aria-expanded="true" aria-controls="collapseOne"><%=rset.getString(1)%> |  <%=F_NomCli%></a>
+
+
+                                <%
+                                    if (banReq == 1) {
+                                %>
+                                <input name="F_ClaUni" value="<%=rset.getString(1)%>" class="hidden" />
+                                <input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" />
+                                <button class="btn btn-sm btn-warning" name="accion" value="cancelar"><span class="glyphicon glyphicon-remove"></span></button>
+                                    <%
+                                        }
+                                    %>
                             </div>
                             <div id="<%=rset.getString(1)%>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
@@ -213,17 +224,8 @@
                                             }
                                         %>
                                     </div-->
-                                        <!--div class="col-sm-2">
-                                        <%
-                                            if (banReq == 1) {
-                                        %>
-                                        <input name="F_ClaUni" value="<%=rset.getString(1)%>" class="hidden" />
-                                        <input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" />
-                                        <button class="btn btn-block btn-sm btn-warning" name="accion" value="cancelar"><span class="glyphicon glyphicon-remove"></span></button>
-                                        <%
-                                            }
-                                        %>
-                                    </div-->
+                                        <div class="col-sm-2">
+                                        </div>
 
                                     </div>
                                     <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-condensed" id="datosProv">
@@ -237,7 +239,7 @@
                                         <%
                                             try {
                                                 int ExiLot = 0, ExiSol = 0;
-                                                ResultSet rsetR1 = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, REQ.F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + rset.getString("F_ClaUni") + "' and F_Status =0 and F_PiezasReq != 0");
+                                                ResultSet rsetR1 = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, REQ.F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + rset.getString("F_ClaUni") + "' and F_Status =0 and F_PiezasReq != 0 group by F_IdReq");
                                                 while (rsetR1.next()) {
 
                                                     ResultSet rsetR2 = con.consulta("select sum(F_ExiLot) from tb_lote where F_ClaPro='" + rsetR1.getString(1) + "'");

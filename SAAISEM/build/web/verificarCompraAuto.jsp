@@ -76,6 +76,7 @@
             <form action="verificarCompraAuto.jsp" method="post">
                 <br/>
                 <div class="row">
+                    <h3>Validación Recibo</h3>
                     <h4 class="col-sm-2">Elegir Remisión: </h4>
                     <div class="col-sm-9">
                         <select class="form-control" name="NoCompra" onchange="this.form.submit();">
@@ -193,6 +194,9 @@
                                                 }
                                             }
 
+                                            if(F_Cb.equals(" ")){
+                                                F_Cb="";
+                                            }
                                 %>
                                 <tr>
                                     <td><%=rset.getString("C.F_FolRemi")%></td>

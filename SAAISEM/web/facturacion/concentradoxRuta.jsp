@@ -61,7 +61,7 @@
                 <%
                     try {
                         con.conectar();
-                        ResultSet rset = con.consulta("select F_FecEnt, DATE_FORMAT(F_FecEnt, '%d/%m/%Y') as F_Fecha from v_facttemp where F_StsFact !=5 group by F_Fecent, F_StsFact");
+                        ResultSet rset = con.consulta("select F_FecEnt, DATE_FORMAT(F_FecEnt, '%d/%m/%Y') as F_Fecha from tb_facttemp group by F_Fecent, F_StsFact");
                         while (rset.next()) {
                 %>
                 <tr>

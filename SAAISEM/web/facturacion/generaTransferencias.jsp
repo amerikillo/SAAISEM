@@ -24,18 +24,18 @@
         response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
-
+    
     String ClaCli = "", FechaEnt = "", ClaPro = "", DesPro = "";
-
+    
     try {
         ClaCli = (String) sesion.getAttribute("ClaCliFM");
         FechaEnt = (String) sesion.getAttribute("FechaEntFM");
         ClaPro = (String) sesion.getAttribute("ClaProFM");
         DesPro = (String) sesion.getAttribute("DesProFM");
     } catch (Exception e) {
-
+        System.out.println(e);
     }
-
+    
     if (ClaCli == null) {
         ClaCli = "";
     }
@@ -48,28 +48,34 @@
     if (DesPro == null) {
         DesPro = "";
     }
-
+    if (FechaEnt.equals("")) {
+        FechaEnt = df2.format(new Date());
+    }
     try {
-
+        
         con.conectar();
         ResultSet rset = con.consulta("select F_IdFact, F_StsFact, F_ClaCli, F_FecEnt from tb_facttemp");
-        rset.last();
-        //while (rset.next()) {
-        if (rset.getString("F_StsFact").equals("3")) {
-            sesion.setAttribute("F_IndGlobal", rset.getString(1));
-            F_IndGlobal = (String) sesion.getAttribute("F_IndGlobal");
-            ClaCli = rset.getString("F_ClaCli");
-            FechaEnt = rset.getString("F_FecEnt");
+        try {
+            rset.last();
+            //while (rset.next()) {
+            if (rset.getString("F_StsFact").equals("3")) {
+                sesion.setAttribute("F_IndGlobal", rset.getString(1));
+                F_IndGlobal = (String) sesion.getAttribute("F_IndGlobal");
+                ClaCli = rset.getString("F_ClaCli");
+                FechaEnt = rset.getString("F_FecEnt");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
         //}
-        con.cierraConexion();
 
         if (request.getParameter("accion").equals("nuevoFolio")) {
             sesion.setAttribute("F_IndGlobal", fact.dameIndGlobal() + "");
             F_IndGlobal = (String) sesion.getAttribute("F_IndGlobal");
         }
+        con.cierraConexion();
     } catch (Exception e) {
-
+        System.out.println(e);
     }
 %>
 <html>
@@ -96,13 +102,13 @@
                 </div>
             </div>
             <hr/>
-            <%
+            <%                
                 if (F_IndGlobal == null) {
             %>
             <form action="generaTransferencias.jsp" method="post">
                 <button class="btn btn-block btn-primary" name="accion" value="nuevoFolio">Nuevo Folio</button>
             </form>
-            <%
+            <%    
             } else {
             %>
             <form action="../FacturacionManual" method="post">
@@ -241,12 +247,12 @@
                     </div>
                 </div>
 
-                <%
+                <%        
                     }
                 %>
 
             </form>
-            <%
+            <%    
                 }
             %>
         </div>
@@ -267,19 +273,19 @@
                                     return true;
                                 return /\d/.test(String.fromCharCode(keynum));
                             }
-
+                            
                             function cambiaLoteCadu(elemento) {
                                 var indice = elemento.selectedIndex;
                                 document.getElementById('SelectCadu').selectedIndex = indice;
                             }
-
+                            
                             function validaBuscar() {
                                 var Unidad = document.getElementById('ClaCli').value;
                                 if (Unidad === "") {
                                     alert('Seleccione Unidad');
                                     return false;
                                 }
-
+                                
                                 var FechaEnt = document.getElementById('FechaEnt').value;
                                 if (FechaEnt === "") {
                                     alert('Seleccione Fecha de Entrega');
@@ -291,8 +297,8 @@
                                     return false;
                                 }
                             }
-
-
+                            
+                            
                             function validaSeleccionar() {
                                 var DesSel = document.getElementById('DesSel').value;
                                 if (DesSel === "") {
@@ -304,7 +310,7 @@
                                     alert('Escriba una cantidad');
                                     return false;
                                 }
-
+                                
                             }
         </script>
     </body>

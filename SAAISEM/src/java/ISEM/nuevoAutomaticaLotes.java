@@ -282,6 +282,52 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 out.println("<script>window.location='verificarCompraAuto.jsp'</script>");
 
             }
+            if (request.getParameter("accion").equals("VerificaRemi")) {
+                try {
+//ConectionDB_SQLServer conModula = new ConectionDB_SQLServer();
+                    con.conectar();
+
+                    ResultSet rsetComTemp = con.consulta("select F_IdCom, F_ClaPro, F_Lote, F_FecCad, F_FecFab, F_Marca from tb_compratemp where F_OrdCom='" + request.getParameter("vOrden") + "' and F_FolRemi = '" + request.getParameter("vRemi") + "' ");
+                    while (rsetComTemp.next()) {
+
+                        Calendar c1 = GregorianCalendar.getInstance();
+                        String F_FecCadAct = "", F_MarcaAct = "";
+                        F_FecCadAct = request.getParameter("F_FecCad" + rsetComTemp.getString("F_IdCom"));
+                        F_MarcaAct = request.getParameter("F_Marca" + rsetComTemp.getString("F_IdCom"));
+                        String Tipo = "";
+                        //String cadu = df2.format(df3.parse(F_FecCadAct));
+                        c1.setTime(df.parse(F_FecCadAct));
+
+                        ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + rsetComTemp.getString("F_ClaPro") + "'");
+                        while (rset_medica.next()) {
+                            Tipo = rset_medica.getString("F_TipMed");
+                            if (Tipo.equals("2504")) {
+                                c1.add(Calendar.YEAR, -3);
+                            } else {
+                                c1.add(Calendar.YEAR, -5);
+                            }
+                        }
+
+                        String fecFab = (df.format(c1.getTime()));
+
+                        ResultSet rset2 = con.consulta("select F_ClaMar from tb_marca where F_DesMar = '" + F_MarcaAct + "'");
+                        while (rset2.next()) {
+                            F_MarcaAct = rset2.getString("F_ClaMar");
+                        }
+
+                        con.insertar("update tb_compratemp set F_Estado='2', F_Cb = '" + request.getParameter("F_Cb" + rsetComTemp.getString("F_IdCom")) + "', F_FecCad = '" + F_FecCadAct + "', F_FecFab='" + fecFab + "', F_Marca = '" + F_MarcaAct + "' where F_IdCom='" + rsetComTemp.getString("F_IdCom") + "'");
+
+                        con.insertar("insert into tb_cb values (0,'" + request.getParameter("F_Cb" + rsetComTemp.getString("F_IdCom")) + "','" + rsetComTemp.getString("F_ClaPro") + "','" + rsetComTemp.getString("F_Lote") + "','" + F_FecCadAct + "','" + fecFab + "','" + F_MarcaAct + "')");
+                    }
+                    con.cierraConexion();
+                    out.println("<script>alert('Remisión Validada Correctamente')</script>");
+
+                } catch (Exception e) {
+                    out.println(e);
+                    out.println("<script>alert('" + e + "')</script>");
+                }
+                out.println("<script>window.location='compraAuto4.jsp'</script>");
+            }
             if (request.getParameter("accion").equals("GuardarVerifica")) {
                 try {
                     //ConectionDB_SQLServer conModula = new ConectionDB_SQLServer();

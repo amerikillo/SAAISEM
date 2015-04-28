@@ -66,7 +66,7 @@
                 <h3 class="col-sm-3">Administrar Remisiones</h3>
                 <div class="col-sm-2 col-sm-offset-5">
                     <br/>
-                    <a class="btn btn-info" href="gnrFacturaConcentrado.jsp" target="_blank">Imprimir Multiples</a>
+                    <!-- class="btn btn-info" href="gnrFacturaConcentrado.jsp" target="_blank">Imprimir Multiples</a-->
                 </div>
                 <div class="col-sm-2">
                     <br/>
@@ -80,7 +80,7 @@
                         <table class="table table-bordered table-striped" id="datosCompras">
                             <thead>
                                 <tr>
-                                    <td></td>
+                                    <!--td></td-->
                                     <td>No. Folio</td>
                                     <td>Punto de Entrega</td>
                                     <td>Fecha de Entrega</td>
@@ -106,9 +106,9 @@
 
                                 %>
                                 <tr>
-                                    <td>
+                                    <!--td>
                                         <input type="checkbox" name="">
-                                    </td>
+                                    </td-->
                                     <td><%=rset.getString(1)%></td>
                                     <td><%=rset.getString(3)%></td>
                                     <td><%=rset.getString("F_FecEnt")%></td>
