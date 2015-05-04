@@ -167,11 +167,12 @@
                                 <%
                                             }
                                         } catch (Exception e) {
+                                            System.out.println(e);
 
                                         }
                                         con.cierraConexion();
                                     } catch (Exception e) {
-
+                                        System.out.println(e);
                                     }
                                 %>
                             </tbody>
@@ -193,12 +194,12 @@
         <script src="js/jquery.dataTables.js"></script>
         <script src="js/dataTables.bootstrap.js"></script>
         <script>
-                                                $(document).ready(function() {
+                                                $(document).ready(function () {
                                                     $('#datosCompras').dataTable();
                                                 });
         </script>
         <script>
-            $(function() {
+            $(function () {
                 $("#fecha").datepicker();
                 $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
             });

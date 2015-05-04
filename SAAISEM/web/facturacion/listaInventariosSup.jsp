@@ -58,7 +58,7 @@
         <h1>SIALSS</h1>
         <%@include file="../jspf/menuPrincipal.jspf" %>
 
-        <h3>Inventarios Operadores</h3>
+        <h3>Inventarios Supervisores</h3>
         <hr/>
         <table class="table table-bordered table-condensed table-striped" id="tablInventarios">
             <thead>
@@ -70,14 +70,11 @@
                     <td>Descargar</td>
                 </tr>
             </thead>
-            <%
-                if (tipo.equals("7")) {
-            %>
             <tbody>
                 <%
                     try {
                         conInv.conectar();
-                        ResultSet rset = conInv.consulta("select * from v_inventarios where cla_jur in (" + juris + ") and user not in ('usuario20', 'usuario21', 'usuario22', 'usuario23', 'usuario24', 'usuario25') group by idInv");
+                        ResultSet rset = conInv.consulta("select * from v_inventarios where cla_jur in (" + juris + ") and user in ('usuario20', 'usuario21', 'usuario22', 'usuario23', 'usuario24', 'usuario25') group by idInv");
                         while (rset.next()) {
                             String tipoInv = "Dispensario";
                             if (rset.getString("tipo").equals("2")) {
@@ -99,38 +96,7 @@
                     }
                 %>
             </tbody>
-            <%
-            } else {
-            %>
-            <tbody>
-                <%
-                    try {
-                        conInv.conectar();
-                        ResultSet rset = conInv.consulta("select * from v_inventarios where cla_jur in (" + juris + ") group by idInv");
-                        while (rset.next()) {
-                            String tipoInv = "Dispensario";
-                            if (rset.getString("tipo").equals("2")) {
-                                tipoInv = "Almacén";
-                            }
-                %>
-                <tr>
-                    <td><%=rset.getString("cla_mod")%></td>
-                    <td><%=rset.getString("des_uni")%></td>
-                    <td><%=df3.format(df.parse(rset.getString("hora_ini")))%></td>
-                    <td><%=tipoInv%></td>
-                    <td><a class="btn btn-block btn-success btn-sm" href="gnrInventario.jsp?cla_mod=<%=rset.getString("cla_mod")%>&idInv=<%=rset.getString("idInv")%>"><span class="glyphicon glyphicon-download"></span></a></td>
-                </tr>  
-                <%
-                        }
-                        conInv.cierraConexion();
-                    } catch (Exception e) {
-                        out.println(e);
-                    }
-                %>
-            </tbody>
-            <%
-                }
-            %>
+            
         </table>
 
         <%@include file="../jspf/piePagina.jspf" %>

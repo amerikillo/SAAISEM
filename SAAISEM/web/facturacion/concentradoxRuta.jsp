@@ -58,8 +58,7 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                    try {
+                <%                    try {
                         con.conectar();
                         ResultSet rset = con.consulta("select F_FecEnt, DATE_FORMAT(F_FecEnt, '%d/%m/%Y') as F_Fecha from tb_facttemp group by F_Fecent, F_StsFact");
                         while (rset.next()) {
@@ -80,7 +79,7 @@
                         }
                         con.cierraConexion();
                     } catch (Exception e) {
-
+                        out.println(e.getMessage());
                     }
                 %>
             </tbody>
@@ -98,9 +97,9 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script>
-                                                $(document).ready(function() {
-                                                    $('#tbConcentrados').dataTable();
-                                                });
+                                $(document).ready(function () {
+                                    $('#tbConcentrados').dataTable();
+                                });
         </script>
     </body>
 </html>
