@@ -102,29 +102,21 @@ public class JQInvenCiclico extends HttpServlet {
                     con.cierraConexion();
                     out.println(jsona);
                     System.out.println(jsona);
-                } else if (request.getParameter("accion").equals("BuscarCBMed")) {/*
+                } else if (request.getParameter("accion").equals("BuscarUnidad")) {
                     con.conectar();
                     JSONObject json = new JSONObject();
                     JSONArray jsona = new JSONArray();
-                    ResultSet rset = con.consulta("select F_Ubica from tb_lote where F_Cb= '" + request.getParameter("F_CBMed") + "' group by F_Ubica");
+                    ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn where F_NomCli like '%" + request.getParameter("nom_uni") + "%' or F_ClaCli like '%" + request.getParameter("nom_uni") + "%' limit 0,10");
                     while (rset.next()) {
-                        json.put("F_ClaUbi", rset.getString(1));
-                        jsona.add(json);
-                        json = new JSONObject();
-                    }
-
-                    //out.println(jsona);
-                    rset = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad from tb_loteinv where F_Cb = '" + request.getParameter("F_CBMed") + "' group by F_ClaPro, F_ClaLot, F_FecCad");
-                    while (rset.next()) {
-                        json.put("F_ClaPro", rset.getString("F_ClaPro"));
-                        json.put("F_ClaLot", rset.getString("F_ClaLot"));
-                        json.put("F_FecCad", rset.getString("F_FecCad"));
+                        json.put("nom_com", rset.getString(1).trim().replaceAll("\\n", "") + " - " + rset.getString(2).trim().replaceAll("\\n", ""));
+                        //json.put("F_NomCli", rset.getString(2).trim().replaceAll("\\n", ""));
                         jsona.add(json);
                         json = new JSONObject();
                     }
                     con.cierraConexion();
                     out.println(jsona);
-                    System.out.println(jsona);*/
+                    System.out.println(jsona);
+
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());

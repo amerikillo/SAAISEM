@@ -63,7 +63,6 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
         <!---->
         <title>SIALSS</title>
@@ -139,7 +138,7 @@
 
                 <form action="nuevoAutomaticaLotes" method="post">
                     <div class="panel-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="divTabla">
                             <table class="table table-bordered table-striped">
                                 <tr>
                                     <td>Remisión</td>
@@ -154,6 +153,7 @@
                                     <td>Código de Barras</td>
                                     <td>Caducidad</td>  
                                     <td>Marca</td>
+                                    <td></td>
                                 </tr>
                                 <%
                                     int banBtn = 0;
@@ -194,8 +194,8 @@
                                                 }
                                             }
 
-                                            if(F_Cb.equals(" ")){
-                                                F_Cb="";
+                                            if (F_Cb.equals(" ")) {
+                                                F_Cb = "";
                                             }
                                 %>
                                 <tr>
@@ -208,22 +208,25 @@
                                     <td><%=formatterDecimal.format(rset.getDouble("C.F_Costo"))%></td>
                                     <td><%=formatterDecimal.format(rset.getDouble("C.F_ImpTo"))%></td>          
                                     <td><%=formatterDecimal.format(rset.getDouble("C.F_ComTot"))%></td>
-                                    <td><input class="form-control" value="<%=F_Cb%>" name="F_Cb<%=rset.getString("F_IdCom")%>" required /></td>
+                                    <td><input class="form-control" value="<%=F_Cb%>" name="F_Cb<%=rset.getString("F_IdCom")%>" required onkeypress="return tabular(event, this)" /></td>
                                     <td>
                                         <%
                                             if (F_FecCad.equals("")) {
                                         %>
-                                        <input type="date" class="form-control" name="F_FecCad<%=rset.getString("F_IdCom")%>" required />
+                                        <input type="date" class="form-control" name="F_FecCad<%=rset.getString("F_IdCom")%>" required onkeypress="return tabular(event, this)" />
                                         <%
                                         } else {
                                         %>
-                                        <input type="date" class="form-control" name="F_FecCad<%=rset.getString("F_IdCom")%>"  value="<%=F_FecCad%>" required />
+                                        <input type="date" class="form-control" name="F_FecCad<%=rset.getString("F_IdCom")%>"  value="<%=F_FecCad%>" required onkeypress="return tabular(event, this)" />
                                         <%
                                             }
                                         %>
                                     </td>
                                     <td>
-                                        <input value="<%=F_Marca%>" class="form-control" name="F_Marca<%=rset.getString("F_IdCom")%>" id="marca<%=rset.getString("F_IdCom")%>" onkeyup="descripMarc()" required />
+                                        <input value="<%=F_Marca%>" class="form-control" name="F_Marca<%=rset.getString("F_IdCom")%>" id="marca<%=rset.getString("F_IdCom")%>" onkeyup="descripMarc()" required onkeypress="return tabular(event, this)" />
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" onclick="eliminaRegistro(this)"  value="<%=rset.getString("F_IdCom")%>" ><span class="glyphicon glyphicon-remove"></span></button>
                                     </td>
                                 </tr>
                                 <%
@@ -234,11 +237,6 @@
                                     }
 
                                 %>
-                                <tr>
-                                    <td colspan="13">
-
-                                    </td>
-                                </tr>
 
                             </table>
                         </div>
@@ -389,7 +387,35 @@
         <script src="js/bootstrap.js"></script>
         <script src="js/jquery-ui-1.10.3.custom.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/funcIngresos.js"></script>
         <script type="text/javascript">
+
+
+                                function eliminaRegistro(e) {
+                                    var confirma = confirm('Seguro de eliminar el insumo?');
+                                    if (confirma) {
+                                        var registo = e.value;
+                                        var dir = 'Modificaciones?accion=eliminarVerifica&id=' + registo + '';
+
+                                        $.ajax({
+                                            url: dir,
+                                            type: 'POST',
+                                            async: false,
+                                            success: function (data) {
+                                                MostrarDatos(data);
+                                            },
+                                            error: function () {
+                                                alert("Ha ocurrido un error");
+                                            }
+                                        });
+                                        function MostrarDatos(data) {
+                                            $("#divTabla").load("compraAuto4.jsp #divTabla");
+                                        }
+                                    } else {
+
+                                    }
+
+                                }
 
                                 function descripMarc() {
             <%
@@ -430,6 +456,28 @@
             %>
 
                                 }
+
+                                function tabular(e, obj)
+                                {
+                                    tecla = (document.all) ? e.keyCode : e.which;
+                                    if (tecla != 13)
+                                        return;
+                                    frm = obj.form;
+                                    for (i = 0; i < frm.elements.length; i++)
+                                        if (frm.elements[i] == obj)
+                                        {
+                                            if (i == frm.elements.length - 1)
+                                                i = -1;
+                                            break
+                                        }
+                                    /*ACA ESTA EL CAMBIO*/
+                                    if (frm.elements[i + 1].disabled == true)
+                                        tabular(e, frm.elements[i + 1]);
+                                    else
+                                        frm.elements[i + 1].focus();
+                                    return false;
+                                }
+
         </script>
     </body>
 

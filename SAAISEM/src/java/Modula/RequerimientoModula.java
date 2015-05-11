@@ -16,6 +16,9 @@ import java.sql.ResultSet;
 public class RequerimientoModula {
 
     public void enviaRequerimiento(String F_IdFact) {
+        /*
+         * Metodo para mandar requerimientos (Facturas o folios)
+         */
         java.text.DateFormat df3 = new java.text.SimpleDateFormat("yyyy-MM-dd");
         java.text.DateFormat df4 = new java.text.SimpleDateFormat("yyyyMMdd");
         ConectionDB con = new ConectionDB();
@@ -24,7 +27,7 @@ public class RequerimientoModula {
             con.conectar();
             conModula.conectar();
             try {
-                 conModula.ejecutar("delete from IMP_ORDINI_RIGHE where RIG_ORDINE='" + F_IdFact + "'");
+                conModula.ejecutar("delete from IMP_ORDINI_RIGHE where RIG_ORDINE='" + F_IdFact + "'");
                 conModula.ejecutar("delete from IMP_ORDINI where ORD_ORDINE='" + F_IdFact + "'");
                 ResultSet rset = con.consulta("select F_ClaCli, F_FecEnt, F_IdFact from v_folioremisiones where F_IdFact = '" + F_IdFact + "' group by F_IdFact");
                 while (rset.next()) {
@@ -48,6 +51,9 @@ public class RequerimientoModula {
         }
 
     }
+    /*
+     *Este metodo de abajo no es
+     */
 
     public void enviaRuta(String F_FecEnt) {
         java.text.DateFormat df3 = new java.text.SimpleDateFormat("yyyy-MM-dd");

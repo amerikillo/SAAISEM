@@ -177,7 +177,7 @@
                                 out.println("En Abasto");
                             }
                         %>
-                        
+
                         <%
                             if (F_StsMod.equals("2")) {
                                 out.println("En Modula");
@@ -186,7 +186,7 @@
                     </td>
                     <td>
                         <%
-                            if (F_StsMod.equals("1")||F_StsMod.equals("2")) {
+                            if (F_StsMod.equals("1") || F_StsMod.equals("2")) {
                                 out.println(F_CantMod);
                             }
                         %>
@@ -227,12 +227,13 @@
             </thead>
             <tbody>
                 <%
+                    int totalModula = 0;
                     try {
-
                         conModula.conectar();
                         con.conectar();
                         ResultSet rset4 = conModula.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0 order by SCO_ARTICOLO");
                         while (rset4.next()) {
+                            totalModula = totalModula + rset4.getInt("SCO_GIAC");
                             String Descrip = "";
                             ResultSet rset5 = con.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + rset4.getString("SCO_ARTICOLO") + "'");
                             while (rset5.next()) {
@@ -259,6 +260,7 @@
                 %>
             </tbody>
         </table>
+        <h3>Total Modula= <%=totalModula%></h3>
         <!-- 
         ================================================== -->
         <!-- Se coloca al final del documento para que cargue mas rapido -->
@@ -269,7 +271,7 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#tablaUbicaciones').dataTable();
                 $('#existModula').dataTable();
             });

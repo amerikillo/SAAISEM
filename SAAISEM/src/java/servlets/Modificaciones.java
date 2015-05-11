@@ -90,7 +90,7 @@ public class Modificaciones extends HttpServlet {
                 System.out.println("hola");
                 try {
                     con.conectar();
-                    con.borrar2("delete from tb_compratemp where F_IdCom = '" + request.getParameter("id") + "'");
+                    con.insertar("delete from tb_compratemp where F_IdCom = '" + request.getParameter("id") + "'");
                     con.cierraConexion();
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());

@@ -51,18 +51,24 @@
     try {
 
         con.conectar();
-        ResultSet rset = con.consulta("select F_IdFact, F_StsFact, F_ClaCli, F_FecEnt from tb_facttemp");
+        ResultSet rset = con.consulta("select F_IdFact, F_StsFact, F_ClaCli, F_FecEnt, F_User from tb_facttemp where F_User = '" + usua + "'");
         rset.last();
         //while (rset.next()) {
-        if (rset.getString("F_StsFact").equals("3")) {
+        if (rset.getString("F_StsFact").equals("3") && rset.getString("F_User").equals(usua)) {
             sesion.setAttribute("F_IndGlobal", rset.getString(1));
             F_IndGlobal = (String) sesion.getAttribute("F_IndGlobal");
             ClaCli = rset.getString("F_ClaCli");
+            sesion.setAttribute("ClaCliFM", ClaCli);
             FechaEnt = rset.getString("F_FecEnt");
         }
         //}
         con.cierraConexion();
 
+    } catch (Exception e) {
+
+    }
+
+    try {
         if (request.getParameter("accion").equals("nuevoFolio")) {
             sesion.setAttribute("F_IndGlobal", fact.dameIndGlobal() + "");
             F_IndGlobal = (String) sesion.getAttribute("F_IndGlobal");
@@ -95,8 +101,7 @@
                 </div>
             </div>
             <hr/>
-            <%
-                if (F_IndGlobal == null) {
+            <%                if (F_IndGlobal == null) {
             %>
             <form action="facturacionManual.jsp" method="post">
                 <button class="btn btn-block btn-primary" name="accion" value="nuevoFolio">Nuevo Folio</button>
@@ -111,55 +116,56 @@
                         <h4>Unidad:</h4>
                     </div>
                     <div class="col-sm-5">
-                        <select class="form-control" name="ClaCli" id="ClaCli">
+                        <input value="<%=ClaCli%>"  class="form-control" name="ClaCli" id="ClaCli"  />
+                        <!--select class="form-control" name="ClaCli" id="ClaCli">
                             <option value="">-Seleccione Unidad-</option>
-                            <%
-                                try {
-                                    con.conectar();
-                                    ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn");
-                                    while (rset.next()) {
-                            %>
-                            <option value="<%=rset.getString(1)%>"
-                                    <%
-                                        if (rset.getString(1).equals(ClaCli)) {
-                                            out.println("selected");
-                                        }
-                                    %>
-                                    ><%=rset.getString(2)%></option>
-                            <%
-                                    }
-                                    con.cierraConexion();
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                        <%
+                            try {
+                                con.conectar();
+                                ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn");
+                                while (rset.next()) {
+                        %>
+                        <option value="<%=rset.getString(1)%>"
+                        <%
+                            if (rset.getString(1).equals(ClaCli)) {
+                                out.println("selected");
+                            }
+                        %>
+                        ><%=rset.getString(2)%></option>
+                        <%
                                 }
-                            %>
-                        </select>
+                                con.cierraConexion();
+                            } catch (Exception e) {
+                                out.println(e.getMessage());
+                            }
+                        %>
+                    </select-->
                     </div>
                     <div class="col-sm-2">
                         <h4>Fecha de Entrega</h4>
                     </div>
                     <div class="col-sm-2">
-                        <input type="date" class="form-control" name="FechaEnt" id="FechaEnt" min="<%=df2.format(new Date())%>" value="<%=FechaEnt%>"/>
+                        <input type="date" class="form-control" name="FechaEnt" id="FechaEnt" value="<%=FechaEnt%>"/>
                     </div>
-                </div>
+                </div> 
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-2">
-                                <h4>Ingrese SICCAL:</h4>
+                                <h4>Ingrese CLAVE:</h4>
                             </div>
                             <div class="col-sm-2">
                                 <input class="form-control" name="ClaPro" id="ClaPro"/>
                             </div>
                             <div class="col-sm-2">
-                                <button class="btn btn-primary btn-block" name="accion" value="btnClave" id="btnClave" onclick="return validaBuscar();">Buscar</button>
+                                <button class="btn btn-primary btn-block" name="accion" value="btnClave" id="btnClave" onclick="return validaUni();">Buscar</button>
                             </div>
                         </div>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-1">
-                                <h4>SICCAL:</h4>
+                                <h4>CLAVE:</h4>
                             </div>
                             <div class="col-sm-2">
                                 <input class="form-control" readonly="" value="<%=ClaPro%>" id="ClaveSel"/>
@@ -191,8 +197,7 @@
                 </div>
                 <table class="table table-condensed table-striped table-bordered table-responsive">
                     <tr>
-                        <td>SICCAL</td>
-                        <td>SAP</td>
+                        <td>CLAVE:</td>
                         <td>Lote</td>
                         <td>Caducidad</td>
                         <td>Ubicación</td>
@@ -210,7 +215,6 @@
                     %>
                     <tr>
                         <td><%=rset.getString(1)%></td>
-                        <td><%=rset.getString("F_ClaSap")%></td>
                         <td><%=rset.getString(2)%></td>
                         <td><%=rset.getString(3)%></td>
                         <td><%=rset.getString(5)%></td>
@@ -231,6 +235,25 @@
                 <%
                     if (banBtn == 1) {
                 %>
+
+                <div class="row">
+                    <h4 class="col-sm-2">Observaciones</h4>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" name="obs"></textarea>
+                    </div>
+                    <h4 class="col-sm-1">Tipo</h4>
+                    <div class="col-sm-2">
+                        <select class="form-control" name="F_Tipo">
+                            <option>Ordinario</option>
+                            <option>Complemento</option>
+                            <option>Apoyo</option>
+                            <option>Programa</option>
+                            <option>Urgente</option>
+                            <option>Normal</option>
+                        </select>
+                    </div>
+                </div>
+                <br/>
                 <div class="row">
                     <div class="col-sm-6">
                         <button class="btn btn-block btn-primary" name="accion" value="ConfirmarFactura" onclick="return confirm('Seguro de confirmar la Factura?')">Confirmar Factura</button>
@@ -259,6 +282,25 @@
         <script src="js/jquery-ui-1.10.3.custom.js"></script>
         <script src="js/funcIngresos.js"></script>
         <script>
+
+                            $(function () {
+                                $("#ClaCli").keyup(function () {
+                                    var nombre = $("#ClaCli").val();
+                                    $("#ClaCli").autocomplete({
+                                        source: "JQInvenCiclico?accion=BuscarUnidad&nom_uni=" + nombre,
+                                        select: function (event, ui) {
+                                            $("#ClaCli").val(ui.item.nom_com);
+                                            return false;
+                                        }
+                                    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                                        return $("<li>")
+                                                .data("ui-autocomplete-item", item)
+                                                .append("<a>" + item.nom_com + "</a>")
+                                                .appendTo(ul);
+                                    };
+                                });
+                            });
+
                             function justNumbers(e)
                             {
                                 var keynum = window.event ? window.event.keyCode : e.which;
@@ -273,6 +315,27 @@
                             }
 
                             function validaBuscar() {
+                            }
+
+
+                            function validaSeleccionar() {
+                                var DesSel = document.getElementById('DesSel').value;
+                                if (DesSel === "") {
+                                    alert('Favor de Capturar Toda la información');
+                                    return false;
+                                }
+                                var cantidad = document.getElementById('Cantidad').value;
+                                if (cantidad === "") {
+                                    alert('Escriba una cantidad');
+                                    return false;
+                                }
+
+                            }
+
+
+
+                            function validaUni() {
+
                                 var Unidad = document.getElementById('ClaCli').value;
                                 if (Unidad === "") {
                                     alert('Seleccione Unidad');
@@ -289,21 +352,43 @@
                                     alert('Escriba una Clave');
                                     return false;
                                 }
-                            }
 
+                                var causes = document.getElementById('ClaCli').value;
 
-                            function validaSeleccionar() {
-                                var DesSel = document.getElementById('DesSel').value;
-                                if (DesSel === "") {
-                                    alert('Favor de Capturar Toda la información');
+                                if (causes === "") {
+                                    alert('Capture Diagnóstico válido');
+                                    e.focus();
                                     return false;
                                 }
-                                var cantidad = document.getElementById('Cantidad').value;
-                                if (cantidad === "") {
-                                    alert('Escriba una cantidad');
+                                var causesArray = causes.split(" - ");
+                                causes = causesArray[0];
+                                var causesTodos = "";
+            <%
+                try {
+                    con.conectar();
+                    ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn ");
+                    while (rset.next()) {
+            %>
+                                causesTodos = causesTodos + "<%=rset.getString("F_ClaCli")%>-";
+            <%
+                    }
+                    con.cierraConexion();
+                } catch (Exception e) {
+
+                }
+            %>
+                                var causesTodosArray = causesTodos.split('-');
+                                var ban1 = 0;
+                                for (i = 0; i <= causesTodosArray.length; i++) {
+                                    if (causes === causesTodosArray[i]) {
+                                        return true;
+                                        ban1 = 1;
+                                    }
+                                }
+                                if (ban1 === 0) {
+                                    alert('Capture Unidad válida');
                                     return false;
                                 }
-
                             }
         </script>
     </body>

@@ -22,7 +22,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class LeeExcel {
 
     private Vector vectorDataExcelXLSX = new Vector();
-    ConectionDB con = new ConectionDB();
 
     public boolean obtieneArchivo(String path, String file) {
         String excelXLSXFileName = path + "/exceles/" + file;
@@ -71,95 +70,125 @@ public class LeeExcel {
         DateFormat df1 = new SimpleDateFormat("dd-MMM-yyyy");
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 
+        ConectionDB con = new ConectionDB();
         for (int i = 0; i < vectorData.size(); i++) {
             Vector vectorCellEachRowData = (Vector) vectorData.get(i);
             String qry = "insert into tb_unireq values (";
+            String qryElimina = "";
             // looping every cell in each row
-            for (int j = 0; j < 4; j++) {
-
-                if (j == 0) {
-                    try {
-                        String Clave = (vectorCellEachRowData.get(j).toString() + "").trim();
-                        /*NumberFormat formatter = new DecimalFormat("0000");
-                         Clave = formatter.format(Double.parseDouble(Clave));*/
-                        System.out.println(Clave);
-                        Clave.replaceAll("^\\s*", "");
-                        Clave.replaceAll(" ", "");
-                        Clave.replaceAll("&nbsp;", "");
-                        for (int x = 0; x < Clave.length(); x++) {
-                            System.out.println(Clave.charAt(x) + " = " + Clave.codePointAt(x));
-                        };
-                        qry = qry + "'" + Clave + "', ";
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                } else if (j == 1) {
-                    System.out.println("algo");
-                    try {
-                        String ClaPro = ((vectorCellEachRowData.get(j).toString()) + "");
-                        DecimalFormat formatter = new DecimalFormat("0000.00");
-                        if (ClaPro.equals("260.02") || ClaPro.equals("801.01") || ClaPro.equals("0260.02") || ClaPro.equals("0801.01")) {
-                            formatter = new DecimalFormat("000.00");
-                        }
-                        DecimalFormatSymbols custom = new DecimalFormatSymbols();
-                        custom.setDecimalSeparator('.');
-                        custom.setGroupingSeparator(',');
-                        formatter.setDecimalFormatSymbols(custom);
-                        ClaPro = formatter.format(Double.parseDouble(ClaPro));
-                        String[] punto = ClaPro.split("\\.");
-                        System.out.println(punto.length);
-                        if (punto.length > 1) {
-                            System.out.println(ClaPro + "***" + punto[0] + "////" + punto[1]);
-                            if (punto[1].equals("01")) {
-                                ClaPro = (punto[0]) + ".01";
-                            } else if (punto[1].equals("02")) {
-                                ClaPro = (punto[0]) + ".02";
-                            } else if (punto[1].equals("10")) {
-                                ClaPro = (punto[0]) + ".1";
-                            } else if (punto[1].equals("00")) {
-                                ClaPro = (punto[0]);
-                            } else {
-                                ClaPro = (punto[0]);
-                            }
-                            System.out.println(ClaPro);
-                        }
-                        qry = qry + "'" + agrega(ClaPro) + "' , ";
-
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                } else if (j == 2) {
-                    qry = qry + "'0' , ";
-                } else if (j == 3) {
-                    try {
-                        String Clave = ((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
-                        qry = qry + "'" + Clave.trim() + "' , ";
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }
-            String F_Fecha = "";
-            String Solicitado = "";
-            try {
-                F_Fecha = (vectorCellEachRowData.get(2).toString());
-                F_Fecha = df2.format(df1.parse(F_Fecha));
-                Solicitado = ((vectorCellEachRowData.get(3).toString()) + "");
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            qry = qry + "curdate(), 0, '0','" + F_Fecha + "','" + Solicitado + "')"; // agregar campos fuera del excel
             try {
                 con.conectar();
                 try {
-                    con.insertar(qry);
+                    String ClaPro = ((vectorCellEachRowData.get(1).toString()) + "");
+                    DecimalFormat formatter = new DecimalFormat("0000.00");
+                    if (ClaPro.equals("260.02") || ClaPro.equals("801.01") || ClaPro.equals("0260.02") || ClaPro.equals("0801.01")) {
+                        formatter = new DecimalFormat("000.00");
+                    }
+                    DecimalFormatSymbols custom = new DecimalFormatSymbols();
+                    custom.setDecimalSeparator('.');
+                    custom.setGroupingSeparator(',');
+                    formatter.setDecimalFormatSymbols(custom);
+                    ClaPro = formatter.format(Double.parseDouble(ClaPro));
+                    String[] punto = ClaPro.split("\\.");
+                    System.out.println(punto.length);
+                    if (punto.length > 1) {
+                        System.out.println(ClaPro + "***" + punto[0] + "////" + punto[1]);
+                        if (punto[1].equals("01")) {
+                            ClaPro = (punto[0]) + ".01";
+                        } else if (punto[1].equals("02")) {
+                            ClaPro = (punto[0]) + ".02";
+                        } else if (punto[1].equals("10")) {
+                            ClaPro = (punto[0]) + ".1";
+                        } else if (punto[1].equals("00")) {
+                            ClaPro = (punto[0]);
+                        } else {
+                            ClaPro = (punto[0]);
+                        }
+                        System.out.println(ClaPro);
+                    }
+                    con.insertar("delete from tb_unireq where F_ClaUni = '" + (vectorCellEachRowData.get(0).toString() + "").trim() + "' and F_ClaPro = '" + agrega(ClaPro) + "' and F_Status=0;");
+                } catch (Exception e) {
+                }
+                for (int j = 0; j < 4; j++) {
+
+                    if (j == 0) {
+                        try {
+                            String Clave = (vectorCellEachRowData.get(j).toString() + "").trim();
+                            /*NumberFormat formatter = new DecimalFormat("0000");
+                             Clave = formatter.format(Double.parseDouble(Clave));*/
+                            System.out.println(Clave);
+                            Clave.replaceAll("^\\s*", "");
+                            Clave.replaceAll(" ", "");
+                            Clave.replaceAll("&nbsp;", "");
+                            for (int x = 0; x < Clave.length(); x++) {
+                                System.out.println(Clave.charAt(x) + " = " + Clave.codePointAt(x));
+                            };
+                            qry = qry + "'" + Clave + "', ";
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } else if (j == 1) {
+                        System.out.println("algo");
+                        try {
+                            String ClaPro = ((vectorCellEachRowData.get(j).toString()) + "");
+                            DecimalFormat formatter = new DecimalFormat("0000.00");
+                            if (ClaPro.equals("260.02") || ClaPro.equals("801.01") || ClaPro.equals("0260.02") || ClaPro.equals("0801.01")) {
+                                formatter = new DecimalFormat("000.00");
+                            }
+                            DecimalFormatSymbols custom = new DecimalFormatSymbols();
+                            custom.setDecimalSeparator('.');
+                            custom.setGroupingSeparator(',');
+                            formatter.setDecimalFormatSymbols(custom);
+                            ClaPro = formatter.format(Double.parseDouble(ClaPro));
+                            String[] punto = ClaPro.split("\\.");
+                            System.out.println(punto.length);
+                            if (punto.length > 1) {
+                                System.out.println(ClaPro + "***" + punto[0] + "////" + punto[1]);
+                                if (punto[1].equals("01")) {
+                                    ClaPro = (punto[0]) + ".01";
+                                } else if (punto[1].equals("02")) {
+                                    ClaPro = (punto[0]) + ".02";
+                                } else if (punto[1].equals("10")) {
+                                    ClaPro = (punto[0]) + ".1";
+                                } else if (punto[1].equals("00")) {
+                                    ClaPro = (punto[0]);
+                                } else {
+                                    ClaPro = (punto[0]);
+                                }
+                                System.out.println(ClaPro);
+                            }
+                            qry = qry + "'" + agrega(ClaPro) + "' , ";
+
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } else if (j == 2) {
+                        qry = qry + "'0' , ";
+                    } else if (j == 3) {
+                        try {
+                            String Clave = ((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
+                            qry = qry + "'" + Clave.trim() + "' , ";
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+                String F_Fecha = "";
+                String Solicitado = "";
+                try {
+                    F_Fecha = (vectorCellEachRowData.get(2).toString());
+                    F_Fecha = df2.format(df1.parse(F_Fecha));
+                    Solicitado = ((vectorCellEachRowData.get(3).toString()) + "");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                qry = qry + "curdate(), 0, '0','" + F_Fecha + "','" + Solicitado + "')"; // agregar campos fuera del excel
+                con.insertar(qry);
                 con.cierraConexion();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+
         }
     }
 

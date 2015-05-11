@@ -23,7 +23,31 @@
         response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
+    String UsuaJuris = "(";
 
+    try {
+
+        con.conectar();
+        String F_Juris = "";
+        ResultSet rset = con.consulta("select F_Juris from tb_usuario where F_Usu = '" + usua + "'");
+        while (rset.next()) {
+            F_Juris = rset.getString("F_Juris");
+        }
+
+        for (int i = 0; i < F_Juris.split(",").length; i++) {
+            if (i == F_Juris.split(",").length - 1) {
+                UsuaJuris = UsuaJuris + "FR.F_Ruta like 'R" + F_Juris.split(",")[i] + "%' ";
+            } else {
+                UsuaJuris = UsuaJuris + "FR.F_Ruta like 'R" + F_Juris.split(",")[i] + "%' or ";
+            }
+        }
+
+        UsuaJuris = UsuaJuris + ")";
+        System.out.println(UsuaJuris);
+        con.cierraConexion();
+    } catch (Exception e) {
+
+    }
     String fol_gnkl = "", fol_remi = "", orden_compra = "", fecha = "";
     try {
         if (request.getParameter("accion").equals("buscar")) {
@@ -60,7 +84,7 @@
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
 
-            <%@include file="../jspf/menuPrincipal.jspf" %>
+            <%@include file="jspf/menuPrincipal.jspf" %>
 
             <div class="row">
                 <h3 class="col-sm-3">Administrar Remisiones</h3>
@@ -83,17 +107,18 @@
                                     <!--td></td-->
                                     <td>No. Folio</td>
                                     <td>Punto de Entrega</td>
-                                    <td>Fecha de Entrega</td>
+                                    <td>Fec Ent</td>
+                                    <td>Tipo</td>
                                     <td>Folio</td>
-                                    <td>Ver Factura</td>
+                                    <td>Ver Fact</td>
                                     <td>Devolución</td>
                                     <td>Reportes</td>
-                                    <%
-                                        if (usua.equals("remision")) {
+                                    <%                                        if (usua.equals("remision")) {
                                             out.println("<td>Reintegrar Insumo</td>");
                                         }
                                     %>
                                     <td>Excel</td>
+                                    <td>Modula</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -101,7 +126,7 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT F.F_ClaDoc,F.F_ClaCli,U.F_NomCli,DATE_FORMAT(F.F_FecApl,'%d/%m/%Y') AS F_FecApl,SUM(F.F_Monto) AS F_Costo,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt FROM tb_factura F INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli GROUP BY F.F_ClaDoc ORDER BY F.F_ClaDoc+0;");
+                                            ResultSet rset = con.consulta("SELECT F.F_ClaDoc,F.F_ClaCli,U.F_NomCli,DATE_FORMAT(F.F_FecApl,'%d/%m/%Y') AS F_FecApl,SUM(F.F_Monto) AS F_Costo,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt, O.F_Tipo, O.F_Req FROM tb_factura F, tb_uniatn U, tb_obserfact O, tb_fecharuta FR where FR.F_ClaUni = U.F_ClaCli and  F.F_ClaDoc=O.F_IdFact AND F.F_ClaCli=U.F_ClaCli and " + UsuaJuris + " GROUP BY F.F_ClaDoc ORDER BY F.F_ClaDoc+0;");
                                             while (rset.next()) {
 
                                 %>
@@ -110,8 +135,9 @@
                                         <input type="checkbox" name="">
                                     </td-->
                                     <td><%=rset.getString(1)%></td>
-                                    <td><%=rset.getString(3)%></td>
+                                    <td><%=rset.getString(2)%> - <%=rset.getString(3)%></td>
                                     <td><%=rset.getString("F_FecEnt")%></td>
+                                    <td><%=rset.getString("F_Req")%></td>
                                     <td>
                                         <form action="reimpFactura.jsp" target="_blank">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
@@ -138,7 +164,7 @@
                                     </td>
                                     <td>
                                         <form class="form-horizontal" role="form" name="formulario_receta" id="formulario_receta" method="get" action="ReporteImprime">   
-                                            <button class="btn btn-block btn-primary" id="btn_capturar" name="btn_capturar" value="<%=rset.getString(1)%>" onclick="return confirm('¿Esta Ud. Seguro de Iniciar proceso de Generación?')">Generar</button>
+                                            <button class="btn btn-block btn-primary" id="btn_capturar" name="btn_capturar" value="<%=rset.getString(1)%>" onclick="return confirm('¿Esta Ud. Seguro de Iniciar proceso de Generación?')"><span class="glyphicon glyphicon-floppy-save"></span></button>
                                         </form>
                                     </td>
                                     <%
@@ -163,6 +189,13 @@
                                     <td>
                                         <a class="btn btn-block btn-success" href="gnrFacturaExcel.jsp?fol_gnkl=<%=rset.getString(1)%>"><span class="glyphicon glyphicon-save"></span></a>
                                     </td>
+                                    <td>
+                                        <form action="FacturacionManual" method="post">
+                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_ClaDoc")%>">
+                                            <button class="btn btn-block btn-info" name="accion" value="ReenviarFactura" onclick="return confirm('Seguro de Reenviar este concentrado?')"><span class="glyphicon glyphicon-upload"></span></button>
+
+                                        </form>
+                                    </td>
                                 </tr>
                                 <%
                                             }
@@ -181,7 +214,7 @@
                 </div>
             </div>
         </div>
-        <%@include file="../jspf/piePagina.jspf" %>
+        <%@include file="jspf/piePagina.jspf" %>
 
         <!-- 
         ================================================== -->

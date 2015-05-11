@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d36d56d-e705-43d8-bec6-461dd4e714a4">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="135"/>
+	<property name="ireport.x" value="27"/>
+	<property name="ireport.y" value="203"/>
 	<parameter name="Folfact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -23,7 +23,7 @@
 	SUM((F.F_CantSur)) as F_CantSur,
 	(F.F_Costo) as F_Costo,
 	F.F_Iva,
-	SUM(F.F_Monto) as F_Monto,
+	SUM(F.F_Costo*F.F_CantSur) as F_Monto,
 	F.F_Ubicacion,
 	SUM(@csum := F.F_Monto +@csum) AS totales,
 	O.F_Obser,
@@ -63,9 +63,7 @@ ORDER BY
 	<field name="F_NomCli" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_FecEnt" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="F_FecEnt" class="java.lang.String"/>
 	<field name="F_ClaDoc" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -78,24 +76,16 @@ ORDER BY
 	<field name="F_ClaLot" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_FecCad" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="F_CantReq" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="F_CantSur" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="F_FecCad" class="java.lang.String"/>
+	<field name="F_CantReq" class="java.math.BigDecimal"/>
+	<field name="F_CantSur" class="java.math.BigDecimal"/>
 	<field name="F_Costo" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="F_Iva" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_Monto" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="F_Monto" class="java.lang.Double"/>
 	<field name="F_Ubicacion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -131,6 +121,9 @@ ORDER BY
 		<variableExpression><![CDATA[$F{F_CantSur}]]></variableExpression>
 	</variable>
 	<variable name="F_Monto_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{F_Monto}]]></variableExpression>
+	</variable>
+	<variable name="F_Monto_3" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{F_Monto}]]></variableExpression>
 	</variable>
 	<background>
@@ -286,28 +279,32 @@ ORDER BY
 				<text><![CDATA[CADUCIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e7f0c556-e4a4-495c-908c-ad68c9aedcd6" mode="Opaque" x="414" y="0" width="45" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="e7f0c556-e4a4-495c-908c-ad68c9aedcd6" mode="Opaque" x="443" y="0" width="45" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[IMPORTE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4136e48c-56b7-4485-8a6a-d86b05c3e730" mode="Opaque" x="474" y="0" width="57" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="4136e48c-56b7-4485-8a6a-d86b05c3e730" mode="Opaque" x="498" y="0" width="57" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[OBSERVACIONES]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="5d9cada9-24af-4c0c-9768-a1992adf71d2" mode="Opaque" x="395" y="1" width="45" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSTO]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="27">
-			<line>
-				<reportElement uuid="91cb4641-04e5-45a9-af35-22cf46e6e492" positionType="FixRelativeToBottom" x="1" y="25" width="570" height="1" forecolor="#CCCCCC"/>
-			</line>
+		<band height="14">
 			<subreport>
-				<reportElement uuid="23fbcd18-4f69-45fc-95e3-4ed1fb81f730" x="1" y="0" width="568" height="25"/>
+				<reportElement uuid="23fbcd18-4f69-45fc-95e3-4ed1fb81f730" x="1" y="1" width="568" height="12"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[]]></subreportParameterExpression>
 				</subreportParameter>
@@ -318,9 +315,9 @@ ORDER BY
 				<subreportExpression><![CDATA["facturaComun2504.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="26">
+		<band height="13">
 			<subreport>
-				<reportElement uuid="362a7b82-648b-4cf8-ba7f-e566f9e58de7" x="1" y="0" width="568" height="25"/>
+				<reportElement uuid="362a7b82-648b-4cf8-ba7f-e566f9e58de7" x="1" y="0" width="568" height="12"/>
 				<subreportParameter name="Folfact">
 					<subreportParameterExpression><![CDATA[$P{Folfact}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -332,7 +329,7 @@ ORDER BY
 	<summary>
 		<band height="227">
 			<staticText>
-				<reportElement uuid="758fa8bf-0040-4248-bcfd-18815c4848bc" x="41" y="1" width="49" height="14"/>
+				<reportElement uuid="758fa8bf-0040-4248-bcfd-18815c4848bc" x="59" y="1" width="49" height="14"/>
 				<textElement verticalAlignment="Top">
 					<font size="6" isBold="true"/>
 				</textElement>
@@ -341,13 +338,6 @@ ORDER BY
 			<line>
 				<reportElement uuid="dca215c6-8534-4948-bc3c-61275c6d3dab" x="3" y="0" width="568" height="1" forecolor="#666666"/>
 			</line>
-			<staticText>
-				<reportElement uuid="ff0f5c44-bbee-4c82-8fda-2fcf904c05ec" x="90" y="151" width="24" height="14"/>
-				<textElement verticalAlignment="Top">
-					<font size="6" isBold="true"/>
-				</textElement>
-				<text><![CDATA[~ D.O //]]></text>
-			</staticText>
 			<textField>
 				<reportElement uuid="75aa17ad-36fb-48dc-ae60-e50c77366c24" x="114" y="151" width="405" height="24"/>
 				<textElement verticalAlignment="Top">
@@ -458,25 +448,18 @@ ORDER BY
 				<text><![CDATA[RESPONSABLE DEL PROYECTO]]></text>
 			</staticText>
 			<textField pattern="#,##0">
-				<reportElement uuid="bb99cd01-2a76-4a55-9db7-be664bbd0ea6" x="304" y="1" width="42" height="8"/>
+				<reportElement uuid="bb99cd01-2a76-4a55-9db7-be664bbd0ea6" x="294" y="2" width="42" height="8"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{F_CantReq_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement uuid="f97fc742-8771-4c9a-9e2e-1770d7f540a8" x="349" y="2" width="50" height="8"/>
+				<reportElement uuid="f97fc742-8771-4c9a-9e2e-1770d7f540a8" x="339" y="2" width="50" height="8"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{F_CantSur_1}]]></textFieldExpression>
-			</textField>
-			<textField pattern="$ #,##0.00">
-				<reportElement uuid="a9fc53bc-c08e-486c-b689-1b22182a9128" x="405" y="2" width="45" height="8"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="6"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{F_Monto_2}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement uuid="0150b068-9ded-4961-b978-1b311e116189" x="2" y="10" width="568" height="1" forecolor="#666666"/>
@@ -523,6 +506,13 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[GNKL-T-7 F 12A]]></text>
 			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="d42364a4-79cc-474b-881a-1fea404bb335" x="431" y="2" width="67" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{F_Monto_3}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

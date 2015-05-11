@@ -55,7 +55,9 @@ public class AbastoModula {
     }
 
     public void enviaRuta(String F_FecEnt) {
-
+        /*
+         * Método para mandar Concentrados por ruta
+         */
         DateFormat df3 = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         DateFormat df4 = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -68,7 +70,7 @@ public class AbastoModula {
             try {
                 conModula.ejecutar("delete from IMP_ORDINI_RIGHE where RIG_ORDINE='R" + F_FecEnt + "'");
                 conModula.ejecutar("delete from IMP_ORDINI where ORD_ORDINE='R" + F_FecEnt + "'");
-                ResultSet rset = con.consulta("select F_FecEnt from tb_facttemp where F_FecEnt = '" + F_FecEnt + "' group by F_FecEnt");
+                ResultSet rset = con.consulta("select F_FecEnt from tb_factura where F_FecEnt = '" + F_FecEnt + "' group by F_FecEnt");
                 while (rset.next()) {
                     conModula.ejecutar("insert into IMP_ORDINI values ('R" + F_FecEnt + "','A','','" + df4.format(df3.parse(rset.getString("F_FecEnt"))) + "','V','','1')");
                 }

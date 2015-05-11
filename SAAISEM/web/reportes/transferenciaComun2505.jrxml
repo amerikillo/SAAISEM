@@ -20,7 +20,7 @@
 	SUM((F.F_CantSur+0)) as F_CantSur,
 	(F.F_Costo) as F_Costo,
 	F.F_Iva,
-	SUM(F.F_Monto+0) as F_Monto,
+	SUM(F.F_CantSur*F.F_Costo) as F_Monto,
 	F.F_Ubicacion,
 	(@csum := F.F_Monto +@csum) AS totales,
 	O.F_Obser,
@@ -61,9 +61,7 @@ ORDER BY
 	<field name="F_NomCli" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_FecEnt" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="F_FecEnt" class="java.lang.String"/>
 	<field name="F_ClaDoc" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -76,24 +74,16 @@ ORDER BY
 	<field name="F_ClaLot" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_FecCad" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="F_CantReq" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="F_CantSur" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="F_FecCad" class="java.lang.String"/>
+	<field name="F_CantReq" class="java.math.BigDecimal"/>
+	<field name="F_CantSur" class="java.math.BigDecimal"/>
 	<field name="F_Costo" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="F_Iva" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_Monto" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="F_Monto" class="java.lang.Double"/>
 	<field name="F_Ubicacion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -159,7 +149,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="4cfe276b-689d-4e4a-9786-f0b53625b6e2" stretchType="RelativeToBandHeight" x="58" y="0" width="120" height="8"/>
+				<reportElement uuid="4cfe276b-689d-4e4a-9786-f0b53625b6e2" stretchType="RelativeToTallestObject" x="58" y="0" width="120" height="8"/>
 				<textElement>
 					<font fontName="SansSerif" size="6"/>
 				</textElement>

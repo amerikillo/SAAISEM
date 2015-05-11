@@ -178,13 +178,24 @@ public class FacturacionManual extends HttpServlet {
                 response.sendRedirect("reimp_factura.jsp");
             }
             if (request.getParameter("accion").equals("CancelarFactura")) {
+                String F_ClaCli = "";
+                try {
+
+                    String F_ClaCliFM = (String) sesion.getAttribute("ClaCliFM");
+                    F_ClaCli = F_ClaCliFM;
+                    String[] F_ClaCliFMArray = F_ClaCliFM.split(" - ");
+                    if (F_ClaCliFMArray.length > 0) {
+                        F_ClaCli = F_ClaCliFMArray[0];
+                    }
+                } catch (Exception e) {
+                }
                 try {
                     con.conectar();
-                    ResultSet rset = con.consulta("select * from tb_facttemp where F_ClaCLi = '" + (String) sesion.getAttribute("ClaCliFM") + "'");
+                    ResultSet rset = con.consulta("select * from tb_facttemp where F_StsFact='3' and F_ClaCLi = '" + F_ClaCli+ "'");
                     while (rset.next()) {
                         con.insertar("insert into tb_facttemp_elim values ('" + rset.getString(1) + "','" + rset.getString(2) + "','" + rset.getString(3) + "','" + rset.getString(4) + "','" + rset.getString(5) + "','" + rset.getString(6) + "','" + rset.getString(7) + "', '" + (String) sesion.getAttribute("nombre") + "', NOW())");
                     }
-                    con.insertar("delete from tb_facttemp where F_ClaCLi = '" + (String) sesion.getAttribute("ClaCliFM") + "' ");
+                    con.insertar("delete from tb_facttemp where F_ClaCLi = '" + F_ClaCli + "' ");
                     con.cierraConexion();
                     sesion.setAttribute("F_IndGlobal", null);
                     out.println("<script>alert('Factura Eliminada Correctamente')</script>");
@@ -462,8 +473,8 @@ public class FacturacionManual extends HttpServlet {
             if (request.getParameter("accion").equals("ConfirmarFactura")) {
                 try {
                     con.conectar();
-                    RequerimientoModula reqMod = new RequerimientoModula();
-                    reqMod.enviaRequerimiento((String) sesion.getAttribute("F_IndGlobal"));
+                    //RequerimientoModula reqMod = new RequerimientoModula();
+                    //reqMod.enviaRequerimiento((String) sesion.getAttribute("F_IndGlobal"));
                     //con.insertar("update tb_facttemp set F_StsFact = '0' where F_IdFact = '" + (String) sesion.getAttribute("F_IndGlobal") + "' ");
                     con.cierraConexion();
                     /*
@@ -486,7 +497,7 @@ public class FacturacionManual extends HttpServlet {
 
                     con.conectar();
 
-                    ResultSet rsetFactTemp = con.consulta("select F_Id, F_IdFact, F_ClaCli from tb_facttemp where F_StsFact=3 group by F_IdFact");
+                    ResultSet rsetFactTemp = con.consulta("select F_Id, F_IdFact, F_ClaCli from tb_facttemp where F_StsFact=3 group by F_IdFact and F_User = '"+(String)sesion.getAttribute("nombre")+"' ");
 //consql.conectar();
 
                     while (rsetFactTemp.next()) {
@@ -500,8 +511,9 @@ public class FacturacionManual extends HttpServlet {
                         }
                         FolFact = FolioFactura + 1;
                         con.actualizar("update tb_indice set F_IndFact='" + FolFact + "'");
-                        //byte[] a = request.getParameter("Obs").getBytes("ISO-8859-1");
-                        String Observaciones = "";//(new String(a, "UTF-8")).toUpperCase();
+                        byte[] a = request.getParameter("obs").getBytes("ISO-8859-1");
+                        String Observaciones = (new String(a, "UTF-8")).toUpperCase();
+                        String tipo = request.getParameter("F_Tipo");
                         String req = "";//request.getParameter("F_Req").toUpperCase();
                         if (req.equals("")) {
                             req = "00000";
@@ -578,12 +590,12 @@ public class FacturacionManual extends HttpServlet {
                                  }*/
                                 con.actualizar("update tb_facttemp set F_StsFact='5' where F_Id='" + F_Id + "'");
                             } else {
-                                out.println("<script>window.open('Error al Generar la remisión, Contacte con el área de Sistemas')</script>");
-                                out.println("<script>window.location='remisionarCamion.jsp'</script>");
+                                out.println("<script>alert('Error al Generar la remisión, Contacte con el área de Sistemas')</script>");
+                                out.println("<script>window.location='facturacionManual.jsp'</script>");
                             }
                         }
 
-                        con.insertar("insert into tb_obserfact values ('" + idFact + "','" + Observaciones + "',0,'', 'ORDINARIO')");
+                        con.insertar("insert into tb_obserfact values ('" + idFact + "','" + Observaciones + "',0,'M', '" + tipo + "')");
                         out.println("<script>window.open('reimpFactura.jsp?fol_gnkl=" + idFact + "','_blank')</script>");
                         //Finaliza
                         //consql.cierraConexion();
@@ -595,7 +607,7 @@ public class FacturacionManual extends HttpServlet {
                     sesion.setAttribute("DesProFM", "");
                     sesion.setAttribute("F_IndGlobal", null);
                     //Aqui tenemos que poner en nulo la variable de folio de dactura
-                    out.println("<script>window.location='facturacion/generaTransferencias.jsp'</script>");
+                    out.println("<script>window.location='facturacionManual.jsp'</script>");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -603,7 +615,7 @@ public class FacturacionManual extends HttpServlet {
             if (request.getParameter("accion").equals("ReenviarFactura")) {
                 RequerimientoModula reqMod = new RequerimientoModula();
                 reqMod.enviaRequerimiento(request.getParameter("fol_gnkl"));
-                response.sendRedirect("reimpConcentrado.jsp");
+                response.sendRedirect("reimp_factura.jsp");
             }
 
             if (request.getParameter("accion").equals("ReenviarConcentradoRuta")) {
@@ -613,9 +625,12 @@ public class FacturacionManual extends HttpServlet {
             }
 
             if (request.getParameter("accion").equals("AgregarClave")) {
+                String F_CLaCli = (String) sesion.getAttribute("ClaCliFM");
+                String[] F_CLaCliArray = F_CLaCli.split(" - ");
+                F_CLaCli = F_CLaCliArray[0];
                 try {
                     con.conectar();
-                    con.insertar("insert into tb_facttemp values('" + (String) sesion.getAttribute("F_IndGlobal") + "','" + (String) sesion.getAttribute("ClaCliFM") + "','" + request.getParameter("IdLot") + "','" + request.getParameter("Cant") + "','" + (String) sesion.getAttribute("FechaEntFM") + "','3','0','','" + request.getParameter("Cant") + "','0')");
+                    con.insertar("insert into tb_facttemp values('" + (String) sesion.getAttribute("F_IndGlobal") + "','" + F_CLaCli + "','" + request.getParameter("IdLot") + "','" + request.getParameter("Cant") + "','" + (String) sesion.getAttribute("FechaEntFM") + "','3','0','" + (String) sesion.getAttribute("nombre") + "','" + request.getParameter("Cant") + "','0')");
                     con.cierraConexion();
                     response.sendRedirect("facturacionManual.jsp");
                 } catch (Exception e) {

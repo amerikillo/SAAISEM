@@ -49,7 +49,7 @@
     String[] temp;
     temp = UsuaJuris.split(",");
     for (int i = 0; i < temp.length; i++) {
-        where += "u.F_ClaJurNum = '" + temp[i] + "'";
+        where += "f.F_Ruta like 'R" + temp[i] + "%'";
         if (i != temp.length - 1) {
             where += " or ";
         }
@@ -102,7 +102,7 @@
                             </select>
                         </div>
 
-                        <h4 class="col-sm-2">Seleccione el Mes:</h4>
+                        <!--h4 class="col-sm-2">Seleccione el Mes:</h4>
                         <div class="col-sm-2">
                             <select name="F_Mes" class="form-control" required>
                                 <option>Seleccione</option>
@@ -119,7 +119,7 @@
                                 <option value="11">Noviembre</option>
                                 <option value="12">Diciembre</option>
                             </select>
-                        </div>
+                        </div-->
 
                         <div class="form-group">
                             <div class="form-group">
@@ -138,7 +138,7 @@
                         int banReq1 = 0, banReq = 0;
                         try {
                             con.conectar();
-                            ResultSet rset = con.consulta("select f.F_ClaUni from tb_fecharuta f, tb_uniatn u where f.F_ClaUni = u.F_ClaCli and f.F_Ruta like '%" + F_Ruta + "%' and MONTH(F_Fecha) = '" + request.getParameter("F_Mes") + "' " + where + " group by f.F_ClaUni");
+                            ResultSet rset = con.consulta("select f.F_ClaUni from tb_fecharuta f, tb_uniatn u where f.F_ClaUni = u.F_ClaCli and f.F_Ruta like '%" + F_Ruta + "%' " + where + " group by f.F_ClaUni");
                             while (rset.next()) {
                                 String F_NomCli = "";
                                 ResultSet rset2 = con.consulta("select  F_NomCli from tb_uniatn where F_ClaCli = '" + rset.getString("F_ClaUni") + "'");
@@ -166,7 +166,7 @@
                             banReq = 0;
                             try {
                                 con.conectar();
-                                ResultSet rset = con.consulta("select f.F_ClaUni,f.F_Ruta, f.F_Fecha from tb_fecharuta f, tb_uniatn u, tb_unireq ur where u.F_claCli = ur.F_ClaUni and f.F_ClaUni = u.F_ClaCli and f.F_Ruta like '%" + F_Ruta + "%' and MONTH(f.F_Fecha) = '" + request.getParameter("F_Mes") + "' " + where + " group by f.F_ClaUni");
+                                ResultSet rset = con.consulta("select f.F_ClaUni,f.F_Ruta, f.F_Fecha from tb_fecharuta f, tb_uniatn u, tb_unireq ur where u.F_claCli = ur.F_ClaUni and f.F_ClaUni = u.F_ClaCli and f.F_Ruta like '%" + F_Ruta + "%' " + where + " group by f.F_ClaUni");
                                 while (rset.next()) {
                                     String F_NomCli = "";
                                     F_FecEnt = rset.getString("F_Fecha");
@@ -203,7 +203,7 @@
                                 %>
                                 <input name="F_ClaUni" value="<%=rset.getString(1)%>" class="hidden" />
                                 <input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" />
-                                <button class="btn btn-sm btn-warning" name="accion" value="cancelar"><span class="glyphicon glyphicon-remove"></span></button>
+                                <button class="btn btn-sm btn-warning" name="eliminar" value="<%=rset.getString(1)%>"><span class="glyphicon glyphicon-remove"></span></button-->
                                     <%
                                         }
                                     %>
@@ -276,6 +276,14 @@
 
                                     </table> 
                                     <div class="row">
+                                        <h4 class="col-sm-2">
+                                            Observaciones:
+                                        </h4>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="obs<%=rset.getString("F_ClaUni")%>"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
 
                                         <h4 class="col-sm-2">
                                             Ruta: 
@@ -304,7 +312,14 @@
                         %>
                         <input name="F_FecEnt" class="hidden" value="<%=F_FecEnt%>" />
                         <input name="F_Juris" class="hidden" value="<%=UsuaJuris%>" />
-                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="generarRemision" onclick="return validaRemision()">Generar Folio(s)</button> 
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button class="btn btn-block btn-warning" type="submit" name="accion" value="cancelar" onclick="return validaRemision()">Cancelar Folio(s)</button> 
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-block btn-primary" type="submit" name="accion" value="generarRemision" onclick="return validaRemision()">Generar Folio(s)</button> 
+                            </div>
+                        </div>
 
                         <%
                             }
@@ -350,19 +365,19 @@
         <script src="js/dataTables.bootstrap.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
         <script>
-                            $(document).ready(function() {
-                                $('#datosProv').dataTable();
-                            });
-                            function validaRemision() {
-                                var confirmacion = confirm('Seguro que desea generar los Folios');
-                                if (confirmacion === true) {
-                                    $('#myModal').modal();
-                                    $('#btnGeneraFolio').prop('disabled', true);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
+                                    $(document).ready(function () {
+                                        $('#datosProv').dataTable();
+                                    });
+                                    function validaRemision() {
+                                        var confirmacion = confirm('Seguro que desea generar los Folios');
+                                        if (confirmacion === true) {
+                                            $('#myModal').modal();
+                                            $('#btnGeneraFolio').prop('disabled', true);
+                                            return true;
+                                        } else {
+                                            return false;
+                                        }
+                                    }
 
         </script> 
 

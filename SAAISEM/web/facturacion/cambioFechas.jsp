@@ -41,6 +41,33 @@
         orden_compra = "";
         fecha = "";
     }
+    
+    
+    String UsuaJuris = "(";
+
+    try {
+
+        con.conectar();
+        String F_Juris = "";
+        ResultSet rset = con.consulta("select F_Juris from tb_usuario where F_Usu = '" + usua + "'");
+        while (rset.next()) {
+            F_Juris = rset.getString("F_Juris");
+        }
+
+        for (int i = 0; i < F_Juris.split(",").length; i++) {
+            if (i == F_Juris.split(",").length - 1) {
+                UsuaJuris = UsuaJuris + "FR.F_Ruta like 'R" + F_Juris.split(",")[i] + "%' ";
+            } else {
+                UsuaJuris = UsuaJuris + "FR.F_Ruta like 'R" + F_Juris.split(",")[i] + "%' or ";
+            }
+        }
+
+        UsuaJuris = UsuaJuris + ")";
+        System.out.println(UsuaJuris);
+        con.cierraConexion();
+    } catch (Exception e) {
+
+    }
 %>
 <html>
     <head>
@@ -93,7 +120,7 @@
                                         try {
                                             con.conectar();
                                             try {
-                                                ResultSet rset = con.consulta("SELECT F.F_ClaDoc,F.F_ClaCli,U.F_NomCli,DATE_FORMAT(F.F_FecApl,'%d/%m/%Y') AS F_FecApl,SUM(F.F_Monto) AS F_Costo,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt FROM tb_factura F INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli GROUP BY F.F_ClaDoc ORDER BY F.F_ClaDoc+0;");
+                                                ResultSet rset = con.consulta("SELECT F.F_ClaDoc,F.F_ClaCli,U.F_NomCli,DATE_FORMAT(F.F_FecApl,'%d/%m/%Y') AS F_FecApl,SUM(F.F_Monto) AS F_Costo,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt, O.F_Tipo, O.F_Req FROM tb_factura F, tb_uniatn U, tb_obserfact O, tb_fecharuta FR where FR.F_ClaUni = U.F_ClaCli and  F.F_ClaDoc=O.F_IdFact AND F.F_ClaCli=U.F_ClaCli and " + UsuaJuris + " GROUP BY F.F_ClaDoc ORDER BY F.F_ClaDoc+0;");
                                                 while (rset.next()) {
 
                                     %>

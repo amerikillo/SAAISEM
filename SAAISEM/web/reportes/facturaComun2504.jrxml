@@ -14,13 +14,14 @@
 	F.F_ClaDoc,
 	F.F_ClaPro,
 	M.F_DesPro,
+	F.F_Costo,
 	Lotes.F_ClaLot,
 	Lotes.F_FecCad,
 	SUM((F.F_CantReq+0)) as F_CantReq,
 	SUM((F.F_CantSur+0)) as F_CantSur,
 	(F.F_Costo) as F_Costo,
 	F.F_Iva,
-	SUM(F.F_Monto+0) as F_Monto,
+	SUM(F.F_Costo*F.F_CantSur) as F_Monto,
 	F.F_Ubicacion,
 	(@csum := F.F_Monto +@csum) AS totales,
 	O.F_Obser,
@@ -55,25 +56,46 @@ group by F.F_ClaPro, Lotes.F_ClaLot, Lotes.F_FecCad
 ORDER BY
 	F.F_ClaPro]]>
 	</queryString>
+	<field name="F_IdFact" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_NomCli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_FecEnt" class="java.lang.String"/>
+	<field name="F_ClaDoc" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="F_ClaPro" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="F_DesPro" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="F_Costo" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="F_ClaLot" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_FecCad" class="java.lang.String">
+	<field name="F_FecCad" class="java.lang.String"/>
+	<field name="F_CantReq" class="java.math.BigDecimal"/>
+	<field name="F_CantSur" class="java.math.BigDecimal"/>
+	<field name="F_Iva" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_CantReq" class="java.math.BigDecimal">
+	<field name="F_Monto" class="java.lang.Double"/>
+	<field name="F_Ubicacion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_CantSur" class="java.math.BigDecimal">
+	<field name="totales" class="java.lang.Double"/>
+	<field name="F_Obser" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_Monto" class="java.lang.Double">
+	<field name="F_Req" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Direc" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="F_CantReq_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
@@ -95,33 +117,33 @@ ORDER BY
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="3" splitType="Stretch"/>
+		<band height="2" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="12" splitType="Stretch">
 			<textField isStretchWithOverflow="true" pattern="###,###,###,##0">
-				<reportElement uuid="6d08861c-080a-4cd8-801f-d9360094f623" x="345" y="0" width="45" height="8"/>
+				<reportElement uuid="6d08861c-080a-4cd8-801f-d9360094f623" x="336" y="0" width="45" height="8"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_CantSur}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="5655ef67-ff04-4f93-9d26-8a3569ffe98b" x="243" y="0" width="55" height="8"/>
+				<reportElement uuid="5655ef67-ff04-4f93-9d26-8a3569ffe98b" x="233" y="0" width="55" height="8"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_FecCad}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###,###,###,##0">
-				<reportElement uuid="9bef2f2d-fa63-4a45-8b51-1ed61a2e8b4d" x="300" y="0" width="45" height="8"/>
+				<reportElement uuid="9bef2f2d-fa63-4a45-8b51-1ed61a2e8b4d" x="288" y="0" width="45" height="8"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_CantReq}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="30a64bb8-8d98-404b-aaed-2e53347a3530" x="182" y="0" width="61" height="8"/>
+				<reportElement uuid="30a64bb8-8d98-404b-aaed-2e53347a3530" x="182" y="0" width="50" height="8"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="6"/>
 				</textElement>
@@ -141,54 +163,61 @@ ORDER BY
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="$ ###,###,###,##0.00">
-				<reportElement uuid="989690a3-c3a7-4ff8-8b5f-084ecfdb85f7" x="390" y="0" width="59" height="8"/>
+			<textField isStretchWithOverflow="true" pattern="###,###,###,##0.00">
+				<reportElement uuid="989690a3-c3a7-4ff8-8b5f-084ecfdb85f7" x="418" y="0" width="59" height="8"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Monto}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="414d21e5-19a4-4a66-b409-ba1361a1fb23" x="0" y="9" width="555" height="1"/>
+				<reportElement uuid="414d21e5-19a4-4a66-b409-ba1361a1fb23" x="0" y="-1" width="555" height="1"/>
 			</line>
+			<textField>
+				<reportElement uuid="aeaf81d6-bd54-412f-8b3a-05dc480fbb94" x="376" y="0" width="45" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Costo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band splitType="Stretch"/>
 	</columnFooter>
-	<pageFooter>
-		<band height="14" splitType="Stretch">
+	<summary>
+		<band height="13">
 			<textField pattern="#,##0">
-				<reportElement uuid="f6d49aa7-2090-45d4-80b1-27cc35272804" x="298" y="0" width="46" height="12"/>
+				<reportElement uuid="f6d49aa7-2090-45d4-80b1-27cc35272804" x="286" y="0" width="46" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{F_CantReq_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement uuid="aa8f2473-95c3-481b-b692-1674f2fc7931" x="345" y="0" width="45" height="12"/>
+				<reportElement uuid="aa8f2473-95c3-481b-b692-1674f2fc7931" x="333" y="0" width="45" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{F_CantSur_1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="$ #,##0.00">
-				<reportElement uuid="3f703dba-77d5-49c5-998c-cf2b7d1f23da" x="403" y="2" width="45" height="10"/>
+			<textField pattern="###,###,##0.00">
+				<reportElement uuid="3f703dba-77d5-49c5-998c-cf2b7d1f23da" x="416" y="2" width="59" height="10"/>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{F_Monto_1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="989c4cfb-99d4-4018-9da6-93c6e512b041" x="58" y="2" width="201" height="10"/>
+				<reportElement uuid="989c4cfb-99d4-4018-9da6-93c6e512b041" x="56" y="2" width="201" height="10"/>
 				<textElement>
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[SubTotal Medicamento (2504)]]></text>
 			</staticText>
+			<line>
+				<reportElement uuid="f2791ffe-0caf-436c-b849-be251a90c25b" x="2" y="0" width="555" height="1"/>
+			</line>
 		</band>
-	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>

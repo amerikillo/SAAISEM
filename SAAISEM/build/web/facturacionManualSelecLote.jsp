@@ -65,7 +65,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf" %>
             <div class="row">
                 <div class="col-sm-12">
@@ -79,29 +79,30 @@
                         <h4>Unidad:</h4>
                     </div>
                     <div class="col-sm-5">
-                        <select class="form-control" name="ClaCli" id="ClaCli">
+                        <input value="<%=ClaCli%>"  class="form-control" name="ClaCli" id="ClaCli"  />
+                        <!--select class="form-control" name="ClaCli" id="ClaCli">
                             <option value="">-Seleccione Unidad-</option>
-                            <%
-                                try {
-                                    con.conectar();
-                                    ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn");
-                                    while (rset.next()) {
-                            %>
-                            <option value="<%=rset.getString(1)%>"
-                                    <%
-                                        if (rset.getString(1).equals(ClaCli)) {
-                                            out.println("selected");
-                                        }
-                                    %>
-                                    ><%=rset.getString(2)%></option>
-                            <%
-                                    }
-                                    con.cierraConexion();
-                                } catch (Exception e) {
-
+                        <%
+                            try {
+                                con.conectar();
+                                ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn");
+                                while (rset.next()) {
+                        %>
+                        <option value="<%=rset.getString(1)%>"
+                        <%
+                            if (rset.getString(1).equals(ClaCli)) {
+                                out.println("selected");
+                            }
+                        %>
+                        ><%=rset.getString(2)%></option>
+                        <%
                                 }
-                            %>
-                        </select>
+                                con.cierraConexion();
+                            } catch (Exception e) {
+
+                            }
+                        %>
+                    </select-->
                     </div>
                     <div class="col-sm-2">
                         <h4>Fecha de Entrega</h4>
@@ -119,7 +120,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-1">
-                                <h4>SICCAL:</h4>
+                                <h4>CLAVE:</h4>
                             </div>
                             <div class="col-sm-2">
                                 <input class="form-control" readonly="" value="<%=ClaPro%>"/>
@@ -152,7 +153,7 @@
             </form>
             <table class="table table-condensed table-striped table-bordered table-responsive">
                 <tr>
-                    <td>SICCAL</td>
+                    <td>CLAVE:</td>
                     <td>Origen</td>
                     <td>Lote</td>
                     <td>Caducidad</td>

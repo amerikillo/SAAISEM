@@ -18,7 +18,6 @@
 <table border="1">
     <tr>
         <td>CLAVE</td>
-        <td>SAP</td>
         <td>Lote</td>
         <td>Caducidad</td>
         <td>Fec Fab</td>
@@ -36,7 +35,6 @@
     %>
     <tr>
         <td><%=rset.getString("F_ClaPro")%></td>
-        <td><%=rset.getString("F_ClaSap")%></td>
         <td><%=rset.getString("F_ClaLot")%></td>
         <td><%=rset.getString("F_FecCad")%></td>
         <td><%=rset.getString("F_FecFab")%></td>
