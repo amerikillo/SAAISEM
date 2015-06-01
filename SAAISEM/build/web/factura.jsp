@@ -161,7 +161,7 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <form action="Facturacion" method="post">
+                    <form action="Facturacion" method="post" onsubmit="muestraImagen()">
                         <%
                             banReq = 0;
                             try {
@@ -202,7 +202,7 @@
                                     if (banReq == 1) {
                                 %>
                                 <input name="F_ClaUni" value="<%=rset.getString(1)%>" class="hidden" />
-                                <input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" />
+                                <!--input name="F_FecEnt" value="<%=rset.getString("F_Fecha")%>" class="hidden" -->
                                 <button class="btn btn-sm btn-warning" name="eliminar" value="<%=rset.getString(1)%>"><span class="glyphicon glyphicon-remove"></span></button-->
                                     <%
                                         }
@@ -310,7 +310,13 @@
                         <%
                             if (banReq1 == 1) {
                         %>
-                        <input name="F_FecEnt" class="hidden" value="<%=F_FecEnt%>" />
+                        <div class="row">
+                            <h4 class="col-sm-3">Fecha de Entrega:</h4>
+                            <div class="col-sm-3">
+                                <input type="date" name="F_FecEnt" class="form-control" value="" required />
+                            </div>
+                        </div>
+                            <br/>
                         <input name="F_Juris" class="hidden" value="<%=UsuaJuris%>" />
                         <div class="row">
                             <div class="col-sm-6">
@@ -371,12 +377,15 @@
                                     function validaRemision() {
                                         var confirmacion = confirm('Seguro que desea generar los Folios');
                                         if (confirmacion === true) {
-                                            $('#myModal').modal();
                                             $('#btnGeneraFolio').prop('disabled', true);
                                             return true;
                                         } else {
                                             return false;
                                         }
+                                    }
+                                    
+                                    function muestraImagen(){
+                                            $('#myModal').modal();
                                     }
 
         </script> 

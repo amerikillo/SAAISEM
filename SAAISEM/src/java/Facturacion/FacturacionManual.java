@@ -67,6 +67,22 @@ public class FacturacionManual extends HttpServlet {
         } catch (Exception e) {
         }
         try {
+            if (!request.getParameter("accionEliminarTrans").equals("")) {
+
+                //sesion.setAttribute("F_IndGlobal", null);
+                con.conectar();
+                ResultSet rset = con.consulta("select * from tb_facttemp where F_Id = '" + request.getParameter("accionEliminarTrans") + "'");
+                while (rset.next()) {
+                    con.insertar("insert into tb_facttemp_elim values ('" + rset.getString(1) + "','" + rset.getString(2) + "','" + rset.getString(3) + "','" + rset.getString(4) + "','" + rset.getString(5) + "','" + rset.getString(6) + "','" + rset.getString(7) + "', '" + (String) sesion.getAttribute("nombre") + "', NOW())");
+                }
+                con.insertar("delete from tb_facttemp where F_Id = '" + request.getParameter("accionEliminarTrans") + "' ");
+                con.cierraConexion();
+                out.println("<script>alert('Clave Eliminada Correctamente')</script>");
+                out.println("<script>window.location='facturacion/generaTransferencias.jsp'</script>");
+            }
+        } catch (Exception e) {
+        }
+        try {
             if (request.getParameter("accion").equals("reintegrarInsumo")) {
                 String F_ClaDoc = request.getParameter("F_ClaDoc");
                 try {
@@ -191,7 +207,7 @@ public class FacturacionManual extends HttpServlet {
                 }
                 try {
                     con.conectar();
-                    ResultSet rset = con.consulta("select * from tb_facttemp where F_StsFact='3' and F_ClaCLi = '" + F_ClaCli+ "'");
+                    ResultSet rset = con.consulta("select * from tb_facttemp where F_StsFact='3' and F_ClaCLi = '" + F_ClaCli + "'");
                     while (rset.next()) {
                         con.insertar("insert into tb_facttemp_elim values ('" + rset.getString(1) + "','" + rset.getString(2) + "','" + rset.getString(3) + "','" + rset.getString(4) + "','" + rset.getString(5) + "','" + rset.getString(6) + "','" + rset.getString(7) + "', '" + (String) sesion.getAttribute("nombre") + "', NOW())");
                     }
@@ -200,6 +216,32 @@ public class FacturacionManual extends HttpServlet {
                     sesion.setAttribute("F_IndGlobal", null);
                     out.println("<script>alert('Factura Eliminada Correctamente')</script>");
                     out.println("<script>window.location='facturacionManual.jsp'</script>");
+                } catch (Exception e) {
+                }
+            }
+            if (request.getParameter("accion").equals("CancelarTransferencia")) {
+                String F_ClaCli = "";
+                try {
+
+                    String F_ClaCliFM = (String) sesion.getAttribute("ClaCliFM");
+                    F_ClaCli = F_ClaCliFM;
+                    String[] F_ClaCliFMArray = F_ClaCliFM.split(" - ");
+                    if (F_ClaCliFMArray.length > 0) {
+                        F_ClaCli = F_ClaCliFMArray[0];
+                    }
+                } catch (Exception e) {
+                }
+                try {
+                    con.conectar();
+                    ResultSet rset = con.consulta("select * from tb_facttemp where F_StsFact='3' and F_ClaCLi = '" + F_ClaCli + "'");
+                    while (rset.next()) {
+                        con.insertar("insert into tb_facttemp_elim values ('" + rset.getString(1) + "','" + rset.getString(2) + "','" + rset.getString(3) + "','" + rset.getString(4) + "','" + rset.getString(5) + "','" + rset.getString(6) + "','" + rset.getString(7) + "', '" + (String) sesion.getAttribute("nombre") + "', NOW())");
+                    }
+                    con.insertar("delete from tb_facttemp where F_ClaCLi = '" + F_ClaCli + "' ");
+                    con.cierraConexion();
+                    sesion.setAttribute("F_IndGlobal", null);
+                    out.println("<script>alert('Transferencia Eliminada Correctamente')</script>");
+                    out.println("<script>window.location='facturacion/generaTransferencias.jsp'</script>");
                 } catch (Exception e) {
                 }
             }
@@ -306,7 +348,7 @@ public class FacturacionManual extends HttpServlet {
                              }*/
                             con.actualizar("update tb_facttemp set F_StsFact='5' where F_Id='" + F_Id + "'");
                         } else {
-                            out.println("<script>window.open('Error al Generar la remisión, Contacte con el área de Sistemas')</script>");
+                            out.println("<script>alert('Error al Generar la remisión, Contacte con el área de Sistemas')</script>");
                             out.println("<script>window.location='remisionarCamion.jsp'</script>");
                         }
 
@@ -448,7 +490,7 @@ public class FacturacionManual extends HttpServlet {
                                  }*/
                                 con.actualizar("update tb_facttemp set F_StsFact='5' where F_Id='" + F_Id + "'");
                             } else {
-                                out.println("<script>window.open('Error al Generar la remisión, Contacte con el área de Sistemas')</script>");
+                                out.println("<script>alert('Error al Generar la remisión, Contacte con el área de Sistemas')</script>");
                                 out.println("<script>window.location='remisionarCamion.jsp'</script>");
                             }
                         }
@@ -497,7 +539,7 @@ public class FacturacionManual extends HttpServlet {
 
                     con.conectar();
 
-                    ResultSet rsetFactTemp = con.consulta("select F_Id, F_IdFact, F_ClaCli from tb_facttemp where F_StsFact=3 group by F_IdFact and F_User = '"+(String)sesion.getAttribute("nombre")+"' ");
+                    ResultSet rsetFactTemp = con.consulta("select F_Id, F_IdFact, F_ClaCli from tb_facttemp where F_StsFact=3 group by F_IdFact and F_User = '" + (String) sesion.getAttribute("nombre") + "' ");
 //consql.conectar();
 
                     while (rsetFactTemp.next()) {
@@ -619,9 +661,23 @@ public class FacturacionManual extends HttpServlet {
             }
 
             if (request.getParameter("accion").equals("ReenviarConcentradoRuta")) {
-                AbastoModula reqMod = new AbastoModula();
-                reqMod.enviaRuta(request.getParameter("F_FecEnt"));
-                response.sendRedirect("facturacion/concentradoxRuta.jsp");
+                try {
+                    AbastoModula reqMod = new AbastoModula();
+                    reqMod.enviaRuta(request.getParameter("F_FecEnt"));
+                    response.sendRedirect("facturacion/concentradoxRuta.jsp");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+
+            if (request.getParameter("accion").equals("ReenviarConcentradoRequerimientos")) {
+                try {
+                    AbastoModula reqMod = new AbastoModula();
+                    reqMod.enviaMultRemis(request.getParameter("F_FecEnt"));
+                    response.sendRedirect("facturacion/concentradoxRuta.jsp");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
 
             if (request.getParameter("accion").equals("AgregarClave")) {

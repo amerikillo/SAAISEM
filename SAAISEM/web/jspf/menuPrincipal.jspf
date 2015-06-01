@@ -111,7 +111,7 @@
                         <li class="divider"></li>
                         <!--li><a href="/SAAISEM/validacionSurtido.jsp">Validación Surtido</a></li>
                         <li><a href="/SAAISEM/validacionAuditores.jsp">Validación Auditores</a></li-->
-                        <!--li><a href="#"  onclick="window.open('modula/modulaHistorico.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Histórico Modula</a></li-->
+                        <li><a href="#"  onclick="window.open('/SAAISEM/modula/modulaHistorico.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Histórico Modula</a></li>
                         <%
                             }
                         %>

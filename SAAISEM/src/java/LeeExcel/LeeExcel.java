@@ -69,6 +69,7 @@ public class LeeExcel {
         // Looping every row data in vector
         DateFormat df1 = new SimpleDateFormat("dd-MMM-yyyy");
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df3 = new SimpleDateFormat("dd/MM/yyyy");
 
         ConectionDB con = new ConectionDB();
         for (int i = 0; i < vectorData.size(); i++) {
@@ -178,10 +179,15 @@ public class LeeExcel {
                 try {
                     F_Fecha = (vectorCellEachRowData.get(2).toString());
                     F_Fecha = df2.format(df1.parse(F_Fecha));
-                    Solicitado = ((vectorCellEachRowData.get(3).toString()) + "");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
+                    try {
+                        F_Fecha = df2.format(df3.parse(F_Fecha));
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
                 }
+                Solicitado = ((vectorCellEachRowData.get(3).toString()) + "");
                 qry = qry + "curdate(), 0, '0','" + F_Fecha + "','" + Solicitado + "')"; // agregar campos fuera del excel
                 con.insertar(qry);
                 con.cierraConexion();

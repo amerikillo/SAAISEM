@@ -48,13 +48,18 @@
 
         <h4>Concentrados por Ruta</h4>
         <hr/>
-
+        <div class="row" id="divImagen">
+            <div class="text-center">
+                <img src="../imagenes/ajax-loader-1.gif" width="100" />
+            </div>
+        </div>
         <table class="table table-condensed table-striped table-bordered" id="tbConcentrados">
             <thead>
                 <tr>
                     <td>Fecha</td>
-                    <td>Imprimir</td>
-                    <td>Enviar Módula</td>
+                    <td width="200">Imprimir</td>
+                    <td width="200">Enviar Módula</td>
+                    <td width="200">Enviar Requerimientos</td>
                 </tr>
             </thead>
             <tbody>
@@ -68,9 +73,16 @@
                     <td><a class="btn btn-block btn-success btn-sm" target="_blank" href="../reimpRutaConcentrado.jsp?F_FecSur=<%=rset.getString("F_FecEnt")%>"><span class="glyphicon glyphicon-print"></span></a></td>
                     <!--td><button class="btn btn-block btn-info btn-sm"><span class="glyphicon glyphicon-upload"></span></button></td-->
                     <td>
-                        <form action="../FacturacionManual" method="post">
+                        <form action="../FacturacionManual" method="post" onsubmit="muestraImagen()">
                             <input class="hidden" name="F_FecEnt" value="<%=rset.getString("F_FecEnt")%>">
-                            <button class="btn btn-block btn-info btn-sm" name="accion" value="ReenviarConcentradoRuta" onclick="return confirm('Seguro de Reenviar este concentrado?')"><span class="glyphicon glyphicon-upload"></span></button>
+                            <button id="btnConct" class="btn btn-block btn-info btn-sm" name="accion" value="ReenviarConcentradoRuta" onclick="return confirm('Seguro de Reenviar este concentrado?'); muestraImagen()"><span class="glyphicon glyphicon-upload"></span></button>
+
+                        </form>
+                    </td>
+                    <td>
+                        <form action="../FacturacionManual" method="post" onsubmit="muestraImagen()">
+                            <input class="hidden" name="F_FecEnt" value="<%=rset.getString("F_FecEnt")%>">
+                            <button id="btnFacts" class="btn btn-block btn-warning btn-sm" name="accion" value="ReenviarConcentradoRequerimientos" onclick="return confirm('Seguro de Reenviar estas remisiones?'); muestraImagen()"><span class="glyphicon glyphicon-upload"></span></button>
 
                         </form>
                     </td>
@@ -100,6 +112,14 @@
                                 $(document).ready(function () {
                                     $('#tbConcentrados').dataTable();
                                 });
+                                
+                                $('#divImagen').toggle();
+                                
+                                function muestraImagen(){
+                                    //$('#btnFacts').attr('disabled', true);
+                                    //$('#btnConct').attr('disabled', true);
+                                    $('#divImagen').toggle();
+                                }
         </script>
     </body>
 </html>

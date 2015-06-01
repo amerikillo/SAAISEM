@@ -775,7 +775,7 @@
                         document.getElementById('TarimasC').focus();
                     }
 
-                    $(function () {
+                    /*$(function () {
                         var availableTags = [
     <%
         try {
@@ -792,8 +792,8 @@
                         $("#descr").autocomplete({
                             source: availableTags
                         });
-                    });
-                    $(function () {
+                    });*/
+                    /*$(function () {
                         var availableTags = [
     <%
         try {
@@ -810,7 +810,7 @@
                         $("#provee").autocomplete({
                             source: availableTags
                         });
-                    });
+                    });*/
                     function ubi() {
                         var ubi = document.formulario1.ubica.value;
                         document.formulario1.ubicacion.value = ubi;

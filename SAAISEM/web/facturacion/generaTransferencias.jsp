@@ -123,7 +123,7 @@
                             <%
                                 try {
                                     con.conectar();
-                                    ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn where F_NomCli like '%C.E.A.%'");
+                                    ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn where F_ClaCli in ('2200A', '4100A', '4101A', '4102A', '4103A', '7094A', '8200A', '8201A');");
                                     while (rset.next()) {
                             %>
                             <option value="<%=rset.getString(1)%>"
@@ -224,7 +224,7 @@
                         <td><%=rset.getString("F_DesMar")%></td>
                         <td><%=rset.getString(4)%></td>
                         <td>
-                            <button class="btn btn-block btn-danger" name="accionEliminar" value="<%=rset.getString("F_Id")%>" onclick="return confirm('Seguro que desea eliminar esta clave?')"><span class="glyphicon glyphicon-remove"></span></button>
+                            <button class="btn btn-block btn-danger" name="accionEliminarTrans" value="<%=rset.getString("F_Id")%>" onclick="return confirm('Seguro que desea eliminar esta clave?')"><span class="glyphicon glyphicon-remove"></span></button>
                         </td>
                     </tr>
                     <%
@@ -243,7 +243,7 @@
                         <button class="btn btn-block btn-primary" name="accion" value="ConfirmarTransferencia" onclick="return confirm('Seguro de confirmar la Transferencia?')">Confirmar Transferencia</button>
                     </div>
                     <div class="col-sm-6">
-                        <button class="btn btn-block btn-danger" name="accion" value="CancelarFactura" onclick="return confirm('Seguro de CANCELAR la Factura?')">Cancelar Factura</button>
+                        <button class="btn btn-block btn-danger" name="accion" value="CancelarTransferencia" onclick="return confirm('Seguro de CANCELAR la Factura?')">Cancelar Transferencia</button>
                     </div>
                 </div>
 

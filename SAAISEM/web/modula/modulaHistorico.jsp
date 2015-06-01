@@ -52,6 +52,7 @@
         <table class="table table-bordered table-condensed table-striped" id="tablaMovMod">
             <thead>
                 <tr>
+                    <td>No Mov</td>
                     <td>Folio Remisión</td>
                     <td>Clave</td>
                     <td>Lote</td>
@@ -70,6 +71,8 @@
                     try {
                         conModula.conectar();
                         con.conectar();
+                        //ResultSet rset = conModula.consulta("select STO_ID, STO_TIME, STO_ORDINE, STO_ARTICOLO, STO_SUB1, STO_SUB2, STO_DSCAD, STO_QTAR, STO_UDC, STO_SCOMPARTO, STO_GIAC, STO_POSI from VIEW_MODULA_STORICO_INTRATA");
+                        //ResultSet rset = conModula.consulta("select STO_ID, STO_TIME, STO_ORDINE, STO_ARTICOLO, STO_SUB1, STO_SUB2, STO_DSCAD, STO_QTAR, STO_UDC, STO_SCOMPARTO, STO_GIAC, STO_POSI from VIEW_MODULA_STORICO_INVENTARIO");
                         ResultSet rset = conModula.consulta("select STO_ID, STO_TIME, STO_ORDINE, STO_ARTICOLO, STO_SUB1, STO_SUB2, STO_DSCAD, STO_QTAR, STO_UDC, STO_SCOMPARTO, STO_GIAC, STO_POSI from VIEW_MODULA_STORICO");
                         while (rset.next()) {
                             String F_DesPro = "";
@@ -83,6 +86,7 @@
                             }
                 %>
                 <tr>
+                    <td><%=rset.getString("STO_ID")%></td>
                     <td><%=Folio%></td>
                     <td title="<%=F_DesPro%>"><%=rset.getString("STO_ARTICOLO")%></td>
                     <td><%=rset.getString("STO_SUB1")%></td>
